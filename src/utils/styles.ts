@@ -1,0 +1,35 @@
+import { CSSProperties } from "react";
+
+
+export const btn_small_style: CSSProperties = {
+    backgroundColor: "white",
+    height: 30,
+    borderColor: "white"
+}
+
+export const btn_small_s_style: CSSProperties = {
+    backgroundColor: "#4A6EE8",
+    height: 30,
+    borderColor: "#4A6EE8",
+    color: "white"
+}
+
+export const text_2_style: CSSProperties = {
+    color: "black",
+    margin: 2
+}
+
+export const text_2_s_style: CSSProperties = {
+    color: "white",
+    margin: 2
+}
+
+export const select_style: CSSProperties = {
+    width: 150
+}
+export const input_style: CSSProperties = {
+    height: 25,
+    borderRadius: 4,
+    fontSize: 20,
+    width: 120
+}
