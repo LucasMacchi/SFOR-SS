@@ -1,12 +1,10 @@
 import Image from "next/image";
 import styles from "./page.module.css";
+import sessionCheck from "@/utils/sessionCheck";
+import { redirect } from "next/navigation"
 
-export default function Home() {
-  return (
-    <div className={styles.page} style={{backgroundColor: "white"}}>
-      <main className={styles.main}>
+export default async function Home() {
 
-      </main>
-    </div>
-  );
+  redirect("/inicio")
+
 }

@@ -9,7 +9,7 @@ const expireTime = process.env.TOKEN_EXPIRE ?? '60s'
 export default async function (username: string, password: string): Promise<IUserData | null> {
     const conn = clientReturner()
     try {
-        const sql = `SELECT * FROM public.glpi_sgp_envio_users where username = '${username}' and password = '${password}';`
+        const sql = `SELECT * FROM public.user where username = '${username}' and password = '${password}';`
         await conn.connect()
         const data:IUserData = (await conn.query(sql)).rows[0]
         await conn.end()

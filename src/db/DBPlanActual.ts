@@ -1,24 +1,25 @@
 import authJwt from "@/utils/authJwt";
 import clientReturner from "./clientReturner";
+import { IReparto } from "@/utils/interfaces";
 
-export default async function (): Promise<number> {
+export default async function (): Promise<IReparto[]> {
     const conn = clientReturner()
     try {
         if(await authJwt()) {
-            const sql = 'SELECT  * FROM glpi_sgp_config where config_id = 8;'
+            const sql = 'SELECT  * FROM public.reparto ORDER BY reparto_id DESC'
             await conn.connect()
-            const data:number = (await conn.query(sql)).rows[0]["payload"]
+            const data:IReparto[] = (await conn.query(sql)).rows
             await conn.end()
             return data
         }
         else {
             await conn.end()
-            return 0
+            return []
         }
 
     } catch (error) {
         await conn.end()
         console.log(error)
-        return 0
+        return []
     }
 }

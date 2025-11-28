@@ -1,6 +1,7 @@
 import DBLogin from "@/db/DBLogin";
 import { NextResponse } from "next/server";
 import { redirect } from 'next/navigation'
+import { IRqLogin } from "@/utils/interfaces";
 
 
 export async function POST(req: Request) {

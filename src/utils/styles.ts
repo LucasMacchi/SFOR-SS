@@ -24,6 +24,17 @@ export const text_2_s_style: CSSProperties = {
     margin: 2
 }
 
+export const text_2_t_style: CSSProperties = {
+    color: "#4A6EE8",
+    margin: 2
+}
+
+export const hr_style: CSSProperties = {
+    margin: 12,
+    borderWidth: 2
+    
+}
+
 export const select_style: CSSProperties = {
     width: 150
 }

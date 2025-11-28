@@ -1,5 +1,7 @@
 import LinkMenu from "@/Componets/LinkMenu";
+import PlanSelector from "@/Componets/PlanSelector";
 import DBPlanActual from "@/db/DBPlanActual";
+import DBUserPlan from "@/db/DBUserPlan";
 import decodeJWT from "@/utils/decodeJWT";
 import { text_2_s_style } from "@/utils/styles";
 import { CSSProperties } from "react";
@@ -15,13 +17,13 @@ export default async function Layout({children}: Readonly<{children: React.React
 
   const userData = await decodeJWT()
   const planActual = await DBPlanActual()
-
+  const userplan = await DBUserPlan()
   return (
         <div style={{display: "flex", justifyContent: "start",margin: 0}}>
           <div style={{paddingLeft:10 ,marginRight: 25, width: 250, height: "100vh",backgroundColor: "#4A6EE8", position: "fixed"}}>
             <div style={{marginBottom: 150}}>
-                <h4 style={text_2_s_style}>usuario: {userData ? userData.username : "NaN"}</h4>
-                <h2 style={text_2_s_style}>PLAN: {planActual}</h2>
+                <h4 style={text_2_s_style}>USER: {userData ? userData.username : "NaN"}</h4>
+                <PlanSelector planes={planActual} userPlan={userplan}/>
             </div>
             <div style={linkListStyle}>
                 <LinkMenu where="/inicio" titulo="inicio"/>
@@ -34,7 +36,7 @@ export default async function Layout({children}: Readonly<{children: React.React
                 <LinkMenu where="/inicio/datos" titulo="datos"/>
             </div>
           </div>
-          <div style={{flex: 1,marginTop: 60,marginLeft: 250}}>
+          <div style={{flex: 1,marginTop: 60,marginLeft: 260}}>
             {children}
           </div>
         </div>        
