@@ -43,6 +43,22 @@ export function desglosesDisplayRemitoSQL (remito_id: number) {
     return `SELECT e.envio_id, d.des as dependencia FROM public.envio e JOIN public.desglose d ON e.desglose_id = d.desglose_id WHERE e.remito_id = ${remito_id};`
 }
 
+export function changeStateRemitoSQL (id: number,estado: string,remito:number) {
+    let fecha = ""
+    if(estado === 'PREPARADO') fecha += `fecha_preparado=NOW(),`
+    if(estado === 'DESPACHADO') fecha += `fecha_despachado=NOW(),`
+    if(estado === 'ENTREGADO') fecha += `fecha_entregado=NOW(),`
+    return `UPDATE public.remito SET ${fecha} estado_id=${id} WHERE remito_id = ${remito};`
+}
+
 export function detalleEnvioSQL (envio_id : number) {
     return `SELECT d.detail_id,d.envio_id,d.ins_id, i.des as insumo,d.unidades,d.raciones FROM public.envio_details d JOIN public.insumo i ON d.ins_id = i.ins_id WHERE d.envio_id = ${envio_id};`
+}
+
+export function reportesRemitoSQL (remito_id:number) {
+    return `SELECT r.reporte_id,r.categoria_id,r.des as descripcion, c.des as titulo,r.fecha FROM public.reporte r JOIN reporte_categoria c ON r.categoria_id = c.categoria_id WHERE r.remito_id = ${remito_id};`
+}
+
+export function reportesCategoriasSQL () {
+    return `SELECT * FROM public.reporte_categoria ORDER BY categoria_id ASC ;`
 }

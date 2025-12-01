@@ -1,5 +1,11 @@
 import DesgloseDisplay from "@/Componets/DesgloseDisplay";
+import ReporteAdd from "@/Componets/ReporteAdd";
+import ReportesDisplay from "@/Componets/ReportesDisplay";
+import StateChangeDisplay from "@/Componets/StateChangeDisplay";
 import DBDesgloseDisplayer from "@/db/DBDesgloseDisplayer";
+import DBEstados from "@/db/DBEstados";
+import DBReportCategorias from "@/db/DBReportCategorias";
+import DBReportes from "@/db/DBReportes";
 import DBUniqRemito from "@/db/DBUniqRemito";
 import refillEmptySpace from "@/utils/refillEmptySpace";
 import sessionCheck from "@/utils/sessionCheck";
@@ -11,10 +17,13 @@ export default async function Page({params}:{params:Promise<{remito:string}>}) {
     await sessionCheck()
     const remitoUrl = (await params).remito
     const remitoUniq = await DBUniqRemito(remitoUrl)
+    const estados = await DBEstados()
+    const categorias = await DBReportCategorias()
     if(!remitoUniq){
         alert("No se pudo traer los datos del remito.")
         redirect("/inicio")
     }
+    const reportes = await DBReportes(remitoUniq.remito_id)
     const remitoDetalles = await DBDesgloseDisplayer(remitoUniq.remito_id)
     const parseRemitoToString = (pv:number,num:number):string => {
         return refillEmptySpace(5,pv)+"-"+refillEmptySpace(8,num)
@@ -47,6 +56,27 @@ export default async function Page({params}:{params:Promise<{remito:string}>}) {
                     <h2 style={{...text_2_t_style, marginTop: 40}}>TIPO DE REMITO: {tipo}</h2>
                     <h2 style={{...text_2_t_style, marginTop: 40}}>LUGAR: {lugarEntreg}</h2>
                     <h2 style={{...text_2_t_style, marginTop: 40}}>CANTIDAD DE REPORTES: {remitoUniq.reportes}</h2>
+                </div>
+                <div style={{marginTop: 65}}>
+                    <div>
+                        <h1 style={text_2_t_style}>ESTADOS</h1>
+                    </div>
+                    <hr color="#4A6EE8" style={hr_style}/>
+                    <StateChangeDisplay remito={remitoUniq} estados={estados}/>
+                </div>
+                <div style={{marginTop: 65}}>
+                    <div>
+                        <h1 style={text_2_t_style}>REPORTES</h1>
+                    </div>
+                    <hr color="#4A6EE8" style={hr_style}/>
+                    <div style={{display: "flex", justifyContent: "space-around"}}>
+                        <div style={{width: "35%"}}>
+                            <ReportesDisplay reportes={reportes}/>
+                        </div>
+                        <div style={{width: "50%"}}>
+                            <ReporteAdd categorias={categorias}/>
+                        </div>
+                    </div>
                 </div>
                 <div style={{marginTop: 65}}>
                     <div>

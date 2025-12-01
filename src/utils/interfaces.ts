@@ -7,6 +7,11 @@ export interface IRqUniq {
     pv:number,
     numero:number
 }
+export interface IRqStChange {
+    estado_id: number,
+    estado: string,
+    remito: number
+}
 export interface IRqRepUserChange {
     repartoId: number
 }
@@ -28,7 +33,13 @@ export interface IEnvioDetalles {
     unidades: number,
     raciones: number
 }
-
+export interface IReporte {
+    reporte_id: number,
+    categoria_id: number,
+    descripcion: string,
+    titulo: string,
+    fecha: Date
+}
 export interface IUniqRemito {
     remito_id:number,
     pv:number,
@@ -58,6 +69,11 @@ export interface IReporteRemito {
     des: string,
     fecha: string,
     reportes: number
+}
+
+export interface IReporteCategoria {
+    categoria_id : number,
+    des: string
 }
 
 export interface IRemitosEnvio {

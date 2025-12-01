@@ -14,6 +14,13 @@ export const btn_small_s_style: CSSProperties = {
     color: "white"
 }
 
+export const btn_s_style: CSSProperties = {
+    backgroundColor: "#4A6EE8",
+    height: 50,
+    borderColor: "#4A6EE8",
+    color: "white"
+}
+
 export const text_2_style: CSSProperties = {
     color: "black",
     margin: 2
