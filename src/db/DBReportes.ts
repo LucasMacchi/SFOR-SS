@@ -18,6 +18,6 @@ export default async function (remito:number): Promise<IReporte[]> {
     } catch (error) {
         await conn.end()
         console.log(error)
-        return []
+        throw new Error("Error al traer los reportes del remito en la base de datos")
     }
 }

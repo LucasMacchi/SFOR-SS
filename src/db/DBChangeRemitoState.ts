@@ -15,5 +15,6 @@ export default async function (estado_id:number,estado:string,remito:number): Pr
     } catch (error) {
         await conn.end()
         console.log(error)
+        throw new Error("Error al modificar estado en la base de datos")
     }
 }

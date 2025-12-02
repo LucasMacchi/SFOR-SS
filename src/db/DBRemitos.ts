@@ -2,7 +2,6 @@ import authJwt from "@/utils/authJwt";
 import clientReturner from "./clientReturner";
 import {IRemitosEnvio } from "@/utils/interfaces";
 import { listRemitosSQL } from "@/db/SQLreturner";
-import { jwtDecode } from "jwt-decode";
 import decodeJWT from "@/utils/decodeJWT";
 
 export default async function (): Promise<IRemitosEnvio[]> {
@@ -23,6 +22,6 @@ export default async function (): Promise<IRemitosEnvio[]> {
     } catch (error) {
         await conn.end()
         console.log(error)
-        return []
+        throw new Error("Error al traer los remitos de la base de datos")
     }
 }

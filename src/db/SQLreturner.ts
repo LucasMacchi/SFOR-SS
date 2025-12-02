@@ -1,3 +1,4 @@
+import { IRqReportAdd } from "@/utils/interfaces"
 
 export function listRemitosSQL(usr: number): string {
     return `SELECT r.remito_id,r.pv,r.numero,r.estado_id,e.des as estado,r.fortificado,r.dias,
@@ -61,4 +62,49 @@ export function reportesRemitoSQL (remito_id:number) {
 
 export function reportesCategoriasSQL () {
     return `SELECT * FROM public.reporte_categoria ORDER BY categoria_id ASC ;`
+}
+
+export function createReporteSQL (d: IRqReportAdd,user:number) {
+    return `INSERT INTO public.reporte(categoria_id, des, fecha, remito_id, "userId") VALUES (${d.categoria_id}, '${d.descripcion}', NOW(), ${d.remito_id}, ${user});`
+}
+
+export function nextRemitoSQL () {
+    return `SELECT last_value FROM remito_numero_seq;`
+}
+
+export function configTableGETSQL () {
+    return `SELECT * FROM public.config order by config_id;`
+}
+
+export function repartoAllSQL () {
+    return `SELECT * FROM public.reparto ORDER BY reparto_id ASC;`
+}
+
+export function facturasSQL () {
+    return `SELECT * FROM public.factura order by factura_id desc;`
+}
+
+export function facturaGroupSQL () {
+    return `SELECT pv,numero,cerrado,sum(raciones) as raciones,fecha_factura FROM public.factura group by pv,numero,cerrado,fecha_factura order by numero desc;`
+}
+
+export function remitosNoFacturados (user:number) {
+    return `SELECT r.remito_id,r.pv,r.numero,r.fortificado FROM public.remito r LEFT JOIN public.factura f ON r.remito_id = f.remito_id WHERE r.plan = (SELECT reparto_id FROM reparto_user WHERE user_id = ${user}) and f.numero is null ORDER BY r.numero;`
+}
+
+export function remitoRacionesCobrablesSQL (remito_id : number) {
+    return `SELECT sum(d.raciones) FROM public.envio e JOIN public.envio_details d ON e.envio_id = d.envio_id JOIN public.insumo i ON d.ins_id = i.ins_id WHERE e.remito_id = ${remito_id} and i.calculable`
+}
+
+export function changeNextRemitoSQL (value:string) {
+    //SELECT setval('remito_numero_seq');
+    return `SELECT setval('remito_numero_seq', ${value}, true); `
+}
+
+export function changeTableConfigSQL (id:number,payload:string) {
+    return `UPDATE public.config SET payload=${payload} WHERE config_id = ${id};`
+}
+
+export function remitoInFacturaSQL (pv:number,nro:number) {
+    return `SELECT r.pv,r.numero,f.raciones FROM public.factura f JOIN public.remito r ON r.remito_id = f.remito_id WHERE f.pv = ${pv} and f.numero = ${pv};`
 }

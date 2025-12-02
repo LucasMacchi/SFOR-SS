@@ -15,6 +15,6 @@ export default async function (pv: number, numero: number): Promise<boolean | nu
     } catch (error) {
         await conn.end()
         console.log(error)
-        return false
+        throw new Error("Error al chequear existencia en la base de datos")
     }
 }

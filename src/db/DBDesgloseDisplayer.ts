@@ -19,6 +19,6 @@ export default async function (remito_id: number): Promise<IDesgloseDisplay[] | 
     } catch (error) {
         await conn.end()
         console.log(error)
-        return null
+        throw new Error("Error al traer desgloses del remito en la base de datos")
     }
 }

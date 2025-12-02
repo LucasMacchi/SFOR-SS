@@ -16,6 +16,6 @@ export default async function (): Promise<IEstados[]> {
     } catch (error) {
         await conn.end()
         console.log(error)
-        return []
+        throw new Error("Error al traer los estados de los remitos de la base de datos")
     }
 }

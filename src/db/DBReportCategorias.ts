@@ -16,6 +16,6 @@ export default async function (): Promise<IReporteCategoria[]> {
     } catch (error) {
         await conn.end()
         console.log(error)
-        return []
+        throw new Error("Error al traer las categorias de reportes")
     }
 }

@@ -12,8 +12,18 @@ export interface IRqStChange {
     estado: string,
     remito: number
 }
+export interface IRqReportAdd {
+    categoria_id: number,
+    descripcion: string,
+    remito_id: number
+}
 export interface IRqRepUserChange {
     repartoId: number
+}
+export interface IConfigTable {
+    config_id: number,
+    des: string,
+    payload: string
 }
 export interface IUserData {
     email: string,
@@ -113,4 +123,37 @@ export interface IReparto {
     reparto_id : number,
     numero: number,
     periodo: number
+}
+
+export interface IFactura {
+    factura_id:number,
+    remito_id:number,
+    raciones:number,
+    fecha_factura:Date,
+    fecha_creado:Date,
+    numero:number,
+    pv:number
+}
+
+export interface IFacturaAgrupado {
+    pv:number,
+    numero: number,
+    cerrado: boolean,
+    raciones: number,
+    fecha_factura: Date,
+    remitos?: IRemitoInFactura[]
+}
+
+export interface IRemitoInFactura {
+    pv:number,
+    numero:number,
+    raciones:number
+}
+
+export interface IRemitosNoF {
+    remito_id: number,
+    pv:number,
+    numero:number,
+    fortificado: boolean,
+    raciones?: string
 }

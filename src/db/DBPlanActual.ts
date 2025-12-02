@@ -20,6 +20,6 @@ export default async function (): Promise<IReparto[]> {
     } catch (error) {
         await conn.end()
         console.log(error)
-        return []
+        throw new Error("Error al traer el plan actual de la base de datos")
     }
 }

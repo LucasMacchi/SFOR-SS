@@ -1,15 +1,31 @@
 "use client"
-import { IReporteCategoria } from "@/utils/interfaces";
+import { IReporteCategoria, IRqReportAdd } from "@/utils/interfaces";
 import { btn_s_style, text_2_t_style } from "@/utils/styles";
+import axios from "axios";
 import { useState } from "react";
 
-export default function ReporteAdd ({categorias}:{categorias:IReporteCategoria[]}) {
+export default function ReporteAdd ({categorias,remito}:{categorias:IReporteCategoria[],remito:number}) {
 
     const [selectedCat, setSelectedCat] = useState(0)
     const [descripcion, setDescripcion] = useState("")
 
-    const createReporte = () => {
-        
+    const createReporte = async () => {
+        if(selectedCat && descripcion.length > 0 && confirm("¿Quieres crear el reporte?")) {
+            const data: IRqReportAdd = {
+                categoria_id: selectedCat,
+                descripcion: descripcion,
+                remito_id: remito
+            }
+            try {
+                const res:boolean = (await axios.post('/reporte/api',data))
+                alert("Reporte creado exitosamente.")
+                window.location.reload()
+            } catch (error) {
+                alert("Error al crear reporte.")
+            }
+
+        } else alert("Faltan datos")
+
     }
     return(
         <div>

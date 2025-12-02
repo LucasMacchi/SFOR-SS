@@ -16,5 +16,6 @@ export default async function (repId: number): Promise<void> {
     } catch (error) {
         await conn.end()
         console.log(error)
+        throw new Error("Error al cambiar el plan del usuario")
     }
 }

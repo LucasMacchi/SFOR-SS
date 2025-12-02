@@ -48,7 +48,7 @@ export default async function Page({params}:{params:Promise<{remito:string}>}) {
                 <div style={{width: "50%",borderRightWidth: "1px"}}>
                     <h2 style={text_2_t_style}>ESTADO: {remitoUniq.estado}</h2>
                     <h2 style={{...text_2_t_style, marginTop: 40}}>FECHA DE PROCESO: {fechaProcs}</h2>
-                    <h2 style={{...text_2_t_style, marginTop: 40}}>FECHA DE PREPARADP: {fechaPrep}</h2>
+                    <h2 style={{...text_2_t_style, marginTop: 40}}>FECHA DE PREPARADO: {fechaPrep}</h2>
                     <h2 style={{...text_2_t_style, marginTop: 40}}>FECHA DE DESPACHO: {fechaDesp}</h2>
                     <h2 style={{...text_2_t_style, marginTop: 40}}>FECHA DE ENTREGA: {fechaEntre}</h2>
                     <h2 style={{...text_2_t_style, marginTop: 40}}>FACTURACION: {fact}</h2>
@@ -74,7 +74,7 @@ export default async function Page({params}:{params:Promise<{remito:string}>}) {
                             <ReportesDisplay reportes={reportes}/>
                         </div>
                         <div style={{width: "50%"}}>
-                            <ReporteAdd categorias={categorias}/>
+                            <ReporteAdd categorias={categorias} remito={remitoUniq.remito_id}/>
                         </div>
                     </div>
                 </div>

@@ -16,6 +16,6 @@ export default async function (remito_id: string): Promise<IUniqRemito | null> {
     } catch (error) {
         await conn.end()
         console.log(error)
-        return null
+        throw new Error("Error al traer los datos del remito unico en la base de datos")
     }
 }
