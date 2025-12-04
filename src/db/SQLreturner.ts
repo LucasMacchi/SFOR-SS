@@ -1,10 +1,10 @@
-import { IRqReportAdd } from "@/utils/interfaces"
+import { IAddFactura, IRqReportAdd } from "@/utils/interfaces"
 
 export function listRemitosSQL(usr: number): string {
     return `SELECT r.remito_id,r.pv,r.numero,r.estado_id,e.des as estado,r.fortificado,r.dias,
             r.fecha_creado,r.fecha_preparado,r.fecha_despachado,
             r.fecha_entregado,r.lentrega_id,l.departamento,l.localidad,f.numero as numF,f.pv as pvF,
-            l.completo as cabecera,re.numero as numRep, re.periodo, (SELECT COUNT(*) FROM public.reporte o WHERE o.remito_id = r.remito_id) as reportes
+            l.completo as cabecera,re.numero as numRep, re.periodo,re.numero as perNumero, (SELECT COUNT(*) FROM public.reporte o WHERE o.remito_id = r.remito_id) as reportes
             FROM public.remito r 
             JOIN estado e ON r.estado_id = e.estado_id 
             JOIN lentrega l ON r.lentrega_id = l.lentrega_id 
@@ -27,7 +27,7 @@ export function userPlanSQL (usr: number):string {
 export function uniqRemitoSQL (id: string) {
 
     return`SELECT r.remito_id,r.pv,r.numero,r.estado_id,e.des as estado,
-            r.fortificado,r.dias,
+            r.fortificado,r.dias, l.direccion,
             r.fecha_creado,r.fecha_preparado,r.fecha_despachado,
             r.fecha_entregado,r.lentrega_id,l.departamento,l.localidad,
             f.numero as numF,f.pv as pvF, (SELECT COUNT(*) FROM public.reporte o WHERE o.remito_id = r.remito_id) as reportes,
@@ -88,8 +88,8 @@ export function facturaGroupSQL () {
     return `SELECT pv,numero,cerrado,sum(raciones) as raciones,fecha_factura FROM public.factura group by pv,numero,cerrado,fecha_factura order by numero desc;`
 }
 
-export function remitosNoFacturados (user:number) {
-    return `SELECT r.remito_id,r.pv,r.numero,r.fortificado FROM public.remito r LEFT JOIN public.factura f ON r.remito_id = f.remito_id WHERE r.plan = (SELECT reparto_id FROM reparto_user WHERE user_id = ${user}) and f.numero is null ORDER BY r.numero;`
+export function remitosNoFacturados (plan:number) {
+    return `SELECT r.remito_id,r.pv,r.numero,r.fortificado FROM public.remito r LEFT JOIN public.factura f ON r.remito_id = f.remito_id WHERE r.plan = ${plan} and f.numero is null ORDER BY r.numero;`
 }
 
 export function remitoRacionesCobrablesSQL (remito_id : number) {
@@ -106,5 +106,29 @@ export function changeTableConfigSQL (id:number,payload:string) {
 }
 
 export function remitoInFacturaSQL (pv:number,nro:number) {
-    return `SELECT r.pv,r.numero,f.raciones FROM public.factura f JOIN public.remito r ON r.remito_id = f.remito_id WHERE f.pv = ${pv} and f.numero = ${pv};`
+    return `SELECT r.remito_id,r.pv,r.numero,f.raciones,l.completo FROM public.factura f JOIN public.remito r ON r.remito_id = f.remito_id JOIN public.lentrega l ON r.lentrega_id = l.lentrega_id WHERE f.pv = ${pv} and f.numero = ${nro};`
+}
+
+export function pvFacturacionSQL () {
+    return `SELECT payload FROM public.config where config_id = 5 order by config_id;`
+}
+
+export function addFacturaSQL (d: IAddFactura) {
+    return `INSERT INTO public.factura(remito_id, raciones, fecha_factura, fecha_creado, numero, pv, cerrado) VALUES (${d.remito_id},${d.raciones}, '${d.fecha_factura}', NOW(), ${d.numero}, ${d.pv}, false);`
+}
+
+export function deleteFacturaSQL (id: number) {
+    return `DELETE FROM public.factura where remito_id = ${id};`
+}
+
+export function closeFacturaSQL (pv:number,nro:number) {
+    return `UPDATE public.factura SET cerrado = true WHERE numero = ${nro} and pv = ${pv};`
+}
+
+export function valRacFacturacionSQL () {
+    return `SELECT payload FROM public.config where config_id = 6 order by config_id;`
+}
+
+export function insumosSQL () {
+    return `SELECT * FROM public.insumo ORDER BY ins_id ASC;`
 }

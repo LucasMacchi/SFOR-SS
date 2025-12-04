@@ -15,6 +15,7 @@ export default async function () {
     const cai = data ? data.configVariables[0].payload : 0
     const fechVe = data ? data.configVariables[1].payload : 0
     const finT = data ? data.configVariables[2].payload : 0
+    const valR = data ? data.configVariables[5].payload : 0
     const facturas: IFactura[] = data ? data.facturas : []
     const lastFact: number = facturas[0].numero
     let racionesF: number = 0
@@ -80,6 +81,10 @@ export default async function () {
                 </div>
                 <div>
                     <h2 style={{...text_2_t_style, marginTop: 40}}>RACIONES FACTURADO: {racionesF}</h2> 
+                </div>
+                <div style={{display: "flex",alignItems: "baseline"}}>
+                    <h2 style={{...text_2_t_style, marginTop: 40}}>VALOR A FACTURAR POR RACION: {valR}</h2>
+                    <ChangeDataBtn id={6} changeData={changeData}/> 
                 </div>
             </div>
         </div>

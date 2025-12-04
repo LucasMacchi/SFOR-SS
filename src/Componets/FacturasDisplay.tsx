@@ -1,19 +1,64 @@
 "use client"
 
-import { IFacturaAgrupado } from "@/utils/interfaces"
+import { IExcelFactura, IFacturaAgrupado, IRemitoInFactura } from "@/utils/interfaces"
 import { text_2_t_style } from "@/utils/styles"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import refillEmptySpace from "@/utils/refillEmptySpace";
+import convertToMoney from "@/utils/convertToMoney";
+import ExcelBtn from "./ExcelBtn";
+import PdfBtn from "./PdfBtn";
+import PDFfactura from "./pdfs/PDFfactura";
+import { pdf } from "@react-pdf/renderer";
 
 
-export default function FacturasDisplay ({facturas}:{facturas:IFacturaAgrupado[]}) {
+export default function FacturasDisplay ({facturas,valor}:{facturas:IFacturaAgrupado[],valor:number}) {
     
     const [selectedF, setSelectedF] = useState(0)
     const parseRemitoToString = (pv:number,num:number):string => {
         return refillEmptySpace(5,pv)+"-"+refillEmptySpace(8,num)
     }
-    //ARREGLAR ESTO
-    useEffect(() => console.log(selectedF),[selectedF])
+    const excelNameReturner = () => {
+        if(facturas[selectedF]) return "F "+parseRemitoToString(facturas[selectedF].pv,facturas[selectedF].numero)
+        else return 'FACTURAS'
+    }
+    const excelDataReturner = () => {
+        if(facturas[selectedF] && facturas[selectedF].remitos) {
+            const data: IExcelFactura[] = []
+            facturas[selectedF].remitos.forEach(rt => {
+                data.push({
+                    REMITO: parseRemitoToString(rt.pv,rt.numero),
+                    RACIONES: rt.raciones,
+                    CABECERA: rt.completo
+                })
+            });
+            return data
+        }
+        else {
+            const allRts: IRemitoInFactura[] = []
+            facturas.forEach(f => {
+                if(f.remitos) {
+                    f.remitos.forEach(r => {
+                        r.factura = parseRemitoToString(f.pv,f.numero)
+                        allRts.push(r)
+                    });
+                }
+            })
+            const data: IExcelFactura[] = []
+            allRts.forEach(rt => {
+                data.push({
+                    REMITO: parseRemitoToString(rt.pv,rt.numero),
+                    RACIONES: rt.raciones,
+                    CABECERA: rt.completo,
+                    FACTURA: rt.factura ? rt.factura : ""
+                })
+            });
+            return data
+        }
+    }
+    const downloadPdf = async ():Promise<Blob> => {
+        const blob: Blob = await pdf(<PDFfactura valor={valor} factura={facturas[selectedF]}/>).toBlob()
+        return blob
+    }
     return (
         <div style={{marginBottom: 50}}>
             <div>
@@ -49,8 +94,15 @@ export default function FacturasDisplay ({facturas}:{facturas:IFacturaAgrupado[]
             </div>
             {selectedF > -1 && <h2 style={text_2_t_style}>TOTAL DE REMITOS: {facturas[selectedF].remitos?.length}</h2>}
             {selectedF > -1 && <h2 style={text_2_t_style}>SUMA TOTAL DE RACIONES: {facturas[selectedF].raciones}</h2>}
+            {selectedF > -1 && <h2 style={text_2_t_style}>SUMA TOTAL MONETARIA: {convertToMoney(facturas[selectedF].raciones * valor)}</h2>}
             {selectedF > -1 && <h2 style={text_2_t_style}>FECHA DE FACTURA: {facturas[selectedF].fecha_factura.toISOString().split("T")[0]}</h2>}
             {selectedF > -1 && <h2 style={text_2_t_style}>ESTADO: {facturas[selectedF].cerrado ? "CERRADA" : "ABIERTA"}</h2>}
+            <div style={{display: "flex",justifyContent:"start"}}>
+                <ExcelBtn title={selectedF > -1 ? "FACTURA" : "FACTURAS"} disable={false} name={excelNameReturner()} page="factura" data={excelDataReturner()}/>
+                <div style={{marginLeft: 10}}>
+                    <PdfBtn title="FACTURA" disable={selectedF > -1 ? false : true} pdf={downloadPdf()}/>
+                </div>
+            </div>
         </div>
     )
 }

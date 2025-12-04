@@ -2,18 +2,18 @@
 
 import {btn_small_style, select_style, text_2_s_style } from "@/utils/styles";
 import { CSSProperties, useEffect, useState } from "react";
-import { IEstados, IRemitosEnvio } from "@/utils/interfaces";
+import { IEstados, IExcelRemito, IRemitosEnvio, IReparto } from "@/utils/interfaces";
 import { useRouter } from "next/navigation"
 import refillEmptySpace from "@/utils/refillEmptySpace";
+import ExcelBtn from "./ExcelBtn";
 
 
-export default function FilterRemito ({remitos,estados}:{remitos: IRemitosEnvio[],estados:IEstados[]}) {
+export default function FilterRemito ({remitos,estados,planes}:{remitos: IRemitosEnvio[],estados:IEstados[],planes:IReparto[]}) {
     const router = useRouter()
     const [selectedState, setSelectedState] = useState(0)
     const [selectedFac, setSelectedFac] = useState(0)
     const [filterRemitos, setFilterRemitos] = useState<IRemitosEnvio[]>(remitos)
     const marginBwtFilters = 20
-
     const colorChange = (state: string) => {
         if(state === "PENDIENTE") {
             return "gold"
@@ -56,6 +56,30 @@ export default function FilterRemito ({remitos,estados}:{remitos: IRemitosEnvio[
     const parseRemitoToString = (pv:number,num:number):string => {
         return refillEmptySpace(5,pv)+"-"+refillEmptySpace(8,num)
     }
+    const excelData = () => {
+        if(filterRemitos.length > 0) {
+            const data: IExcelRemito[] = []
+            filterRemitos.forEach(r => {
+                data.push({
+                    REMITO: parseRemitoToString(r.pv,r.numero),
+                    ESTADO: r.estado,
+                    TIPO: r.fortificado ? "ALMUERZO" : "COPA LECHE",
+                    DIAS: r.dias,
+                    FECHA_CREADO: r.fecha_creado.toISOString().split("T")[0],
+                    FECHA_PREPARADO: r.fecha_preparado ? r.fecha_preparado.toISOString().split("T")[0] : "",
+                    FECHA_DESPACHADO: r.fecha_despachado ? r.fecha_despachado.toISOString().split("T")[0] : "",
+                    FECHA_ENTREGADO: r.fecha_entregado ? r.fecha_entregado.toISOString().split("T")[0] : "",
+                    LUGARID: r.lentrega_id,
+                    DEPARTAMENTO: r.departamento,
+                    LOCALIDAD: r.localidad,
+                    CABECERA:r.cabecera,
+                    PLAN:r.pernumero+"-"+r.periodo,
+                    FACTURA: r.pvf && r.numf ? parseRemitoToString(r.pvf,r.numf) : ""
+                })
+            });
+            return data
+        }
+    }
 
     return(
         <div style={{width: "85%"}}>
@@ -81,6 +105,9 @@ export default function FilterRemito ({remitos,estados}:{remitos: IRemitosEnvio[
                             <option value={1}>SI</option>
                             <option value={2}>NO</option>
                         </select>
+                    </div>
+                    <div style={{marginTop: 40}}>
+                        <ExcelBtn title="REMITOS" disable={filterRemitos.length > 0 ? false : true} data={excelData()} page="REMITOS" name={"REMITOS-"+filterRemitos[0].pernumero+"-"+filterRemitos[0].periodo}/>
                     </div>
                 </div>
             </div>

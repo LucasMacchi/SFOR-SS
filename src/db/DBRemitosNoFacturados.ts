@@ -6,13 +6,12 @@ import decodeJWT from "@/utils/decodeJWT"
 
 
 
-export default async function (): Promise<IRemitosNoF[] | null> {
+export default async function (plan:number): Promise<IRemitosNoF[] | null> {
     const conn = clientReturner()
     try {
-        const user = await decodeJWT()
-        if(await authJwt() && user) {
+        if(await authJwt()) {
             await conn.connect()
-            const remitosNoF: IRemitosNoF[] = (await conn.query(remitosNoFacturados(user.userId))).rows
+            const remitosNoF: IRemitosNoF[] = (await conn.query(remitosNoFacturados(plan))).rows
             for(const rt of remitosNoF) {
                 rt.raciones = await (await conn.query(remitoRacionesCobrablesSQL(rt.remito_id))).rows[0]["sum"]
             }

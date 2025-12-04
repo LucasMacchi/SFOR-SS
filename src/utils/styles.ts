@@ -44,7 +44,8 @@ export const hr_style: CSSProperties = {
 }
 
 export const select_style: CSSProperties = {
-    width: 150
+    width: 150,
+    fontSize: 20
 }
 export const input_style: CSSProperties = {
     height: 25,

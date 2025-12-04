@@ -43,6 +43,45 @@ export interface IEnvioDetalles {
     unidades: number,
     raciones: number
 }
+export interface IInsumo {
+    ins_id: number,
+    cod1: number,
+    cod2: number,
+    cod3: number | null,
+    des: string,
+    caja_palet: number,
+    gr_racion: number,
+    gr_unidad: number,
+    unidades_caja: number,
+    racunidad: number,
+    raccaja:number,
+    calculable:boolean
+
+}
+export interface IDesgloseParsed {
+    envio_id: number,
+    dependencia:string,
+    detalles: IEnvioDetallesParsed[]
+
+}
+export interface IRemitosDetalles {
+    unidades: number,
+    raciones: number,
+    bolsas:number,
+    cajas:number,
+    kilos:number,
+    des: string
+}
+export interface IEnvioDetallesParsed {
+    unidades: number,
+    bolsas: number
+    raciones: number,
+    cajas: number,
+    kilos: number,
+    palet?: number,
+    ins_id: number,
+    des: string
+}
 export interface IReporte {
     reporte_id: number,
     categoria_id: number,
@@ -69,7 +108,8 @@ export interface IUniqRemito {
     pvf: number,
     cabecera: string,
     periodo: number,
-    reportes: number
+    reportes: number,
+    direccion: string
 }
 
 export interface IReporteRemito {
@@ -105,6 +145,7 @@ export interface IRemitosEnvio {
     cabecera: string,
     numRep: number,
     periodo: number,
+    pernumero: number,
     fecha_entregado: Date,
     reportes: number
 
@@ -147,8 +188,13 @@ export interface IFacturaAgrupado {
 export interface IRemitoInFactura {
     pv:number,
     numero:number,
-    raciones:number
+    raciones:number,
+    remito_id: number,
+    completo: string,
+    factura?:string
 }
+
+
 
 export interface IRemitosNoF {
     remito_id: number,
@@ -156,4 +202,36 @@ export interface IRemitosNoF {
     numero:number,
     fortificado: boolean,
     raciones?: string
+}
+
+export interface IAddFactura {
+    raciones: number,
+    remito_id:number,
+    fecha_factura:string,
+    numero:number,
+    pv:number
+}
+
+export interface IExcelFactura {
+    REMITO:string,
+    CABECERA: string,
+    RACIONES: number,
+    FACTURA?:string
+}
+
+export interface IExcelRemito {
+    REMITO:string,
+    ESTADO: string,
+    TIPO: string,
+    DIAS: number,
+    FECHA_CREADO: string,
+    FECHA_PREPARADO: string,
+    FECHA_DESPACHADO: string,
+    FECHA_ENTREGADO: string,
+    LUGARID: number,
+    DEPARTAMENTO: string,
+    LOCALIDAD: string,
+    FACTURA: string,
+    CABECERA: string,
+    PLAN: string,
 }

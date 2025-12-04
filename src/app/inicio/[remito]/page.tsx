@@ -1,15 +1,22 @@
 import DesgloseDisplay from "@/Componets/DesgloseDisplay";
+import PdfBtn from "@/Componets/PdfBtn";
+import PDFRemitoUniq from "@/Componets/pdfs/PDFRemitoUniq";
+import RemitoUniqPdf from "@/Componets/RemitoUniqPdf";
 import ReporteAdd from "@/Componets/ReporteAdd";
 import ReportesDisplay from "@/Componets/ReportesDisplay";
 import StateChangeDisplay from "@/Componets/StateChangeDisplay";
 import DBDesgloseDisplayer from "@/db/DBDesgloseDisplayer";
 import DBEstados from "@/db/DBEstados";
+import DBGeneralData from "@/db/DBGeneralData";
+import DBInsumos from "@/db/DBInsumos";
 import DBReportCategorias from "@/db/DBReportCategorias";
 import DBReportes from "@/db/DBReportes";
 import DBUniqRemito from "@/db/DBUniqRemito";
+import { parsedRemitosDetalles } from "@/utils/parseDesglose";
 import refillEmptySpace from "@/utils/refillEmptySpace";
 import sessionCheck from "@/utils/sessionCheck";
 import { hr_style, text_2_t_style } from "@/utils/styles";
+import { pdf } from "@react-pdf/renderer";
 import { redirect } from "next/navigation";
 
 
@@ -19,6 +26,8 @@ export default async function Page({params}:{params:Promise<{remito:string}>}) {
     const remitoUniq = await DBUniqRemito(remitoUrl)
     const estados = await DBEstados()
     const categorias = await DBReportCategorias()
+    const insumos = await DBInsumos()
+    const configTable = await DBGeneralData()
     if(!remitoUniq){
         alert("No se pudo traer los datos del remito.")
         redirect("/inicio")
@@ -35,6 +44,9 @@ export default async function Page({params}:{params:Promise<{remito:string}>}) {
     const fact = remitoUniq.numf && remitoUniq.pvf ? refillEmptySpace(5,remitoUniq.pvf)+"-"+refillEmptySpace(8,remitoUniq.numf) : "NaN"
     const tipo = remitoUniq.fortificado ? "ALMUERZO FORTIFICADO" : "COPA DE LECHE"
     const lugarEntreg = remitoUniq.lentrega_id+" - "+remitoUniq.departamento+", "+remitoUniq.localidad
+    const venc = configTable ? configTable.configVariables[1].payload: "NAN"
+    const cai = configTable ? configTable.configVariables[0].payload: "NAN"
+
     return(
         <div style={{marginBottom: 200}}>
             <div style={{display: "flex",justifyContent: "center"}}>
@@ -42,6 +54,9 @@ export default async function Page({params}:{params:Promise<{remito:string}>}) {
             </div>
             <div style={{display: "flex",justifyContent: "center"}}>
                 <h4 style={text_2_t_style}>{remitoUniq.cabecera}</h4>
+            </div>
+            <div>
+                <RemitoUniqPdf insumos={insumos} remito={remitoUniq} detalles={remitoDetalles ? remitoDetalles : [] } venc={venc} cai={cai} />
             </div>
             <hr color="#4A6EE8" style={hr_style}/>
             <div style={{marginLeft: 50,marginTop: 40}}>
@@ -84,6 +99,8 @@ export default async function Page({params}:{params:Promise<{remito:string}>}) {
                     </div>
                     <hr color="#4A6EE8" style={hr_style}/>
                     {remitoDetalles && <DesgloseDisplay envios={remitoDetalles}/>}
+                </div>
+                <div>
                 </div>
             </div>
         </div>
