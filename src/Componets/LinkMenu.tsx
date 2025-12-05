@@ -30,6 +30,6 @@ export default function LinkMenu ({where,titulo} : {where: string,titulo: string
         else return linkStyle
     }
 
-
     return <Link href={where} style={changeToSelected()}>{titulo.toUpperCase()}</Link>
+
 }

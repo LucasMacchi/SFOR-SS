@@ -1,6 +1,7 @@
 import DesgloseDisplay from "@/Componets/DesgloseDisplay";
 import PdfBtn from "@/Componets/PdfBtn";
 import PDFRemitoUniq from "@/Componets/pdfs/PDFRemitoUniq";
+import RemitoInsumosDisplay from "@/Componets/RemitoInsumosDisplay";
 import RemitoUniqPdf from "@/Componets/RemitoUniqPdf";
 import ReporteAdd from "@/Componets/ReporteAdd";
 import ReportesDisplay from "@/Componets/ReportesDisplay";
@@ -60,18 +61,24 @@ export default async function Page({params}:{params:Promise<{remito:string}>}) {
             </div>
             <hr color="#4A6EE8" style={hr_style}/>
             <div style={{marginLeft: 50,marginTop: 40}}>
-                <div style={{width: "50%",borderRightWidth: "1px"}}>
-                    <h2 style={text_2_t_style}>ESTADO: {remitoUniq.estado}</h2>
-                    <h2 style={{...text_2_t_style, marginTop: 40}}>FECHA DE PROCESO: {fechaProcs}</h2>
-                    <h2 style={{...text_2_t_style, marginTop: 40}}>FECHA DE PREPARADO: {fechaPrep}</h2>
-                    <h2 style={{...text_2_t_style, marginTop: 40}}>FECHA DE DESPACHO: {fechaDesp}</h2>
-                    <h2 style={{...text_2_t_style, marginTop: 40}}>FECHA DE ENTREGA: {fechaEntre}</h2>
-                    <h2 style={{...text_2_t_style, marginTop: 40}}>FACTURACION: {fact}</h2>
-                    <h2 style={{...text_2_t_style, marginTop: 40}}>DIAS DE COBERTURA: {remitoUniq.dias}</h2>
-                    <h2 style={{...text_2_t_style, marginTop: 40}}>TIPO DE REMITO: {tipo}</h2>
-                    <h2 style={{...text_2_t_style, marginTop: 40}}>LUGAR: {lugarEntreg}</h2>
-                    <h2 style={{...text_2_t_style, marginTop: 40}}>CANTIDAD DE REPORTES: {remitoUniq.reportes}</h2>
+                <div style={{display: "flex"}}>
+                    <div style={{width: "50%",borderRightWidth: "1px"}}>
+                        <h2 style={text_2_t_style}>ESTADO: {remitoUniq.estado}</h2>
+                        <h2 style={{...text_2_t_style, marginTop: 40}}>FECHA DE PROCESO: {fechaProcs}</h2>
+                        <h2 style={{...text_2_t_style, marginTop: 40}}>FECHA DE PREPARADO: {fechaPrep}</h2>
+                        <h2 style={{...text_2_t_style, marginTop: 40}}>FECHA DE DESPACHO: {fechaDesp}</h2>
+                        <h2 style={{...text_2_t_style, marginTop: 40}}>FECHA DE ENTREGA: {fechaEntre}</h2>
+                        <h2 style={{...text_2_t_style, marginTop: 40}}>FACTURACION: {fact}</h2>
+                        <h2 style={{...text_2_t_style, marginTop: 40}}>DIAS DE COBERTURA: {remitoUniq.dias}</h2>
+                        <h2 style={{...text_2_t_style, marginTop: 40}}>TIPO DE REMITO: {tipo}</h2>
+                        <h2 style={{...text_2_t_style, marginTop: 40}}>LUGAR: {lugarEntreg}</h2>
+                        <h2 style={{...text_2_t_style, marginTop: 40}}>CANTIDAD DE REPORTES: {remitoUniq.reportes}</h2>
+                    </div>
+                    <div>
+                        <RemitoInsumosDisplay desgloses={remitoDetalles  ? remitoDetalles : [] } insumos={insumos}/>
+                    </div>
                 </div>
+
                 <div style={{marginTop: 65}}>
                     <div>
                         <h1 style={text_2_t_style}>ESTADOS</h1>

@@ -55,8 +55,22 @@ export interface IInsumo {
     unidades_caja: number,
     racunidad: number,
     raccaja:number,
-    calculable:boolean
+    calculable:boolean,
+    [key: string]: any
 
+}
+export interface ICreateInsumo {
+    cod1:number,
+    cod2:number,
+    cod3:number,
+    des:string,
+    caja_palet:number,
+    gr_racion:number,
+    gr_total:number,
+    unitades_caja:number,
+    rac_unidad:number,
+    rac_caja:number,
+    calculable:boolean
 }
 export interface IDesgloseParsed {
     envio_id: number,
@@ -234,4 +248,26 @@ export interface IExcelRemito {
     FACTURA: string,
     CABECERA: string,
     PLAN: string,
+}
+
+export interface IPlan {
+    dias:number,
+    fortificado: boolean,
+    plan_id: number,
+    des: string,
+    detalles: IPlanDetails[]
+}
+
+export interface IPlanDetails {
+    detail_id: number,
+    ins_id: number,
+    dias: number,
+    plan_id: number,
+    des: string
+}
+
+export interface IAddPlanDetails {
+    ins_id: number,
+    dias: number,
+    plan_id:number
 }

@@ -1,4 +1,4 @@
-import { IAddFactura, IRqReportAdd } from "@/utils/interfaces"
+import { IAddFactura, IAddPlanDetails, ICreateInsumo, IRqReportAdd } from "@/utils/interfaces"
 
 export function listRemitosSQL(usr: number): string {
     return `SELECT r.remito_id,r.pv,r.numero,r.estado_id,e.des as estado,r.fortificado,r.dias,
@@ -9,8 +9,8 @@ export function listRemitosSQL(usr: number): string {
             JOIN estado e ON r.estado_id = e.estado_id 
             JOIN lentrega l ON r.lentrega_id = l.lentrega_id 
             LEFT JOIN factura f on r.remito_id = f.remito_id
-            JOIN reparto re on r.plan = re.reparto_id
-            WHERE r.plan = (SELECT reparto_id FROM reparto_user WHERE user_id = ${usr}) 
+            JOIN reparto re on r.reparto_id = re.reparto_id
+            WHERE r.reparto_id = (SELECT reparto_id FROM reparto_user WHERE user_id = ${usr}) 
             ORDER BY r.numero DESC;`
 }
 
@@ -36,7 +36,7 @@ export function uniqRemitoSQL (id: string) {
             JOIN estado e ON r.estado_id = e.estado_id 
             JOIN lentrega l ON r.lentrega_id = l.lentrega_id 
             LEFT JOIN factura f on r.remito_id = f.remito_id
-            JOIN reparto re on r.plan = re.reparto_id
+            JOIN reparto re on r.reparto_id = re.reparto_id
             WHERE r.remito_id = ${id};`
 }
 
@@ -89,7 +89,7 @@ export function facturaGroupSQL () {
 }
 
 export function remitosNoFacturados (plan:number) {
-    return `SELECT r.remito_id,r.pv,r.numero,r.fortificado FROM public.remito r LEFT JOIN public.factura f ON r.remito_id = f.remito_id WHERE r.plan = ${plan} and f.numero is null ORDER BY r.numero;`
+    return `SELECT r.remito_id,r.pv,r.numero,r.fortificado FROM public.remito r LEFT JOIN public.factura f ON r.remito_id = f.remito_id WHERE r.reparto_id = ${plan} and f.numero is null ORDER BY r.numero;`
 }
 
 export function remitoRacionesCobrablesSQL (remito_id : number) {
@@ -131,4 +131,31 @@ export function valRacFacturacionSQL () {
 
 export function insumosSQL () {
     return `SELECT * FROM public.insumo ORDER BY ins_id ASC;`
+}
+
+export function insumoEditSQL (column: string,ins: number,value:string) {
+    return `UPDATE public.insumo SET ${column}=${value} WHERE ins_id = ${ins};`
+}
+
+export function insumoAddSQL (d: ICreateInsumo) {
+    return `INSERT INTO public.insumo(
+    cod1, cod2, cod3, des, caja_palet, gr_racion, gr_unidad, 
+    unidades_caja, racunidad, raccaja, calculable)
+    VALUES ( ${d.cod1}, ${d.cod2}, ${d.cod3}, '${d.des}', ${d.caja_palet}, ${d.gr_racion}, ${d.gr_total}, ${d.unitades_caja}, ${d.rac_unidad}, ${d.rac_caja}, ${d.calculable});`
+}
+
+export function planDetSQL (id:number) {
+    return `SELECT * FROM public.plan_detail d JOIN public.insumo i ON i.ins_id = d.ins_id WHERE d.plan_id = ${id} ORDER BY d.detail_id ASC;`
+}
+
+export function planAllSQL () {
+    return `SELECT * FROM public.plan ORDER BY plan_id ASC;`
+}
+
+export function planEditDaysSQL (detail_id: number,days:number) {
+    return `UPDATE public.plan_detail SET dias=${days} WHERE detail_id = ${detail_id};`
+}
+
+export function planAddDetailSQL (d: IAddPlanDetails) {
+    return `INSERT INTO public.plan_detail(ins_id, dias, plan_id) VALUES (${d.ins_id}, ${d.dias}, ${d.plan_id});`
 }
