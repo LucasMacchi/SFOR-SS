@@ -1,4 +1,4 @@
-import { IAddFactura, IAddPlanDetails, ICreateInsumo, IRqReportAdd } from "@/utils/interfaces"
+import { IAddFactura, IAddPlan, IAddPlanDetails, ICreateInsumo, IRqReportAdd } from "@/utils/interfaces"
 
 export function listRemitosSQL(usr: number): string {
     return `SELECT r.remito_id,r.pv,r.numero,r.estado_id,e.des as estado,r.fortificado,r.dias,
@@ -158,4 +158,24 @@ export function planEditDaysSQL (detail_id: number,days:number) {
 
 export function planAddDetailSQL (d: IAddPlanDetails) {
     return `INSERT INTO public.plan_detail(ins_id, dias, plan_id) VALUES (${d.ins_id}, ${d.dias}, ${d.plan_id});`
+}
+
+export function planAddPlanSQL (d: IAddPlan) {
+    return `INSERT INTO public.plan(dias, fortificado, des) VALUES (${d.days}, ${d.fortificado}, '${d.descripcion}') RETURNING plan_id;`
+}
+
+export function deleteDetailSQL (id:number) {
+    return `DELETE FROM public.plan_detail WHERE detail_id = ${id};`
+}
+
+export function allLugaresEntregaSQL () {
+    return `SELECT * FROM public.lentrega ORDER BY lentrega_id ASC;`
+}
+
+export function desgloseByLentregaSQL (id:number) {
+    return `SELECT * FROM public.desglose WHERE lentrega_id = ${id} ORDER BY desglose_id ASC;`
+}
+
+export function departamentosSQl () {
+    return `SELECT departamento FROM public.lentrega GROUP BY departamento ORDER BY departamento;`
 }

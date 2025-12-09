@@ -136,7 +136,7 @@ const insumosDisplayer = (insumos: IRemitosDetalles[],desgloses: number, dias: n
     for (let j = 0; j < amount; j++) {
         const i = insumos[j]
         elements.push(
-            <View style={stylePedido.tableRow}>
+            <View style={stylePedido.tableRow} key={j}>
                 <View style={stylePedido.tableColIns2}>
                     <Text style={stylePedido.tableCell2}>{i ? i.des.toUpperCase() : " "}</Text>
                 </View>
@@ -160,7 +160,7 @@ const insumosDisplayer = (insumos: IRemitosDetalles[],desgloses: number, dias: n
     }
 
         elements.push(
-            <View style={stylePedido.tableRow}>
+            <View style={stylePedido.tableRow} key={99}>
                 <View style={stylePedido.tableColIns2}>
                     <Text style={stylePedido.tableCell}>Total</Text>
                 </View>
@@ -182,7 +182,7 @@ const insumosDisplayer = (insumos: IRemitosDetalles[],desgloses: number, dias: n
             </View>
         )
         elements.push(
-            <View style={stylePedido.tableRow}>
+            <View style={stylePedido.tableRow} key={100}>
                 <View style={stylePedido.tableColIns}>
                     <Text style={stylePedido.tableCell2}>Total de Desgloses: {desgloses}</Text>
                 </View>
@@ -204,7 +204,7 @@ const insumosDisplayer = (insumos: IRemitosDetalles[],desgloses: number, dias: n
             </View>
         )
         elements.push(
-            <View style={stylePedido.tableRow}>
+            <View style={stylePedido.tableRow} key={101}>
                 <View style={stylePedido.tableColIns}>
                     <Text style={stylePedido.tableCell2}>Raciones por {dias} dias habiles</Text>
                 </View>

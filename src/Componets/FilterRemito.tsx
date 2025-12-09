@@ -107,7 +107,7 @@ export default function FilterRemito ({remitos,estados,planes}:{remitos: IRemito
                         </select>
                     </div>
                     <div style={{marginTop: 40}}>
-                        <ExcelBtn title="REMITOS" disable={filterRemitos.length > 0 ? false : true} data={excelData()} page="REMITOS" name={"REMITOS-"+filterRemitos[0].pernumero+"-"+filterRemitos[0].periodo}/>
+                        {filterRemitos.length > 0 && <ExcelBtn title="REMITOS" disable={filterRemitos.length > 0 ? false : true} data={excelData()} page="REMITOS" name={"REMITOS-"+filterRemitos[0].pernumero+"-"+filterRemitos[0].periodo}/>}
                     </div>
                 </div>
             </div>
@@ -123,7 +123,7 @@ export default function FilterRemito ({remitos,estados,planes}:{remitos: IRemito
                             <th style={{border: "1px solid", width: "8%"}}>FAC.</th>
                             <th style={{border: "1px solid", width: "8%"}}>TIPO</th>
                         </tr>
-                        {filterRemitos.map((rt) => (
+                        {filterRemitos.length > 0 && filterRemitos.map((rt) => (
                         <tr style={{backgroundColor: colorChange(rt.estado)}} key={rt.remito_id}
                         onClick={() => router.push("/inicio/"+rt.remito_id)}>
                             <th style={{border: "1px solid", width: "20%"}}>{parseRemitoToString(rt.pv,rt.numero)}</th>

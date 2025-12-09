@@ -269,5 +269,37 @@ export interface IPlanDetails {
 export interface IAddPlanDetails {
     ins_id: number,
     dias: number,
-    plan_id:number
+    plan_id?:number,
+    des: string
+}
+
+export interface IAddPlan {
+    days: number,
+    descripcion: string,
+    fortificado:boolean
+}
+
+export interface ILentrega {
+    lentrega_id: number,
+    localidad: string,
+    departamento:string,
+    completo: string,
+    direccion: string,
+    descripcion: string,
+    desgloses?:IDesglose[]
+}
+
+export interface IDesglose {
+    desglose_id: number,
+    lentrega_id: number,
+    cue: string,
+    des: string,
+    raciones: number,
+    fortificado: boolean,
+    visible: boolean,
+    enviado: boolean
+}
+
+export interface IDepartamento {
+    departamento: string
 }

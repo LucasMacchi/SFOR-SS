@@ -18,8 +18,8 @@ export default function RemitoInsumosDisplay ({desgloses,insumos} : {desgloses: 
                             <th style={{border: "1px solid", fontSize: 20}}>UNIDADES</th>
                             <th style={{border: "1px solid", fontSize: 20}}>RACIONES</th>
                         </tr>
-                        {data.map((d) => (
-                        <tr >
+                        {data.map((d,i) => (
+                        <tr key={i }>
                             <th style={{border: "1px solid", fontSize: 20}}>{d.des}</th>
                             <th style={{border: "1px solid", fontSize: 20}}>{d.unidades}</th>
                             <th style={{border: "1px solid", fontSize: 20}}>{d.raciones}</th>

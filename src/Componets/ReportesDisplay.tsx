@@ -18,7 +18,7 @@ export default function ReportesDisplay ({reportes}:{reportes:IReporte[]}) {
                             <th style={{border: "1px solid", fontSize: 20}}>FECHA</th>
                         </tr>
                         {reportes.map((d,i) => (
-                        <tr onClick={() => setSelectedReporte(i)}
+                        <tr onClick={() => setSelectedReporte(i)} key={i}
                         style={{backgroundColor: selectedReporte === i ? "#4A6EE8":"white"}}>
                             <th style={{border: "1px solid", fontSize: 20}}>{d.titulo}</th>
                             <th style={{border: "1px solid", fontSize: 20}}>{d.fecha.toISOString().split("T")[0]}</th>

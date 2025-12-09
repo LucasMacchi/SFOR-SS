@@ -17,7 +17,7 @@ export default function DesgloseDisplay ({envios}:{envios:IDesgloseDisplay[]}) {
                             <th style={{border: "1px solid", fontSize: 26}}>DEPENDENCIA</th>
                         </tr>
                         {envios.map((e,i) => (
-                        <tr style={{backgroundColor: selectedEnvio === i ? "#4A6EE8":"white"}} key={e.envio_id}
+                        <tr style={{backgroundColor: selectedEnvio === i ? "#4A6EE8":"white"}} key={i}
                         onClick={() => setSelectedEnvio(i)}>
                             <th style={{border: "1px solid",fontSize: 20}}>{e.dependencia}</th>
                         </tr>
@@ -34,8 +34,8 @@ export default function DesgloseDisplay ({envios}:{envios:IDesgloseDisplay[]}) {
                             <th style={{border: "1px solid", fontSize: 20}}>UNIDADES</th>
                             <th style={{border: "1px solid", fontSize: 20}}>RACIONES</th>
                         </tr>
-                        {envios[selectedEnvio].detalles.map((d) => (
-                        <tr >
+                        {envios[selectedEnvio].detalles.map((d,i) => (
+                        <tr key={i}>
                             <th style={{border: "1px solid", fontSize: 20}}>{d.insumo}</th>
                             <th style={{border: "1px solid", fontSize: 20}}>{d.unidades}</th>
                             <th style={{border: "1px solid", fontSize: 20}}>{d.raciones}</th>

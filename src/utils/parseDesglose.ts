@@ -1,4 +1,4 @@
-import { IDesgloseDisplay, IDesgloseParsed, IEnvioDetallesParsed, IInsumo, IRemitosDetalles } from "./interfaces";
+import { IDesgloseDisplay, IDesgloseParsed, IInsumo, IRemitosDetalles } from "./interfaces";
 
 
 

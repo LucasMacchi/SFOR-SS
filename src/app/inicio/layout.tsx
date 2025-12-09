@@ -35,6 +35,7 @@ export default async function Layout({children}: Readonly<{children: React.React
                 <LinkMenu where="/inicio/traer" titulo="traer" />
                 <LinkMenu where="/inicio/planes" titulo="planes" />
                 <LinkMenu where="/inicio/insumos" titulo="insumos"/>
+                <LinkMenu where="/inicio/escuelas" titulo="escuelas" />             
                 <LinkMenu where="/inicio/stock" titulo="stock"/>
                 <LinkMenu where="/inicio/informes" titulo="informes" />
                 <LinkMenu where="/inicio/facturacion" titulo="facturacion" />
