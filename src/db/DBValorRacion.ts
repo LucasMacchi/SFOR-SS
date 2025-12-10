@@ -6,7 +6,7 @@ import { valRacFacturacionSQL } from "./SQLreturner";
 export default async function () {
     const conn = clientReturner()
     try {
-        if(await authJwt()) {
+        if(await authJwt(2)) {
             await conn.connect()
             const val:number = (await conn.query(valRacFacturacionSQL())).rows[0]['payload']
             await conn.end()

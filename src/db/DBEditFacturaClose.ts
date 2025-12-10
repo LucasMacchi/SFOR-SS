@@ -6,7 +6,7 @@ import { closeFacturaSQL } from "./SQLreturner";
 export default async function (pv:number,nro:number): Promise<boolean> {
     const conn = clientReturner()
     try {
-        if(await authJwt()) {
+        if(await authJwt(2)) {
             await conn.connect()
             const sql = closeFacturaSQL(pv,nro)
             await conn.query(sql)

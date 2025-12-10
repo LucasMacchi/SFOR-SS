@@ -1,4 +1,5 @@
-import { IAddFactura, IAddPlan, IAddPlanDetails, ICreateInsumo, IRqReportAdd } from "@/utils/interfaces"
+import { ESTADOS, ROLES } from "@/utils/enums"
+import { IAddDesglose, IAddFactura, IAddPlan, IAddPlanDetails, ICreateInsumo, IRqReportAdd } from "@/utils/interfaces"
 
 export function listRemitosSQL(usr: number): string {
     return `SELECT r.remito_id,r.pv,r.numero,r.estado_id,e.des as estado,r.fortificado,r.dias,
@@ -178,4 +179,26 @@ export function desgloseByLentregaSQL (id:number) {
 
 export function departamentosSQl () {
     return `SELECT departamento FROM public.lentrega GROUP BY departamento ORDER BY departamento;`
+}
+
+export function desgloseEditSQL (column: string,id: number,value:string | boolean,text:boolean) {
+    return text ? `UPDATE public.desglose SET ${column}='${value}' WHERE desglose_id = ${id};` : `UPDATE public.desglose SET ${column}=${value} WHERE desglose_id = ${id};`
+}
+
+export function changeStateMultipleSQL (id:number[],estado: number) {
+    let arr:string = ""
+    let date: string = ""
+    id.forEach((id,i) => {
+        if(i === 0) arr += id+''
+        else arr += ','+id
+    });
+    if(estado === ESTADOS.DESPACHADO) date = 'fecha_despachado=NOW(),'
+    else if (estado === ESTADOS.PREPARADO) date = 'fecha_preparado=NOW(),'
+    else if(estado === ESTADOS.ENTREGADO) date = 'fecha_entregado=NOW(),'
+    
+    return `UPDATE public.remito SET ${date} estado_id=${estado} WHERE remito_id IN (${arr});`
+}
+
+export function addDesgloseSQL (data: IAddDesglose) {
+    return `INSERT INTO public.desglose(lentrega_id, cue, des, raciones, fortificado, visible, enviado) VALUES (${data.lentrega_id}, ${data.cue}, '${data.des}', ${data.raciones}, ${data.fortificado}, true, false);`
 }

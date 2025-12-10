@@ -8,7 +8,7 @@ import { ILentrega } from "@/utils/interfaces"
 export default async function (): Promise<ILentrega[]> {
     const conn = clientReturner()
     try {
-        if(await authJwt()) {
+        if(await authJwt(3)) {
             await conn.connect()
             const lugares: ILentrega[] = (await conn.query(allLugaresEntregaSQL())).rows
             for(const l of lugares) {

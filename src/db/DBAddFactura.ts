@@ -6,7 +6,7 @@ import { IAddFactura, } from "@/utils/interfaces";
 export default async function (data: IAddFactura[]): Promise<boolean> {
     const conn = clientReturner()
     try {
-        if(await authJwt()) {
+        if(await authJwt(2)) {
             await conn.connect()
             for(const remito of data) {
                 const sql = addFacturaSQL(remito)

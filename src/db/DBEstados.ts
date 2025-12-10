@@ -6,7 +6,7 @@ import { listEstadosRemitosSQL } from "./SQLreturner";
 export default async function (): Promise<IEstados[]> {
     const conn = clientReturner()
     try {
-        if(await authJwt()) {
+        if(await authJwt(3)) {
             await conn.connect()
             const res: IEstados[] = (await conn.query(listEstadosRemitosSQL())).rows
             await conn.end()

@@ -1,13 +1,13 @@
 import clientReturner from "./clientReturner";
-import { changeStateRemitoSQL } from "./SQLreturner";
+import { changeStateMultipleSQL, changeStateRemitoSQL } from "./SQLreturner";
 import authJwt from "@/utils/authJwt";
 
-export default async function (estado_id:number,estado:string,remito:number): Promise<void> {
+export default async function (estado_id:number,remitos:number[]): Promise<void> {
     const conn = clientReturner()
     try {
         if(await authJwt(3)) {
             await conn.connect()
-            const sql = changeStateRemitoSQL(estado_id,estado,remito)
+            const sql = changeStateMultipleSQL(remitos,estado_id)
             console.log(sql)
             await conn.query(sql)
         }

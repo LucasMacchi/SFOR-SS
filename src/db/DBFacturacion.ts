@@ -8,7 +8,7 @@ import { IFacturaAgrupado, IRemitosNoF } from "@/utils/interfaces"
 export default async function (): Promise<IFacturaAgrupado[] | null> {
     const conn = clientReturner()
     try {
-        if(await authJwt()) {
+        if(await authJwt(2)) {
             await conn.connect()
             const facturas: IFacturaAgrupado[] = (await conn.query(facturaGroupSQL())).rows
             for(const f of facturas) {

@@ -6,7 +6,7 @@ import { reportesCategoriasSQL } from "./SQLreturner";
 export default async function (): Promise<IReporteCategoria[]> {
     const conn = clientReturner()
     try {
-        if(await authJwt()) {
+        if(await authJwt(3)) {
             await conn.connect()
             const res: IReporteCategoria[] = (await conn.query(reportesCategoriasSQL())).rows
             await conn.end()

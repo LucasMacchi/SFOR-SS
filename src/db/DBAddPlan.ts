@@ -6,7 +6,7 @@ import { IAddPlan, IAddPlanDetails, } from "@/utils/interfaces";
 export default async function (plan: IAddPlan,details:IAddPlanDetails[]): Promise<boolean> {
     const conn = clientReturner()
     try {
-        if(await authJwt()) {
+        if(await authJwt(2)) {
             await conn.connect()
             const id:number = await (await conn.query(planAddPlanSQL(plan))).rows[0]["plan_id"]
             for(const d of details) {

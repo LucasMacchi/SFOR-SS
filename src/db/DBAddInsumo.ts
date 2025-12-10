@@ -8,7 +8,7 @@ export default async function (data: ICreateInsumo): Promise<boolean> {
     const conn = clientReturner()
     try {
         const user = await decodeJWT()
-        if(await authJwt() && user) {
+        if(await authJwt(2) && user) {
             await conn.connect()
             const sql = insumoAddSQL(data)
             await conn.query(sql)

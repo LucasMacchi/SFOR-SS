@@ -7,7 +7,7 @@ import { deleteFacturaSQL } from "./SQLreturner";
 export default async function (data: number[]): Promise<boolean> {
     const conn = clientReturner()
     try {
-        if(await authJwt()) {
+        if(await authJwt(2)) {
             await conn.connect()
             for(const id of data) {
                 const sql = deleteFacturaSQL(id)

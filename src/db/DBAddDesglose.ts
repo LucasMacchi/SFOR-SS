@@ -1,15 +1,15 @@
 import clientReturner from "./clientReturner";
-import { deleteDetailSQL } from "./SQLreturner";
+import { addDesgloseSQL } from "./SQLreturner";
 import authJwt from "@/utils/authJwt";
+import { IAddDesglose } from "@/utils/interfaces";
 
-export default async function (detail_id:number): Promise<boolean> {
+export default async function (data: IAddDesglose): Promise<boolean> {
     const conn = clientReturner()
     try {
         if(await authJwt(2)) {
             await conn.connect()
-            const sql = deleteDetailSQL(detail_id)
+            const sql = addDesgloseSQL(data)
             await conn.query(sql)
-            await conn.end()
             return true
         }
         await conn.end()
@@ -17,6 +17,6 @@ export default async function (detail_id:number): Promise<boolean> {
     } catch (error) {
         await conn.end()
         console.log(error)
-        throw new Error("Error al agregar detalle.")
+        throw new Error("Error al crear desglose en la base de datos")
     }
 }

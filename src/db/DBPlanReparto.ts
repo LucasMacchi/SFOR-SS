@@ -6,7 +6,7 @@ import { planAllSQL, planDetSQL } from "./SQLreturner";
 export default async function (): Promise<IPlan[] | null> {
     const conn = clientReturner()
     try {
-        if(await authJwt()) {
+        if(await authJwt(2)) {
             await conn.connect()
             const res: IPlan[] = (await conn.query(planAllSQL())).rows
             for(const p of res) {

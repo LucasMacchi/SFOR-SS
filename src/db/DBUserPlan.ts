@@ -7,7 +7,7 @@ export default async function (): Promise<number> {
     const conn = clientReturner()
     try {
         const user = await decodeJWT()
-        if(await authJwt() && user) {
+        if(await authJwt(3) && user) {
             await conn.connect()
             const sql = userPlanSQL(user.userId)
             const res:number = (await conn.query(sql)).rows[0]['reparto_id']

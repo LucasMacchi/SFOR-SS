@@ -6,7 +6,7 @@ import { planAllSQL, planDetSQL, planEditDaysSQL } from "./SQLreturner";
 export default async function (detail_id:number,days:number): Promise<boolean> {
     const conn = clientReturner()
     try {
-        if(await authJwt()) {
+        if(await authJwt(2)) {
             await conn.connect()
             await conn.query(planEditDaysSQL(detail_id,days))
             await conn.end()

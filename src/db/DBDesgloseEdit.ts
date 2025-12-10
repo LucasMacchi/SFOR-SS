@@ -1,14 +1,14 @@
 import authJwt from "@/utils/authJwt"
 import clientReturner from "./clientReturner"
-import { insumoEditSQL } from "./SQLreturner"
+import { desgloseEditSQL, insumoEditSQL } from "./SQLreturner"
 
 
-export default async function (ins_id: number,newVal: string,column:string):Promise<boolean> {
+export default async function (id: number,newVal: string | boolean,column:string,text:boolean):Promise<boolean> {
         const conn = clientReturner()
         try {
             if(await authJwt(2)) {
                 await conn.connect()
-                const sql = insumoEditSQL(column,ins_id,newVal)
+                const sql = desgloseEditSQL(column,id,newVal,text)
                 await conn.query(sql)
                 return true
             }

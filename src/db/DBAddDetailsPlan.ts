@@ -6,7 +6,7 @@ import { IAddPlanDetails } from "@/utils/interfaces";
 export default async function (detail:IAddPlanDetails): Promise<boolean> {
     const conn = clientReturner()
     try {
-        if(await authJwt()) {
+        if(await authJwt(2)) {
             await conn.connect()
             const sql = planAddDetailSQL(detail)
             await conn.query(sql)

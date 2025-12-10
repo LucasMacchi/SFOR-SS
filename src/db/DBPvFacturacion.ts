@@ -6,7 +6,7 @@ import { pvFacturacionSQL } from "./SQLreturner";
 export default async function () {
     const conn = clientReturner()
     try {
-        if(await authJwt()) {
+        if(await authJwt(3)) {
             await conn.connect()
             const pv:number = (await conn.query(pvFacturacionSQL())).rows[0]['payload']
             await conn.end()

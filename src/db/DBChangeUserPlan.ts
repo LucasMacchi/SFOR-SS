@@ -7,7 +7,7 @@ export default async function (repId: number): Promise<void> {
     const conn = clientReturner()
     try {
         const user = await decodeJWT()
-        if(await authJwt() && user) {
+        if(await authJwt(3) && user) {
             await conn.connect()
             const sql = updateRepartoUserSQL(user.userId,repId)
             await conn.query(sql)

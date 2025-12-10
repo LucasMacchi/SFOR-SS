@@ -5,7 +5,7 @@ import { IReparto } from "@/utils/interfaces";
 export default async function (): Promise<IReparto[]> {
     const conn = clientReturner()
     try {
-        if(await authJwt()) {
+        if(await authJwt(3)) {
             const sql = 'SELECT  * FROM public.reparto ORDER BY reparto_id DESC'
             await conn.connect()
             const data:IReparto[] = (await conn.query(sql)).rows

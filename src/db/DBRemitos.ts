@@ -8,10 +8,13 @@ export default async function (): Promise<IRemitosEnvio[]> {
     const conn = clientReturner()
     try {
         const user = await decodeJWT()
-        if(await authJwt() && user) {
+        if(await authJwt(3) && user) {
             const sql = listRemitosSQL(user.userId)
             await conn.connect()
             const remitos: IRemitosEnvio[] = (await conn.query(sql)).rows
+            remitos.forEach(element => {
+                element.checked = false
+            });
             await conn.end()
             return remitos
         }

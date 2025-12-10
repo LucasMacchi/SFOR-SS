@@ -6,7 +6,7 @@ import authJwt from "@/utils/authJwt";
 export default async function (remito:number): Promise<IReporte[]> {
     const conn = clientReturner()
     try {
-        if(await authJwt()) {
+        if(await authJwt(3)) {
             await conn.connect()
             const sql = reportesRemitoSQL(remito)
             const reportes:IReporte[] = (await conn.query(sql)).rows

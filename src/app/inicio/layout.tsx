@@ -7,6 +7,8 @@ import { text_2_s_style } from "@/utils/styles";
 import { CSSProperties } from "react";
 import Image from "next/image";
 import { headers } from "next/headers";
+import logout from "@/utils/logout";
+import LogoutBtn from "@/Componets/LogoutBtn";
 
 
 
@@ -20,6 +22,12 @@ export default async function Layout({children}: Readonly<{children: React.React
   const userData = await decodeJWT()
   const planActual = await DBPlanActual()
   const userplan = await DBUserPlan()
+
+  const logoutFn = async (): Promise<boolean> => {
+    "use server"
+    await logout()
+    return true
+  }
 
   return (
         <div style={{display: "flex", justifyContent: "start",margin: 0}}>
@@ -40,6 +48,9 @@ export default async function Layout({children}: Readonly<{children: React.React
                 <LinkMenu where="/inicio/informes" titulo="informes" />
                 <LinkMenu where="/inicio/facturacion" titulo="facturacion" />
                 <LinkMenu where="/inicio/datos" titulo="datos" />
+            </div>
+            <div >
+                <LogoutBtn logoutFn={logoutFn}/>
             </div>
           </div>
           <div style={{flex: 1,marginTop: 30,marginLeft: 260}}>

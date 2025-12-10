@@ -9,7 +9,7 @@ import decodeJWT from "@/utils/decodeJWT"
 export default async function (plan:number): Promise<IRemitosNoF[] | null> {
     const conn = clientReturner()
     try {
-        if(await authJwt()) {
+        if(await authJwt(2)) {
             await conn.connect()
             const remitosNoF: IRemitosNoF[] = (await conn.query(remitosNoFacturados(plan))).rows
             for(const rt of remitosNoF) {

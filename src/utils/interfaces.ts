@@ -1,3 +1,4 @@
+import { ROLES } from "./enums"
 
 export interface IRqLogin {
     username: string,
@@ -28,7 +29,8 @@ export interface IConfigTable {
 export interface IUserData {
     email: string,
     username: string,
-    userId: number
+    userId: number,
+    rol:number
 }
 export interface IDesgloseDisplay {
     envio_id: number,
@@ -161,7 +163,8 @@ export interface IRemitosEnvio {
     periodo: number,
     pernumero: number,
     fecha_entregado: Date,
-    reportes: number
+    reportes: number,
+    checked:boolean
 
 }
 export interface IRemitoFacturacionResponse {
@@ -297,9 +300,18 @@ export interface IDesglose {
     raciones: number,
     fortificado: boolean,
     visible: boolean,
-    enviado: boolean
+    enviado: boolean,
+    [key: string]: any
 }
 
 export interface IDepartamento {
     departamento: string
+}
+
+export interface IAddDesglose {
+    lentrega_id: number,
+    cue: number,
+    des: string,
+    raciones: number,
+    fortificado: boolean
 }

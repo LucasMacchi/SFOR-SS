@@ -6,7 +6,7 @@ import { insumosSQL } from "./SQLreturner";
 export default async function (): Promise<IInsumo[]> {
     const conn = clientReturner()
     try {
-        if(await authJwt()) {
+        if(await authJwt(2)) {
             await conn.connect()
             const data:IInsumo[] = (await conn.query(insumosSQL())).rows
             await conn.end()

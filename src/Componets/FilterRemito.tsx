@@ -1,6 +1,6 @@
 "use client"
 
-import {btn_small_style, select_style, text_2_s_style } from "@/utils/styles";
+import {btn_s_style, btn_small_style, select_style, text_2_s_style } from "@/utils/styles";
 import { CSSProperties, useEffect, useState } from "react";
 import { IEstados, IExcelRemito, IRemitosEnvio, IReparto } from "@/utils/interfaces";
 import { useRouter } from "next/navigation"
@@ -8,13 +8,16 @@ import refillEmptySpace from "@/utils/refillEmptySpace";
 import ExcelBtn from "./ExcelBtn";
 
 
-export default function FilterRemito ({remitos,estados,planes}:{remitos: IRemitosEnvio[],estados:IEstados[],planes:IReparto[]}) {
+export default function FilterRemito ({remitos,estados,planes,stateMultipleFn}:{remitos: IRemitosEnvio[],estados:IEstados[],planes:IReparto[],stateMultipleFn: (remitos: number[],state:number) => Promise<boolean> }) {
     const router = useRouter()
     const [selectedState, setSelectedState] = useState(0)
     const [selectedFac, setSelectedFac] = useState(0)
+    const [selectedStC,setSelectedStC] = useState(0)
     const [filterRemitos, setFilterRemitos] = useState<IRemitosEnvio[]>(remitos)
+    const [changeStateMode, setChangeStateMode] = useState(false)
     const marginBwtFilters = 20
-    const colorChange = (state: string) => {
+    const colorChange = (state: string,checked:boolean) => {
+        if(checked) return '#00BFFF'
         if(state === "PENDIENTE") {
             return "gold"
         }
@@ -53,6 +56,14 @@ export default function FilterRemito ({remitos,estados,planes}:{remitos: IRemito
         setFilterRemitos(arr)
     },[selectedState,selectedFac])
 
+    useEffect(() => {
+        let check = false
+        filterRemitos.forEach(element => {
+            if(element.checked) check = true
+        });
+        setChangeStateMode(check)
+    },[filterRemitos])
+
     const parseRemitoToString = (pv:number,num:number):string => {
         return refillEmptySpace(5,pv)+"-"+refillEmptySpace(8,num)
     }
@@ -79,6 +90,26 @@ export default function FilterRemito ({remitos,estados,planes}:{remitos: IRemito
             });
             return data
         }
+    }
+
+    const checkRt = (chk:boolean,index:number) => {
+        setFilterRemitos(prt => prt.map((rt,i) => i===index ? {...rt, checked: chk} : rt))
+    }
+    const checkAll = (chk:boolean) => {
+        setFilterRemitos(prt => prt.map((rt) => {return {...rt,checked: chk}}))
+    }
+    const changeStateMultiple = async () => {
+        const ids: number[] = []
+        filterRemitos.forEach(f => {
+            if(f.checked) ids.push(f.remito_id)
+        });
+        const res = await stateMultipleFn(ids,selectedStC)
+        if(res) {
+            alert("Remitos cambiados")
+            window.location.reload()
+        }
+        else alert("Error al cambiar los remitos")
+
     }
 
     return(
@@ -111,10 +142,30 @@ export default function FilterRemito ({remitos,estados,planes}:{remitos: IRemito
                     </div>
                 </div>
             </div>
+            {changeStateMode && (
+            <div style={{marginTop: 20,marginBottom: 20}}>
+                <select name="estados_sel" id="state_sl" value={selectedStC}
+                onChange={(e) => setSelectedStC(parseInt(e.target.value))}
+                style={{width: 450,fontSize:24}}>
+                    <option value={0}>---</option>
+                    {estados.map((es) => {
+                        return(
+                            <option key={es.estado_id} value={es.estado_id}>{es.des}</option>
+                        )
+                    })}
+                </select>
+                <div style={{marginTop: 15}}>
+                    <button style={btn_s_style} onClick={() => changeStateMultiple()}>CAMBIAR ESTADO</button>
+                </div>
+            </div>
+            )}
             <div>
                 <table style={{width: "100%"}}>
                     <tbody>
                         <tr>
+                            <th style={{border: "1px solid", width: "2%"}}>
+                                <input type="checkbox" onChange={(e) => checkAll(e.target.checked)}/>
+                            </th>
                             <th style={{border: "1px solid", width: "20%"}}>REMITO</th>
                             <th style={{border: "1px solid", width: "20%"}}>LOCALIDAD</th>
                             <th style={{border: "1px solid", width: "20%"}}>DEPART.</th>
@@ -123,9 +174,12 @@ export default function FilterRemito ({remitos,estados,planes}:{remitos: IRemito
                             <th style={{border: "1px solid", width: "8%"}}>FAC.</th>
                             <th style={{border: "1px solid", width: "8%"}}>TIPO</th>
                         </tr>
-                        {filterRemitos.length > 0 && filterRemitos.map((rt) => (
-                        <tr style={{backgroundColor: colorChange(rt.estado)}} key={rt.remito_id}
+                        {filterRemitos.length > 0 && filterRemitos.map((rt,i) => (
+                        <tr style={{backgroundColor: colorChange(rt.estado,rt.checked)}} key={rt.remito_id}
                         onClick={() => router.push("/inicio/"+rt.remito_id)}>
+                            <th style={{border: "1px solid", width: "2%"}} onClick={(e) => e.stopPropagation()}>
+                                <input type="checkbox" onChange={(e) => checkRt(e.target.checked,i)} checked={rt.checked}/>
+                            </th>
                             <th style={{border: "1px solid", width: "20%"}}>{parseRemitoToString(rt.pv,rt.numero)}</th>
                             <th style={{border: "1px solid", width: "20%"}}>{rt.localidad}</th>
                             <th style={{border: "1px solid", width: "20%"}}>{rt.departamento}</th>
