@@ -301,6 +301,7 @@ export interface IDesglose {
     fortificado: boolean,
     visible: boolean,
     enviado: boolean,
+    selected: boolean
     [key: string]: any
 }
 
@@ -314,4 +315,20 @@ export interface IAddDesglose {
     des: string,
     raciones: number,
     fortificado: boolean
+}
+
+export interface IViaje {
+    des: string,
+    detalles: IViajeRemito[]
+}
+
+export interface IViajeRemito {
+    plan_id: number,
+    lenterga_id:number,
+    detalles: IViajeDetalle[]
+}
+
+export interface IViajeDetalle {
+    desglose_id: number,
+    raciones: number,
 }

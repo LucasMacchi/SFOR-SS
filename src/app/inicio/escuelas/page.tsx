@@ -9,8 +9,8 @@ import sessionCheck from "@/utils/sessionCheck"
 import { hr_style, text_2_t_style } from "@/utils/styles"
 
 export default async function Page () {
-    await sessionCheck()
-    const lugares = await DBEscuelas()
+    await sessionCheck(2)
+    const lugares = await DBEscuelas(false)
     const departamentos = await DBDepartamentos()
 
     const editDesglose = async (id: number,newVal: string | boolean,column:string,text:boolean): Promise<boolean> => {

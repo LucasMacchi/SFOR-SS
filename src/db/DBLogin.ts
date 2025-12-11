@@ -15,7 +15,7 @@ export default async function (username: string, password: string): Promise<IUse
         await conn.end()
         if(data.username === username && expireTime && secret) {
             //CAMBIAR EL TIEMPO DE EXPIRACION
-            const token = jwt.sign(data,secret,{expiresIn: '1h'});
+            const token = jwt.sign(data,secret,{expiresIn: '72h'});
             (await cookies()).set('JWTKN',token,{httpOnly: true,secure:true})
             return data
         }

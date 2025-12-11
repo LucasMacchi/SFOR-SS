@@ -22,7 +22,7 @@ import { redirect } from "next/navigation";
 
 
 export default async function Page({params}:{params:Promise<{remito:string}>}) {
-    await sessionCheck()
+    await sessionCheck(3)
     const remitoUrl = (await params).remito
     const remitoUniq = await DBUniqRemito(remitoUrl)
     const estados = await DBEstados()

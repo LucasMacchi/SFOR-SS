@@ -14,7 +14,7 @@ import { hr_style, text_2_t_style } from "@/utils/styles"
 
 
 export default async function Page () {
-    await sessionCheck()
+    await sessionCheck(2)
     const insumos = await DBInsumos()
     const planes = await DBPlanReparto()
 

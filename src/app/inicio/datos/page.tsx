@@ -7,7 +7,7 @@ import { hr_style, text_2_t_style } from "@/utils/styles"
 
 
 export default async function () {
-    await sessionCheck()
+    await sessionCheck(2)
     const data = await DBGeneralData()
     
     const pvR = data ? data.configVariables[3].payload : 0

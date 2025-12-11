@@ -15,7 +15,7 @@ import { hr_style, text_2_t_style } from "@/utils/styles"
 
 
 export default async function () {
-    await sessionCheck()
+    await sessionCheck(2)
     const facturas = await DBFacturacion()
     const pvF = await DBPvFacturacion()
     const planesActuales = await DBPlanActual()

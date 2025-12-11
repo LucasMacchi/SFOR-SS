@@ -173,8 +173,8 @@ export function allLugaresEntregaSQL () {
     return `SELECT * FROM public.lentrega ORDER BY lentrega_id ASC;`
 }
 
-export function desgloseByLentregaSQL (id:number) {
-    return `SELECT * FROM public.desglose WHERE lentrega_id = ${id} ORDER BY desglose_id ASC;`
+export function desgloseByLentregaSQL (id:number,sent:boolean) {
+    return sent ? `SELECT * FROM public.desglose WHERE lentrega_id = ${id} and enviado = false ORDER BY desglose_id ASC;` :`SELECT * FROM public.desglose WHERE lentrega_id = ${id} ORDER BY desglose_id ASC;`
 }
 
 export function departamentosSQl () {

@@ -18,8 +18,7 @@ export default async function Layout({children}: Readonly<{children: React.React
     display: "flex",
     flexDirection: "column"
   }
-  const h = headers()
-  const userData = await decodeJWT()
+  let userData = await decodeJWT()
   const planActual = await DBPlanActual()
   const userplan = await DBUserPlan()
 
@@ -28,6 +27,7 @@ export default async function Layout({children}: Readonly<{children: React.React
     await logout()
     return true
   }
+  if(!userData) userData = {username:"NaN",userId:0,email:"NaN",rol:10}
 
   return (
         <div style={{display: "flex", justifyContent: "start",margin: 0}}>
@@ -39,15 +39,15 @@ export default async function Layout({children}: Readonly<{children: React.React
             <div style={linkListStyle}>
                 <LinkMenu where="/inicio" titulo="inicio" />
                 <LinkMenu where="/inicio/generar" titulo="generar" />
-                <LinkMenu where="/inicio/eliminar" titulo="eliminar" />
+                {userData.rol <= 2 && <LinkMenu where="/inicio/planificacion" titulo="planificacion" />}
                 <LinkMenu where="/inicio/traer" titulo="traer" />
-                <LinkMenu where="/inicio/planes" titulo="planes" />
-                <LinkMenu where="/inicio/insumos" titulo="insumos"/>
-                <LinkMenu where="/inicio/escuelas" titulo="escuelas" />             
-                <LinkMenu where="/inicio/stock" titulo="stock"/>
-                <LinkMenu where="/inicio/informes" titulo="informes" />
-                <LinkMenu where="/inicio/facturacion" titulo="facturacion" />
-                <LinkMenu where="/inicio/datos" titulo="datos" />
+                {userData.rol <= 2 && <LinkMenu where="/inicio/planes" titulo="planes" />}
+                {userData.rol <= 2 && <LinkMenu where="/inicio/insumos" titulo="insumos"/>}
+                {userData.rol <= 2 && <LinkMenu where="/inicio/escuelas" titulo="escuelas" />}             
+                {userData.rol <= 2 && <LinkMenu where="/inicio/stock" titulo="stock"/>}
+                {userData.rol <= 2 && <LinkMenu where="/inicio/informes" titulo="informes" />}
+                {userData.rol <= 2 && <LinkMenu where="/inicio/facturacion" titulo="facturacion" />}
+                {userData.rol <= 2 && <LinkMenu where="/inicio/datos" titulo="datos" />}
             </div>
             <div >
                 <LogoutBtn logoutFn={logoutFn}/>

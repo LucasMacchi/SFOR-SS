@@ -5,7 +5,7 @@ import axios from "axios"
 import { CSSProperties, useState } from "react"
 import { useRouter } from "next/navigation"
 
-export default function Login () {
+export default function Login ({loginFun}:{loginFun: (username:string,password:string) => Promise<boolean>}) {
 
     const router = useRouter()
     const loginContainerStyle: CSSProperties = {
@@ -34,7 +34,7 @@ export default function Login () {
     const loginFn = async () => {
         setUsername("")
         setPassword("")
-        const res:boolean = await (await axios.post('/login/api',{username,password})).data["success"]
+        const res:boolean = await loginFun(username,password)
         if(res) {
             router.push("/inicio")
         }
