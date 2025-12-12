@@ -45,6 +45,7 @@ export interface IEnvioDetalles {
     unidades: number,
     raciones: number
 }
+
 export interface IInsumo {
     ins_id: number,
     cod1: number,
@@ -77,6 +78,7 @@ export interface ICreateInsumo {
 export interface IDesgloseParsed {
     envio_id: number,
     dependencia:string,
+    raciones?:number
     detalles: IEnvioDetallesParsed[]
 
 }
@@ -94,7 +96,7 @@ export interface IEnvioDetallesParsed {
     raciones: number,
     cajas: number,
     kilos: number,
-    palet?: number,
+    palet: number,
     ins_id: number,
     des: string
 }
@@ -319,16 +321,44 @@ export interface IAddDesglose {
 
 export interface IViaje {
     des: string,
-    detalles: IViajeRemito[]
+    remitos: IViajeRemito[],
+    viaje_id?:number
 }
 
 export interface IViajeRemito {
     plan_id: number,
     lenterga_id:number,
-    detalles: IViajeDetalle[]
+    detalles: IViajeDetalle[],
+    vremito_id?:number
 }
 
 export interface IViajeDetalle {
     desglose_id: number,
     raciones: number,
+    detalle_id?:number,
+}
+
+export interface IViajeRQ {
+    des: string,
+    remitos: IViajeRemitoRQ[],
+    viaje_id:number
+}
+
+export interface IViajeRemitoRQ {
+    vremito_id:number,
+    plan_id:number,
+    lentrega_id:number,
+    completo:string,
+    departamento:string,
+    des: string,
+    dias:number
+    detalles: IViajeDetalleRQ[]
+}
+
+export interface IViajeDetalleRQ {
+    detalle_id:number,
+    desglose_id:number,
+    vremito_id:number,
+    raciones:number,
+    des:string
 }

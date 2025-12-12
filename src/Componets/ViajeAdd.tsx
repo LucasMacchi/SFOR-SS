@@ -1,12 +1,15 @@
 "use client"
 
-import { IDesglose, ILentrega, IPlan, IViajeDetalle, IViajeRemito } from "@/utils/interfaces"
+import { IDesglose, IEnvioDetallesParsed, IInsumo, ILentrega, IPlan, IViaje, IViajeDetalle, IViajeRemito } from "@/utils/interfaces"
 import { btn_s_style, text_2_t_style } from "@/utils/styles"
 import { useEffect, useState } from "react"
 //@ts-ignore
 import "./css/hoverTableCell.css"
+import viajeInsumosParse from "@/utils/viajeInsumosParseDisplay"
 
-export default function ViajeAdd ({escuelas,departamentos,planes} : {escuelas: ILentrega[],departamentos:string[],planes:IPlan[]}) {
+export default function ViajeAdd ({escuelas,departamentos,planes,insumos,addViajeFn} : {escuelas: ILentrega[],departamentos:string[],planes:IPlan[],insumos:IInsumo[],
+    addViajeFn: (v:IViaje) => Promise<boolean>
+}) {
 
     const [selectedDep, setSelectedDep] = useState("")
     const [selectedLgr, setSelectedLgr] = useState(-1)
@@ -17,6 +20,7 @@ export default function ViajeAdd ({escuelas,departamentos,planes} : {escuelas: I
     const [detallesViaje,setDetallesViaje] = useState<IDesglose[]>([])
     const [updater,setUpdater] = useState(0)
     const [remitos, setRemitos] = useState<IViajeRemito[]>([])
+    const [prev,setPrev] = useState<IEnvioDetallesParsed[]>([])
     const maxheight = 350
     useEffect(() => {
         setSelectedLgr(-1)
@@ -36,6 +40,7 @@ export default function ViajeAdd ({escuelas,departamentos,planes} : {escuelas: I
 
     useEffect(() => {
         setDesgloses([])
+        setDetallesViaje([])
         if(selectedLgr > -1 && filteredLgrs[selectedLgr].desgloses) setDesgloses(filteredLgrs[selectedLgr].desgloses)
     },[selectedLgr])
 
@@ -76,25 +81,62 @@ export default function ViajeAdd ({escuelas,departamentos,planes} : {escuelas: I
         return des
     }
 
-    const createRemito = () => {
-        const detalle:IViajeDetalle[] = []
+    const checkNoRepeat = () =>  {
+        let status = true
+        const lgr = detallesViaje[0].lentrega_id
         detallesViaje.forEach(d => {
-            detalle.push({
-                desglose_id: d.desglose_id,
-                raciones: d.raciones
-            })
+            if(d.lentrega_id !== lgr) status = false
         });
-        const remito: IViajeRemito = {
-            plan_id: planes[selectedP].plan_id,
-            lenterga_id: escuelas[selectedLgr].lentrega_id,
-            detalles: detalle
+        return status
+    }
+
+    const createRemito = () => {
+        if(detallesViaje.length > 0) {
+            if(checkNoRepeat()) {
+                const detalle:IViajeDetalle[] = []
+                detallesViaje.forEach(d => {
+                    detalle.push({
+                        desglose_id: d.desglose_id,
+                        raciones: d.raciones
+                    })
+                });
+                const remito: IViajeRemito = {
+                    plan_id: planes[selectedP].plan_id,
+                    lenterga_id: filteredLgrs[selectedLgr].lentrega_id,
+                    detalles: detalle
+                }
+                setRemitos([...remitos, remito])
+                setDetallesViaje([])
+                setDesgloses([])
+                setSelectedLgr(-1)
+                setSelectedDep("")
+                setUpdater(updater + 1)
+            }
+            else alert("Lugar de entrega repetido")
         }
-        setRemitos([...remitos, remito])
-        setDetallesViaje([])
-        setDesgloses([])
-        setSelectedLgr(-1)
-        setSelectedDep("")
-        setUpdater(updater + 1)
+        else alert("Ingrese desgloses.")
+
+    }
+
+    const createViaje = async () => {
+        if(remitos.length > 0 && viajeDes.length > 0){
+            if(confirm("¿Quieres crear el Viaje "+viajeDes+"?")) {
+                const viaje:IViaje = {
+                    des: viajeDes,
+                    remitos: remitos
+                }
+                const res = await addViajeFn(viaje)
+                if(res) {
+                    alert("Viaje "+viajeDes+" creado correctamente.")
+                    window.location.reload()
+                } else alert("Error al crear el viaje.")
+            }
+        }
+        else alert("No hay remitos agregados o no tiene la descripcion.")
+    }
+    const prevRemitos = () => {
+        setPrev(viajeInsumosParse(insumos,planes,remitos)) 
+        
     }
     return (
         <div style={{marginLeft: 25, marginBottom: 100}}>
@@ -224,11 +266,42 @@ export default function ViajeAdd ({escuelas,departamentos,planes} : {escuelas: I
                 </table>
                 </div>
                 <div style={{display:"flex",justifyContent:"center",marginTop: 40}}>
-                    <button style={btn_s_style} onClick={() => createRemito()}>CREAR VIAJE</button>
+                    <button style={btn_s_style} onClick={() => createViaje()}>CREAR VIAJE</button>
+                    <button style={btn_s_style} onClick={() => prevRemitos()}>?</button>
                 </div>
             </div>
             </div>
-
+            {prev.length > 0 && 
+            <div >
+                <div>
+                    <h2 style={{...text_2_t_style, marginTop: 40}}>PREVISUALIZACION</h2>
+                </div>
+                <div style={{maxHeight: maxheight,height:maxheight, overflow: "scroll",marginLeft: 30, width: 1000}}>
+                <table style={{width: "100%", fontSize: 16}}>
+                    <tbody>
+                        <tr style={{backgroundColor: "#4A6EE8",color:"white"}}>
+                            <th style={{border: "1px solid", width: "60%"}}>INS</th>
+                            <th style={{border: "1px solid", width: "10%"}}>UNIDADES</th>
+                            <th style={{border: "1px solid", width: "10%"}}>PALETS</th>
+                            <th style={{border: "1px solid", width: "10%"}}>CAJAS</th>
+                            <th style={{border: "1px solid", width: "10%"}}>BOLSAS</th>
+                            <th style={{border: "1px solid", width: "10%"}}>KILOS</th>
+                        </tr>
+                        {prev.map((r,i) => (
+                        <tr key={i}>
+                            <th style={{border: "1px solid", width: "60%",textAlign: "left"}}>{r.des}</th>
+                            <th style={{border: "1px solid", width: "10%"}}>{r.unidades}</th>
+                            <th style={{border: "1px solid", width: "10%"}}>{r.palet}</th>
+                            <th style={{border: "1px solid", width: "10%"}}>{r.cajas}</th>
+                            <th style={{border: "1px solid", width: "10%"}}>{r.bolsas}</th>
+                            <th style={{border: "1px solid", width: "10%"}}>{r.kilos.toFixed(2)}</th>
+                        </tr>
+                        ))}
+                    </tbody>
+                </table>
+                </div>
+            </div>
+            }
         </div>
     )
 }

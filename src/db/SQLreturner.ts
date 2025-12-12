@@ -1,5 +1,5 @@
 import { ESTADOS, ROLES } from "@/utils/enums"
-import { IAddDesglose, IAddFactura, IAddPlan, IAddPlanDetails, ICreateInsumo, IRqReportAdd } from "@/utils/interfaces"
+import { IAddDesglose, IAddFactura, IAddPlan, IAddPlanDetails, ICreateInsumo, IRqReportAdd, IViajeDetalle, IViajeRemito } from "@/utils/interfaces"
 
 export function listRemitosSQL(usr: number): string {
     return `SELECT r.remito_id,r.pv,r.numero,r.estado_id,e.des as estado,r.fortificado,r.dias,
@@ -177,6 +177,11 @@ export function desgloseByLentregaSQL (id:number,sent:boolean) {
     return sent ? `SELECT * FROM public.desglose WHERE lentrega_id = ${id} and enviado = false ORDER BY desglose_id ASC;` :`SELECT * FROM public.desglose WHERE lentrega_id = ${id} ORDER BY desglose_id ASC;`
 }
 
+export function desgloseByLentregaPlanSQL (id:number) {
+    //ESTO HAY QUE VERLE COMO HACER
+    return `SELECT * FROM public.desglose WHERE lentrega_id = ${id} ORDER BY desglose_id ASC;`
+}
+
 export function departamentosSQl () {
     return `SELECT departamento FROM public.lentrega GROUP BY departamento ORDER BY departamento;`
 }
@@ -202,3 +207,32 @@ export function changeStateMultipleSQL (id:number[],estado: number) {
 export function addDesgloseSQL (data: IAddDesglose) {
     return `INSERT INTO public.desglose(lentrega_id, cue, des, raciones, fortificado, visible, enviado) VALUES (${data.lentrega_id}, ${data.cue}, '${data.des}', ${data.raciones}, ${data.fortificado}, true, false);`
 }
+
+export function addViajeSQL (des:string,user:number) {
+    return `INSERT INTO public.viaje(des, reparto_id) VALUES ( '${des}', (SELECT reparto_id FROM reparto_user WHERE user_id = ${user})) RETURNING viaje_id;`
+}
+
+export function addRemitoViajeSQL (d: IViajeRemito,viajeId: number) {
+    return `INSERT INTO public.viaje_remito(plan_id, viaje_id, lentrega_id) VALUES ( ${d.plan_id}, ${viajeId}, ${d.lenterga_id}) RETURNING vremito_id;`
+}
+
+export function addDetalleViajeSQL (d: IViajeDetalle,rtId:number,user:number) {
+    return `INSERT INTO public.viaje_detalle(desglose_id, vremito_id, raciones,reparto_id) VALUES (${d.desglose_id}, ${rtId}, ${d.raciones},(SELECT reparto_id FROM reparto_user WHERE user_id = ${user}));`
+}
+
+export function viajeSQL (userId:number) {
+    return `SELECT * FROM public.viaje WHERE reparto_id = (SELECT reparto_id FROM reparto_user WHERE user_id = ${userId}) ORDER BY viaje_id DESC `
+}
+
+export function viajeRemitoSQL (viaje: number) {
+    return `SELECT r.vremito_id,r.plan_id,r.lentrega_id,p.des,l.completo,l.departamento,p.dias FROM public.viaje_remito r JOIN public.plan p ON p.plan_id = r.plan_id JOIN public.lentrega l ON l.lentrega_id = r.lentrega_id WHERE r.viaje_id = ${viaje} ORDER BY r.vremito_id ASC `
+}
+
+export function viajeDetalleSQL(vremito:number) {
+    return `SELECT d.detalle_id,d.desglose_id,d.vremito_id,d.raciones,dg.des FROM public.viaje_detalle d JOIN public.desglose dg ON d.desglose_id = dg.desglose_id  WHERE d.vremito_id = ${vremito};`
+}
+
+export function deleteViajeSQL (id:number,table:string,column: string) {
+    return `DELETE FROM public.${table} WHERE ${column}=${id};`
+}
+

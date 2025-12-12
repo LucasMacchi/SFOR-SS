@@ -19,7 +19,8 @@ export function parsedDesgloseDetalles(insumos: IInsumo[],d: IDesgloseDisplay) :
                     bolsas: det.unidades - (cajasN* i.unidades_caja),
                     kilos: det.unidades * i.gr_unidad / 1000,
                     ins_id: i.ins_id,
-                    des: i.des
+                    des: i.des,
+                    palet: 0
                 })
             }
         });
