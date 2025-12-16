@@ -37,8 +37,29 @@ export interface IDesgloseDisplay {
     dependencia:string,
     detalles: IEnvioDetalles[]
 }
+
+export interface IAddRemito {
+    estado_id: number,
+    lentrega_id:number,
+    fortificado:boolean,
+    reparto_id: number,
+    dias:number,
+    fecha_creado:string,
+    viaje_id:number | null,
+    envios:IAddEnvio[]
+}
+
+export interface IAddEnvio {
+    envio_id?:number,
+    remito_id:number,
+    desglose_id:number,
+    tanda: number,
+    fortificado: boolean,
+    detalles: IEnvioDetalles[]
+}
+
 export interface IEnvioDetalles {
-    detail_id: number,
+    detail_id?: number,
     envio_id: number,
     ins_id: number,
     insumo: string,
@@ -291,7 +312,7 @@ export interface ILentrega {
     completo: string,
     direccion: string,
     descripcion: string,
-    desgloses?:IDesglose[]
+    desgloses?:IDesglose[],
 }
 
 export interface IDesglose {
@@ -341,7 +362,9 @@ export interface IViajeDetalle {
 export interface IViajeRQ {
     des: string,
     remitos: IViajeRemitoRQ[],
-    viaje_id:number
+    viaje_id:number,
+    reparto_id: number,
+    procesado:boolean
 }
 
 export interface IViajeRemitoRQ {
@@ -361,4 +384,27 @@ export interface IViajeDetalleRQ {
     vremito_id:number,
     raciones:number,
     des:string
+}
+
+export interface IRemitoT {
+    remito_id:number,
+    pv:number,
+    numero:number,
+    estado_id:number,
+    descipcion: string,
+    direccion:string,
+    lentrega_id:number,
+    dias:number,
+    viaje_id:number,
+    fortificado: boolean,
+    completo:string,
+    envios:IEnvioT[]
+}
+export interface IEnvioT {
+    envio_id:number,
+    remito_id:number,
+    desglose_id:number,
+    des: string,
+    fortificado: boolean,
+    detalles: IEnvioDetalles[]
 }

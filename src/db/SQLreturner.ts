@@ -1,5 +1,5 @@
 import { ESTADOS, ROLES } from "@/utils/enums"
-import { IAddDesglose, IAddFactura, IAddPlan, IAddPlanDetails, ICreateInsumo, IRqReportAdd, IViajeDetalle, IViajeRemito } from "@/utils/interfaces"
+import { IAddDesglose, IAddEnvio, IAddFactura, IAddPlan, IAddPlanDetails, IAddRemito, ICreateInsumo, IEnvioDetalles, IRqReportAdd, IViajeDetalle, IViajeRemito } from "@/utils/interfaces"
 
 export function listRemitosSQL(usr: number): string {
     return `SELECT r.remito_id,r.pv,r.numero,r.estado_id,e.des as estado,r.fortificado,r.dias,
@@ -178,7 +178,6 @@ export function desgloseByLentregaSQL (id:number,sent:boolean) {
 }
 
 export function desgloseByLentregaPlanSQL (id:number) {
-    //ESTO HAY QUE VERLE COMO HACER
     return `SELECT * FROM public.desglose WHERE lentrega_id = ${id} ORDER BY desglose_id ASC;`
 }
 
@@ -236,3 +235,43 @@ export function deleteViajeSQL (id:number,table:string,column: string) {
     return `DELETE FROM public.${table} WHERE ${column}=${id};`
 }
 
+export function createRemitoSQL (rt: IAddRemito) {
+    return `INSERT INTO public.remito(pv, estado_id, lentrega_id, fortificado, reparto_id, dias, fecha_creado, viaje_id) 
+    VALUES ((SELECT CAST(payload AS integer) FROM public.config WHERE config_id = 4), 
+    ${rt.estado_id}, ${rt.lentrega_id}, ${rt.fortificado}, 
+    ${rt.reparto_id}, ${rt.dias}, ${rt.fecha_creado}, ${rt.viaje_id}) RETURNING remito_id;`
+}
+
+export function createEnvioSQL (e: IAddEnvio,tanda:number) {
+    return `INSERT INTO public.envio(remito_id, desglose_id, tanda, fecha, remito, fortificado) VALUES ( ${e.remito_id}, ${e.desglose_id}, ${tanda}, NOW(), null, ${e.fortificado}) RETURNING envio_id;`
+}
+
+export function createEnvioDetalleSQL (d: IEnvioDetalles) {
+    return `INSERT INTO public.envio_details(envio_id, ins_id, raciones, unidades) VALUES (${d.envio_id}, ${d.ins_id}, ${d.raciones}, ${d.unidades});`
+}
+
+export function lastTandaSQL () {
+    return `SELECT MAX(tanda) FROM public.envio;`
+}
+ 
+export function changeStateViajeSQL (id:number,state:boolean) {
+    return `UPDATE public.viaje SET procesado=${state} WHERE viaje_Id = ${id};`
+}
+
+export function traerRemitosViajeSQL (user:number,viaje:number) {
+    return`SELECT * FROM public.remito r JOIN public.lentrega l ON r.lentrega_id = l.lentrega_id WHERE reparto_id = (SELECT reparto_id FROM reparto_user WHERE user_id = ${user}) and viaje_id = ${viaje} ORDER BY numero DESC;`
+}
+
+export function traerRemitosRangoSQL (user:number,start:number,end:number) {
+    return`SELECT * FROM public.remito r JOIN public.lentrega l ON r.lentrega_id = l.lentrega_id 
+            WHERE reparto_id = (SELECT reparto_id FROM reparto_user WHERE user_id = ${user}) 
+            AND numero BETWEEN ${start} and ${end} ORDER BY numero DESC;`
+}
+
+export function traerEnviosRemitoSQL (id:number) {
+    return `SELECT * FROM public.envio e JOIN public.desglose d ON e.desglose_id = d.desglose_id WHERE remito_id = ${id} ORDER BY remito_id DESC;`
+}
+
+export function traerDetallesEnviosRemitoSQL (id:number) {
+    return `SELECT * FROM public.envio_details d JOIN public.insumo i ON d.ins_id = i.ins_id WHERE d.envio_id = ${id} ORDER BY d.ins_id ASC `
+}

@@ -4,13 +4,14 @@ import { useEffect, useState } from "react";
 
 //@ts-ignore
 import "./css/hoverTableCell.css"
-import { btn_d_style, btn_s_style, text_2_t_style } from "@/utils/styles";
+import { btn_d_style, btn_s_style, text_2_g_style, text_2_t_style } from "@/utils/styles";
 import viajeRemitoInsumoParaseDisplay from "@/utils/viajeRemitoInsumoParaseDisplay";
 
-export default function DisplayPlanes ({viajes,deleteFn,insumos,planes,lugares,addViajeDetalleFn}:
+export default function DisplayPlanes ({viajes,deleteFn,insumos,planes,lugares,addViajeDetalleFn,activarViajeFn}:
     {viajes:IViajeRQ[],deleteFn:(id:number,table:string,column: string) => Promise<boolean>,
     insumos:IInsumo[],planes: IPlan[],lugares:ILentrega[],
-    addViajeDetalleFn: (detail:IViajeDetalle,id:number) => Promise<boolean>}) {
+    addViajeDetalleFn: (detail:IViajeDetalle,id:number) => Promise<boolean>,
+    activarViajeFn: (id:number,state:boolean) => Promise<boolean>}) {
 
     const [selectedViaje,setSelectedViaje] = useState(-1)
     const [selectedRt,setSelectedRt] = useState(-1)
@@ -63,6 +64,16 @@ export default function DisplayPlanes ({viajes,deleteFn,insumos,planes,lugares,a
             }
         }
     }
+    const activarViaje = async () => {
+        if(confirm("¿Quieres activar devuelta este viaje?") && selectedViaje > -1) {
+            const res = await activarViajeFn(viajes[selectedViaje].viaje_id,false)
+            if(res){
+                alert("Viaje activado devuelta.")
+                window.location.reload()
+            }
+            else alert ("Error al activar el viaje.")
+        }
+    }
     useEffect(() => {
         setSelectedRt(-1)
         setDesgloses([])
@@ -105,6 +116,12 @@ export default function DisplayPlanes ({viajes,deleteFn,insumos,planes,lugares,a
                 </div>
                 {selectedViaje > -1 &&
                 <div>
+                    {viajes[selectedViaje].procesado && (
+                        <div >
+                            <h2 style={{...text_2_g_style, marginTop: 40}}>VIAJE YA PROCESADO</h2>
+                            <button style={{...btn_s_style,margin:5}} onClick={() => activarViaje()}>ACTIVAR</button>
+                        </div>
+                    )}
                     <div style={{display: "flex", alignItems:"baseline"}}>
                         <h2 style={{...text_2_t_style, marginTop: 40}}>SELECCIONA EL REMITO</h2>
                         <button style={{...btn_d_style,margin:5}} onClick={() => deleteRemito()} disabled={selectedRt > -1 ? false:true}>BORRAR</button>
@@ -126,7 +143,7 @@ export default function DisplayPlanes ({viajes,deleteFn,insumos,planes,lugares,a
                         style={{width: 500,fontSize:24,marginBottom: 20}}>
                             <option value={-1}>---</option>
                             {desgloses.map((d,i) =>  (
-                                <option key={i} value={i}>{d.des}</option>
+                                !d.selected && <option key={i} value={i}>{d.des}</option>
                             ))}
                         </select>
                     </div>

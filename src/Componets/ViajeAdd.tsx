@@ -197,7 +197,7 @@ export default function ViajeAdd ({escuelas,departamentos,planes,insumos,addViaj
                                 <th style={{border: "1px solid", width: "5%"}}>TIPO</th>
                             </tr>
                             {desgloses.map((d,i) => {
-                                if(selectedP > -1 && d.fortificado === planes[selectedP].fortificado && !checkDesglose(d.desglose_id) && !checkDesgloseRemitos(d.desglose_id)) {
+                                if(selectedP > -1 && d.fortificado === planes[selectedP].fortificado && !checkDesglose(d.desglose_id) && !checkDesgloseRemitos(d.desglose_id) && !d.selected) {
                                     return (
                                     <tr key={i} onClick={() => addDesglose(d)} id="cnt">
                                         <th style={{border: "1px solid", width: "80%",textAlign: "left"}}>{d.des}</th>

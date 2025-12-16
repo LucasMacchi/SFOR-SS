@@ -8,7 +8,7 @@ import sessionCheck from "@/utils/sessionCheck";
 
 export default async function Page() {
 
-    await sessionCheck()
+    await sessionCheck(3)
     const remitos = await DBRemitos()
     const estados = await DBEstados()
     const plan = await DBPlanActual()

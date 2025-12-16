@@ -46,6 +46,12 @@ export const text_2_t_style: CSSProperties = {
     margin: 2
 }
 
+export const text_2_g_style: CSSProperties = {
+    color: "#55e455ff",
+    margin: 2
+}
+
+
 export const hr_style: CSSProperties = {
     margin: 12,
     borderWidth: 2
