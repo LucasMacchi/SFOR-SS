@@ -1,13 +1,18 @@
 "use client"
 
-import { IRemitoT, IViajeRQ } from "@/utils/interfaces"
+import { IInsumo, IRemitoT, IViajeRQ } from "@/utils/interfaces"
 import refillEmptySpace from "@/utils/refillEmptySpace"
 import { btn_s_style, text_2_t_style } from "@/utils/styles"
 import { CSSProperties, useEffect, useState } from "react"
+import PdfBtn from "./PdfBtn"
+import PDFRemitos from "./pdfs/PDFRemitos"
+import { pdf } from "@react-pdf/renderer"
+import PDFDesglose from "./pdfs/PDFDesglose"
+import PDFActas from "./pdfs/PDFActas"
 
 
-export default function TraerRemitosDisplay ({viajes,getRtViaje,getRtRango}:
-    {viajes:IViajeRQ[],getRtViaje: (viaje:number) => Promise<IRemitoT[]>,getRtRango: (start:number,end:number) => Promise<IRemitoT[]>}) {
+export default function TraerRemitosDisplay ({viajes,insumos,venc,cai,getRtViaje,getRtRango}:
+    {viajes:IViajeRQ[],insumos:IInsumo[],venc:string,cai:string,getRtViaje: (viaje:number) => Promise<IRemitoT[]>,getRtRango: (start:number,end:number) => Promise<IRemitoT[]>}) {
 
     const inputRtStyle: CSSProperties = {
         height: 25,
@@ -25,6 +30,21 @@ export default function TraerRemitosDisplay ({viajes,getRtViaje,getRtRango}:
         setRange({start:0,end:0})
     },[option])
 
+    const downloadRemitos = async ():Promise<Blob> => {
+        const blob = await pdf(<PDFRemitos remito={remitos} insumos={insumos}
+        venc={venc} cai={cai}/>).toBlob()
+        return blob
+    }
+
+    const downloadDesglose = async ():Promise<Blob> => {
+        const blob = await pdf(<PDFDesglose insumos={insumos} remitos={remitos} />).toBlob()
+        return blob
+    }
+
+    const downloadActas = async ():Promise<Blob> => {
+        const blob = await pdf(<PDFActas remitos={remitos} />).toBlob()
+        return blob
+    }
 
     const displayViaje = () => {
 
@@ -113,7 +133,15 @@ export default function TraerRemitosDisplay ({viajes,getRtViaje,getRtRango}:
             {option === 2 && displayRangos()}
             {remitos.length > 0 && 
             <div>
-                <h2 style={{...text_2_t_style, marginTop: 40}}>REMITOS TOTALES - {remitos.length}</h2>
+                <div>
+                    <h2 style={{...text_2_t_style, marginTop: 40}}>REMITOS TOTALES - {remitos.length}</h2>
+                    <div style={{display:"flex",justifyContent:"space-evenly",width:"50%"}}>
+                        <PdfBtn disable={false} title="REMITOS" pdf={downloadRemitos()}/>
+                        <PdfBtn disable={false} title="DESGLOSES" pdf={downloadDesglose()}/>
+                        <PdfBtn disable={false} title="ACTAS" pdf={downloadActas()}/>
+                    </div>
+
+                </div>
                 <div style={{maxHeight: 300,height:300,overflow:"scroll",width: "50%",marginTop:20}}>
                 <table style={{width: "100%", fontSize: 16}}>
                     <tbody>

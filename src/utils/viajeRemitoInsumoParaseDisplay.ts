@@ -1,4 +1,4 @@
-import { IDesgloseParsed, IEnvioDetallesParsed, IInsumo, IPlan, IViajeRemito, IViajeRemitoRQ } from "./interfaces";
+import { IDesgloseParsed, IEnvioDetallesParsed, IInsumo, IPlan, IViajeRemitoRQ } from "./interfaces";
 
 export default function (insumos: IInsumo[],planes: IPlan[], r: IViajeRemitoRQ) {
 

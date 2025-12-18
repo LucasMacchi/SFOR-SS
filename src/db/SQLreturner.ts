@@ -174,7 +174,7 @@ export function allLugaresEntregaSQL () {
 }
 
 export function desgloseByLentregaSQL (id:number,sent:boolean) {
-    return sent ? `SELECT * FROM public.desglose WHERE lentrega_id = ${id} and enviado = false ORDER BY desglose_id ASC;` :`SELECT * FROM public.desglose WHERE lentrega_id = ${id} ORDER BY desglose_id ASC;`
+    return sent ? `SELECT * FROM public.desglose WHERE lentrega_id = ${id} and enviado = false and visible = true ORDER BY desglose_id ASC;` :`SELECT * FROM public.desglose WHERE lentrega_id = ${id} and visible = true ORDER BY desglose_id ASC;`
 }
 
 export function desgloseByLentregaPlanSQL (id:number) {
@@ -208,7 +208,7 @@ export function addDesgloseSQL (data: IAddDesglose) {
 }
 
 export function addViajeSQL (des:string,user:number) {
-    return `INSERT INTO public.viaje(des, reparto_id) VALUES ( '${des}', (SELECT reparto_id FROM reparto_user WHERE user_id = ${user})) RETURNING viaje_id;`
+    return `INSERT INTO public.viaje(des, reparto_id,procesado) VALUES ( '${des}', (SELECT reparto_id FROM reparto_user WHERE user_id = ${user}),false) RETURNING viaje_id;`
 }
 
 export function addRemitoViajeSQL (d: IViajeRemito,viajeId: number) {
@@ -274,4 +274,8 @@ export function traerEnviosRemitoSQL (id:number) {
 
 export function traerDetallesEnviosRemitoSQL (id:number) {
     return `SELECT * FROM public.envio_details d JOIN public.insumo i ON d.ins_id = i.ins_id WHERE d.envio_id = ${id} ORDER BY d.ins_id ASC `
+}
+
+export function setEnviadoDesgloseSQL (id:number,state:boolean) {
+    return `UPDATE public.desglose SET enviado=${state} WHERE desglose_id=${id};`
 }

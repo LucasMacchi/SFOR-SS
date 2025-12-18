@@ -1,27 +1,28 @@
 "use client"
 
-import { IDesglose, IEnvioDetallesParsed, IInsumo, ILentrega, IPlan, IViaje, IViajeDetalle, IViajeRemito } from "@/utils/interfaces"
+import { IAddRemito, IDesglose, IEnvioDetallesParsed, IInsumo, ILentrega, IPlan, IViajeDetalle, IViajeRemito, IViajeRQ } from "@/utils/interfaces"
 import { btn_s_style, text_2_t_style } from "@/utils/styles"
 import { useEffect, useState } from "react"
-//@ts-ignore
-import "./css/hoverTableCell.css"
-import viajeInsumosParse from "@/utils/viajeInsumosParseDisplay"
+import viajeInsumosParseDisplay from "@/utils/viajeInsumosParseDisplay"
+import parsedRemitosToGenerate from "@/utils/parsedRemitosToGenerate"
 
-export default function ViajeAdd ({escuelas,departamentos,planes,insumos,addViajeFn} : {escuelas: ILentrega[],departamentos:string[],planes:IPlan[],insumos:IInsumo[],
-    addViajeFn: (v:IViaje) => Promise<boolean>
-}) {
 
+
+export default function GenerarIndividual ({escuelas,departamentos,planes,insumos,generateFn,reparto}:
+    {escuelas: ILentrega[],departamentos:string[],planes:IPlan[],insumos:IInsumo[], reparto:number,
+    generateFn: (remitos: IAddRemito[])=> Promise<boolean>}) {
+    const [desgloses,setDesgloses] = useState<IDesglose[]>([])
+    const [selectedP, setSelectedP] = useState(-1)
     const [selectedDep, setSelectedDep] = useState("")
     const [selectedLgr, setSelectedLgr] = useState(-1)
     const [filteredLgrs, setFilteredLgrs] = useState<ILentrega[]>(escuelas)
-    const [viajeDes, setViajeDes] = useState("")
-    const [selectedP, setSelectedP] = useState(-1)
-    const [desgloses,setDesgloses] = useState<IDesglose[]>([])
-    const [detallesViaje,setDetallesViaje] = useState<IDesglose[]>([])
     const [updater,setUpdater] = useState(0)
+    const [detallesViaje,setDetallesViaje] = useState<IDesglose[]>([])
     const [remitos, setRemitos] = useState<IViajeRemito[]>([])
     const [prev,setPrev] = useState<IEnvioDetallesParsed[]>([])
+ 
     const maxheight = 350
+
     useEffect(() => {
         setSelectedLgr(-1)
         let arr = escuelas
@@ -63,23 +64,6 @@ export default function ViajeAdd ({escuelas,departamentos,planes,insumos,addViaj
     const checkDesglose = (id:number) => {
         return detallesViaje.find((des) => des.desglose_id === id)
     }
-    const checkDesgloseRemitos = (id:number) => {
-        let check = false
-        remitos.forEach(r => {
-            r.detalles.forEach(d => {
-                if(d.desglose_id === id) check = true
-            });
-        });
-        return check
-    }
-
-    const planReturner = (id:number) : string => {
-        let des = ""
-        planes.forEach(p => {
-            if(p.plan_id === id) des = p.des+" x "+p.dias
-        });
-        return des
-    }
 
     const checkNoRepeat = () =>  {
         let status = true
@@ -89,7 +73,7 @@ export default function ViajeAdd ({escuelas,departamentos,planes,insumos,addViaj
         });
         return status
     }
-
+    
     const createRemito = () => {
         if(detallesViaje.length > 0) {
             if(checkNoRepeat()) {
@@ -117,34 +101,39 @@ export default function ViajeAdd ({escuelas,departamentos,planes,insumos,addViaj
         else alert("Ingrese desgloses.")
 
     }
-
-    const createViaje = async () => {
-        if(remitos.length > 0 && viajeDes.length > 0){
-            if(confirm("¿Quieres crear el Viaje "+viajeDes+"?")) {
-                const viaje:IViaje = {
-                    des: viajeDes,
-                    remitos: remitos
-                }
-                const res = await addViajeFn(viaje)
-                if(res) {
-                    alert("Viaje "+viajeDes+" creado correctamente.")
-                    window.location.reload()
-                } else alert("Error al crear el viaje.")
-            }
-        }
-        else alert("No hay remitos agregados o no tiene la descripcion.")
+    const checkDesgloseRemitos = (id:number) => {
+        let check = false
+        remitos.forEach(r => {
+            r.detalles.forEach(d => {
+                if(d.desglose_id === id) check = true
+            });
+        });
+        return check
     }
     const prevRemitos = () => {
-        setPrev(viajeInsumosParse(insumos,planes,remitos))    
+        setPrev(viajeInsumosParseDisplay(insumos,planes,remitos))    
     }
+    const planReturner = (id:number) : string => {
+        let des = ""
+        planes.forEach(p => {
+            if(p.plan_id === id) des = p.des+" x "+p.dias
+        });
+        return des
+    }
+
+    const generarRemitos = async () => {
+        if(confirm("¿Quieres crear estos remitos?") && remitos) {
+            const remitosP = parsedRemitosToGenerate(remitos,planes,insumos,reparto)
+            const res = await generateFn(remitosP)
+            if(res) {
+                alert("Remitos creados")
+            } else alert("Error al crear los remitos")
+        }
+    }
+
     return (
         <div style={{marginLeft: 25, marginBottom: 100}}>
             <div style={{display: "flex",marginLeft: 10}}>
-                <div>
-                    <h2 style={{...text_2_t_style, marginTop: 40}}>DESCRIPCION</h2>
-                    <input name="plan-inpt" value={viajeDes} style={{width: 250,fontSize:24,marginBottom: 20}}
-                    onChange={(e) => setViajeDes(e.target.value)}/>
-                </div>
                 <div>
                     <h2 style={{...text_2_t_style, marginTop: 40}}>SELECCIONA EL PLAN</h2>
                     <select name="estados_sel" id="state_sl" value={selectedP}
@@ -265,7 +254,7 @@ export default function ViajeAdd ({escuelas,departamentos,planes,insumos,addViaj
                 </table>
                 </div>
                 <div style={{display:"flex",justifyContent:"center",marginTop: 40}}>
-                    <button style={btn_s_style} onClick={() => createViaje()}>CREAR VIAJE</button>
+                    <button style={btn_s_style} onClick={() => generarRemitos()}>TST</button>
                     <button style={btn_s_style} onClick={() => prevRemitos()}>?</button>
                 </div>
             </div>

@@ -55,6 +55,7 @@ export default function DisplayPlanes ({viajes,deleteFn,insumos,planes,lugares,a
         const desid = id
         if(confirm("¿Quieres eliminar el desglose?")) {
             if(desid) {
+                console.log(id)
                 const res = await deleteFn(desid,'viaje_detalle','detalle_id')
                 if(res) {
                     alert("Desglose eliminado")
@@ -87,7 +88,6 @@ export default function DisplayPlanes ({viajes,deleteFn,insumos,planes,lugares,a
         }
     },[selectedRt])
     useEffect(() => {
-        console.log(option)
         if(selectedRt > -1 && selectedViaje > -1 && viajes[selectedViaje]) {
             const lgr = viajes[selectedViaje].remitos[selectedRt] ? viajes[selectedViaje].remitos[selectedRt].lentrega_id : 0
             if(option && lgr) {
@@ -98,6 +98,10 @@ export default function DisplayPlanes ({viajes,deleteFn,insumos,planes,lugares,a
         }
 
     },[option])
+
+    const typePlanReturner = (id:number) => {
+        return planes.find(pls => pls.plan_id === id)?.fortificado || false
+    }
     return (
         <div>
             <div>
@@ -143,7 +147,7 @@ export default function DisplayPlanes ({viajes,deleteFn,insumos,planes,lugares,a
                         style={{width: 500,fontSize:24,marginBottom: 20}}>
                             <option value={-1}>---</option>
                             {desgloses.map((d,i) =>  (
-                                !d.selected && <option key={i} value={i}>{d.des}</option>
+                                (!d.selected && typePlanReturner(viajes[selectedViaje].remitos[0].plan_id) === d.fortificado) && <option key={i} value={i}>{d.des+" - "+(d.fortificado ? "AL" : "CL")}</option>
                             ))}
                         </select>
                     </div>
@@ -165,7 +169,7 @@ export default function DisplayPlanes ({viajes,deleteFn,insumos,planes,lugares,a
                             </tr>
                             {viajes[selectedViaje].remitos[selectedRt].detalles.map((d,i) => {
                                 return (
-                                <tr key={i} id="del" onClick={() => deleteDesglose(d.desglose_id)}>
+                                <tr key={i} id="del" onClick={() => deleteDesglose(d.detalle_id)}>
                                     <th style={{border: "1px solid", width: "80%",textAlign: "left"}}>{d.des}</th>
                                     <th style={{border: "1px solid", width: "5%"}}>{d.raciones}</th>
                                 </tr>

@@ -109,7 +109,8 @@ export interface IRemitosDetalles {
     bolsas:number,
     cajas:number,
     kilos:number,
-    des: string
+    des: string,
+    calculable?:boolean
 }
 export interface IEnvioDetallesParsed {
     unidades: number,
@@ -398,7 +399,9 @@ export interface IRemitoT {
     viaje_id:number,
     fortificado: boolean,
     completo:string,
-    envios:IEnvioT[]
+    plan_id:number,
+    localidad:string,
+    envios:IEnvioT[],
 }
 export interface IEnvioT {
     envio_id:number,

@@ -13,11 +13,11 @@ export default function (insumos: IInsumo[],planes: IPlan[], remitos: IViajeRemi
                     p.detalles.forEach(pd => {
                         insumos.forEach(ins => {
                             if(ins.ins_id === pd.ins_id) {
-                                const unidadesN = Math.ceil((rd.raciones * pd.dias) / ins.racunidad) 
-                                let cajasN = unidadesN >= ins.unidades_caja ? Math.floor(unidadesN / ins.unidades_caja) : 0
+                                const unidadesN = Math.ceil((rd.raciones * pd.dias) / ins.racunidad)
+                                let cajasN = (unidadesN >= ins.unidades_caja && ins.unidades_caja) ? Math.floor(unidadesN / ins.unidades_caja) : 0
                                 arrDetallesIns.push({
                                     unidades: unidadesN,
-                                    bolsas: unidadesN - (cajasN* ins.unidades_caja),
+                                    bolsas: cajasN ? unidadesN - (cajasN* ins.unidades_caja) : unidadesN,
                                     raciones: unidadesN * ins.racunidad,
                                     cajas: cajasN,
                                     kilos: unidadesN * ins.gr_unidad / 1000,
@@ -47,7 +47,6 @@ export default function (insumos: IInsumo[],planes: IPlan[], remitos: IViajeRemi
     detalles.forEach(d => {
         leches += d.raciones ? d.raciones  : 0
     });
-    console.log("TOTALES = "+leches)
     insumos.forEach(i => {
         const ins: IEnvioDetallesParsed = {
             unidades: 0,
@@ -68,10 +67,9 @@ export default function (insumos: IInsumo[],planes: IPlan[], remitos: IViajeRemi
                 ins.kilos += d.kilos
             }
         });
-        const cajasToAdd = ins.bolsas >= i.unidades_caja ? Math.floor(ins.bolsas / i.unidades_caja) : 0
+        const cajasToAdd = ins.bolsas >= i.unidades_caja && ins.cajas ? Math.floor(ins.bolsas / i.unidades_caja) : 0
         ins.bolsas = cajasToAdd > 0 ? ins.bolsas - cajasToAdd * i.unidades_caja : ins.bolsas
         ins.cajas +=cajasToAdd
-        if(ins.unidades > 0) console.log(ins)
         const paletsToAdd = ins.cajas >= i.caja_palet ? Math.floor(ins.cajas / i.caja_palet) : 0
         ins.cajas = paletsToAdd > 0 ? ins.cajas - paletsToAdd * i.caja_palet : ins.cajas
         ins.palet += paletsToAdd
