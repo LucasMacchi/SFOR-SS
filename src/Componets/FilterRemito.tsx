@@ -2,17 +2,18 @@
 
 import {btn_s_style, btn_small_style, select_style, text_2_s_style } from "@/utils/styles";
 import { CSSProperties, useEffect, useState } from "react";
-import { IEstados, IExcelRemito, IRemitosEnvio, IReparto } from "@/utils/interfaces";
+import { IEstados, IExcelRemito, IRemitosEnvio, IReparto, IViajeRQ } from "@/utils/interfaces";
 import { useRouter } from "next/navigation"
 import refillEmptySpace from "@/utils/refillEmptySpace";
 import ExcelBtn from "./ExcelBtn";
 
 
-export default function FilterRemito ({remitos,estados,planes,stateMultipleFn}:{remitos: IRemitosEnvio[],estados:IEstados[],planes:IReparto[],stateMultipleFn: (remitos: number[],state:number) => Promise<boolean> }) {
+export default function FilterRemito ({remitos,estados,planes,stateMultipleFn,viajes}:{viajes:IViajeRQ[],remitos: IRemitosEnvio[],estados:IEstados[],planes:IReparto[],stateMultipleFn: (remitos: number[],state:number) => Promise<boolean> }) {
     const router = useRouter()
     const [selectedState, setSelectedState] = useState(0)
     const [selectedFac, setSelectedFac] = useState(0)
     const [selectedStC,setSelectedStC] = useState(0)
+    const [selectedV,setSelectedV] = useState(-1)
     const [filterRemitos, setFilterRemitos] = useState<IRemitosEnvio[]>(remitos)
     const [changeStateMode, setChangeStateMode] = useState(false)
     const marginBwtFilters = 20
@@ -53,8 +54,10 @@ export default function FilterRemito ({remitos,estados,planes,stateMultipleFn}:{
         if(selectedState) arr = arr.filter((rt) => rt.estado_id === selectedState)
         if(selectedFac === 1) arr = arr.filter((rt) => rt.numf)
         if(selectedFac === 2) arr = arr.filter((rt) => !rt.numf)
+        if(selectedV > -1) arr = arr.filter((rt) => rt.viaje_id === viajes[selectedV].viaje_id)
+        console.log(selectedV)
         setFilterRemitos(arr)
-    },[selectedState,selectedFac])
+    },[selectedState,selectedFac,selectedV])
 
     useEffect(() => {
         let check = false
@@ -135,6 +138,17 @@ export default function FilterRemito ({remitos,estados,planes,stateMultipleFn}:{
                             <option value={0}>---</option>
                             <option value={1}>SI</option>
                             <option value={2}>NO</option>
+                        </select>
+                    </div>
+                    <div style={{margin: marginBwtFilters}}>
+                        <h4 style={text_2_s_style}>VIAJE</h4>
+                        <select name="estados_sel" id="state_sl" value={selectedV}
+                        onChange={(e) => setSelectedV(parseInt(e.target.value))}
+                        style={select_style}>
+                            <option value={-1}>---</option>
+                            {viajes.map((v,i) => (
+                                <option key={i} value={i}>{v.des}</option>
+                            ))}
                         </select>
                     </div>
                     <div style={{marginTop: 40}}>

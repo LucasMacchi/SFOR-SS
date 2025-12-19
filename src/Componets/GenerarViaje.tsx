@@ -25,6 +25,7 @@ export default function GenenarViaje ({viajes,planes,insumos,generarFn}:{viajes:
                 const res = await generarFn(remitos)
                 if(res) {
                     alert("Remitos creados")
+                    window.location.reload()
                 } else alert("Error al crear los remitos")
             }
             else alert("Viaje no tiene remitos.")
@@ -35,7 +36,7 @@ export default function GenenarViaje ({viajes,planes,insumos,generarFn}:{viajes:
         <div>
             <div>
                 <div>
-                    <h2 style={{...text_2_t_style, marginTop: 40}}>SELECCIONA EL PLAN</h2>
+                    <h2 style={{...text_2_t_style, marginTop: 40}}>SELECCIONA EL VIAJE</h2>
                     <select name="estados_sel" id="state_sl" value={selectedViaje}
                     onChange={(e) => setSelectedViaje(parseInt(e.target.value))}
                     style={{width: 500,fontSize:24,marginBottom: 20}}>

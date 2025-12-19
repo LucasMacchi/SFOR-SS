@@ -17,8 +17,8 @@ export default async function Page() {
     const viajes = await DBViajes()
     const insumos = await DBInsumos()
     const planes = await DBPlanReparto()
-    const lugares = await DBEscuelas(true)
-    const departamentos = await DBDepartamentos()
+    //const lugares = await DBEscuelas(true)
+    //const departamentos = await DBDepartamentos()
     
     const generateRemitosViaje = async (remitos: IAddRemito[]): Promise<boolean> => {
         "use server"

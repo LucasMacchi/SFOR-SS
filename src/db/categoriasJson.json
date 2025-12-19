@@ -1,0 +1,12 @@
+{
+    "categorias":[
+        {
+            "type":"ENTRADA - INGRESO MERCADERIA",
+            "sum":true
+        },
+        {
+            "type":"SALIDA - MERCADERIA VENCIDA",
+            "sum":false
+        }
+    ]
+}

@@ -109,7 +109,6 @@ export default function ViajeAdd ({escuelas,departamentos,planes,insumos,addViaj
                 setDetallesViaje([])
                 setDesgloses([])
                 setSelectedLgr(-1)
-                setSelectedDep("")
                 setUpdater(updater + 1)
             }
             else alert("Lugar de entrega repetido")
@@ -146,7 +145,7 @@ export default function ViajeAdd ({escuelas,departamentos,planes,insumos,addViaj
                     onChange={(e) => setViajeDes(e.target.value)}/>
                 </div>
                 <div>
-                    <h2 style={{...text_2_t_style, marginTop: 40}}>SELECCIONA EL PLAN</h2>
+                    <h2 style={{...text_2_t_style, marginTop: 40}}>SELECCIONA EL VIAJE</h2>
                     <select name="estados_sel" id="state_sl" value={selectedP}
                     onChange={(e) => setSelectedP(parseInt(e.target.value))}
                     style={{width: 500,fontSize:24,marginBottom: 20}}>

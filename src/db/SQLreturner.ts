@@ -3,7 +3,7 @@ import { IAddDesglose, IAddEnvio, IAddFactura, IAddPlan, IAddPlanDetails, IAddRe
 
 export function listRemitosSQL(usr: number): string {
     return `SELECT r.remito_id,r.pv,r.numero,r.estado_id,e.des as estado,r.fortificado,r.dias,
-            r.fecha_creado,r.fecha_preparado,r.fecha_despachado,
+            r.fecha_creado,r.fecha_preparado,r.fecha_despachado, r.viaje_id,
             r.fecha_entregado,r.lentrega_id,l.departamento,l.localidad,f.numero as numF,f.pv as pvF,
             l.completo as cabecera,re.numero as numRep, re.periodo,re.numero as perNumero, (SELECT COUNT(*) FROM public.reporte o WHERE o.remito_id = r.remito_id) as reportes
             FROM public.remito r 
@@ -278,4 +278,23 @@ export function traerDetallesEnviosRemitoSQL (id:number) {
 
 export function setEnviadoDesgloseSQL (id:number,state:boolean) {
     return `UPDATE public.desglose SET enviado=${state} WHERE desglose_id=${id};`
+}
+
+export function stockLogsSQL () {
+    return `SELECT log_id,l.ins_id,unidades_prev,unidades_new,fecha,descripcion,des as insumo,cod1,cod2,cod3 FROM public.stock_log l JOIN public.insumo i ON i.ins_id = l.ins_id ORDER BY l.log_id DESC;`
+}
+
+export function stockAddMovSQL (value: number,sum:boolean,des: string,ins_id:number) {
+    return `SELECT updateStockFn(${ins_id},${value},'${des}',${sum});`
+}
+
+export function despacharSQL (remito:number) {
+    return `UPDATE public.remito SET despachado=true WHERE remito_id = ${remito} AND despachado = false;`
+}
+
+export function returnRemitoUnidadesSQL (remito:number) {
+    return `SELECT r.pv,r.numero,d.ins_id,SUM(d.unidades) as unidades FROM public.remito r 
+    JOIN public.envio e ON r.remito_id = e.remito_id 
+    JOIN public.envio_details d ON e.envio_id = d.envio_id 
+    WHERE r.remito_id = ${remito} AND r.despachado = false GROUP BY d.ins_id,r.pv,r.numero;`
 }

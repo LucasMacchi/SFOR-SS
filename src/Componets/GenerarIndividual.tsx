@@ -127,6 +127,7 @@ export default function GenerarIndividual ({escuelas,departamentos,planes,insumo
             const res = await generateFn(remitosP)
             if(res) {
                 alert("Remitos creados")
+                window.location.reload()
             } else alert("Error al crear los remitos")
         }
     }
@@ -274,6 +275,7 @@ export default function GenerarIndividual ({escuelas,departamentos,planes,insumo
                             <th style={{border: "1px solid", width: "10%"}}>CAJAS</th>
                             <th style={{border: "1px solid", width: "10%"}}>BOLSAS</th>
                             <th style={{border: "1px solid", width: "10%"}}>KILOS</th>
+                            <th style={{border: "1px solid", width: "10%"}}>RACIONES</th>
                         </tr>
                         {prev.map((r,i) => (
                         <tr key={i}>
@@ -282,7 +284,7 @@ export default function GenerarIndividual ({escuelas,departamentos,planes,insumo
                             <th style={{border: "1px solid", width: "10%"}}>{r.palet}</th>
                             <th style={{border: "1px solid", width: "10%"}}>{r.cajas}</th>
                             <th style={{border: "1px solid", width: "10%"}}>{r.bolsas}</th>
-                            <th style={{border: "1px solid", width: "10%"}}>{r.kilos.toFixed(2)}</th>
+                            <th style={{border: "1px solid", width: "10%"}}>{r.raciones}</th>
                         </tr>
                         ))}
                     </tbody>

@@ -1,15 +1,25 @@
+import { IEnvioDetalles, IRemitoUnids } from "@/utils/interfaces";
 import clientReturner from "./clientReturner";
-import { changeStateRemitoSQL } from "./SQLreturner";
+import { changeStateRemitoSQL, despacharSQL, returnRemitoUnidadesSQL, stockAddMovSQL } from "./SQLreturner";
 import authJwt from "@/utils/authJwt";
+import parseRemitoString from "@/utils/parseRemitoString";
 
 export default async function (estado_id:number,estado:string,remito:number): Promise<void> {
     const conn = clientReturner()
     try {
         if(await authJwt(3)) {
             await conn.connect()
-            const sql = changeStateRemitoSQL(estado_id,estado,remito)
-            console.log(sql)
-            await conn.query(sql)
+            await conn.query(changeStateRemitoSQL(estado_id,estado,remito))
+            if(estado_id === 3) {
+                const insumosRemito: IRemitoUnids[] = (await conn.query(returnRemitoUnidadesSQL(remito))).rows
+                for(const insumo of insumosRemito) {
+                    const des = 'REMITO DESPACHADO - '+parseRemitoString(insumo.pv,insumo.numero)
+                    console.log(insumo)
+                    await conn.query(stockAddMovSQL(insumo.unidades,false,des,insumo.ins_id))
+                }
+                await conn.query(despacharSQL(remito))
+            }
+            await conn.end()
         }
         await conn.end()
     } catch (error) {

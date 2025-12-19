@@ -98,7 +98,7 @@ export default function (insumos: IInsumo[],planes: IPlan[], remitos: IViajeRemi
         total.palet += i.palet ? i.palet : 0
     });
     insumosP.push(total)
-
+    console.log(insumosP)
     return insumosP
 
 }

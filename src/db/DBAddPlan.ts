@@ -1,5 +1,5 @@
 import clientReturner from "./clientReturner";
-import { addFacturaSQL, planAddDetailSQL, planAddPlanSQL } from "./SQLreturner";
+import { planAddDetailSQL, planAddPlanSQL } from "./SQLreturner";
 import authJwt from "@/utils/authJwt";
 import { IAddPlan, IAddPlanDetails, } from "@/utils/interfaces";
 

@@ -80,6 +80,7 @@ export interface IInsumo {
     racunidad: number,
     raccaja:number,
     calculable:boolean,
+    stock:number,
     [key: string]: any
 
 }
@@ -188,7 +189,8 @@ export interface IRemitosEnvio {
     pernumero: number,
     fecha_entregado: Date,
     reportes: number,
-    checked:boolean
+    checked:boolean,
+    viaje_id:number
 
 }
 export interface IRemitoFacturacionResponse {
@@ -410,4 +412,32 @@ export interface IEnvioT {
     des: string,
     fortificado: boolean,
     detalles: IEnvioDetalles[]
+}
+
+export interface IStockLog {
+    log_id: number,
+    unidades_prev: number,
+    unidades_new: number,
+    fecha: Date,
+    descripcion:string,
+    insumo:string,
+    cod1:number,
+    cod2:number,
+    cod3:number,
+    ins_id: number
+}
+
+export interface IStockAdd {
+    ins_id: number,
+    value: number,
+    sum: boolean,
+    des:string,
+    title: string
+}
+
+export interface IRemitoUnids {
+    pv: number,
+    numero: number,
+    ins_id: number,
+    unidades:number
 }
