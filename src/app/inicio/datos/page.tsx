@@ -26,7 +26,6 @@ export default async function () {
     async function changeData(id: number,payload:string) : Promise<boolean> {
         "use server"
         try {
-            console.log(id,payload)
             await DBChangeData(id,payload)
             return true
         } catch (error) {

@@ -16,7 +16,6 @@ export default function ({remito,estados}:{remito: IUniqRemito,estados: IEstados
                 if(s.estado_id === selectedState) estado = s.des
             });
             const res:boolean = await (await axios.patch('/remitos/uniq/api',{estado_id:selectedState,estado,remito:remito.remito_id})).data["success"]
-            console.log(res)
             if(res) window.location.reload()
             else alert("No se pudo cambiar el estado.")
         }

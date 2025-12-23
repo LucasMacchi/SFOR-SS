@@ -1,3 +1,4 @@
+import DeleteRemito from "@/Componets/DeleteRemito";
 import DesgloseDisplay from "@/Componets/DesgloseDisplay";
 import PdfBtn from "@/Componets/PdfBtn";
 import PDFRemitoUniq from "@/Componets/pdfs/PDFRemitoUniq";
@@ -6,6 +7,7 @@ import RemitoUniqPdf from "@/Componets/RemitoUniqPdf";
 import ReporteAdd from "@/Componets/ReporteAdd";
 import ReportesDisplay from "@/Componets/ReportesDisplay";
 import StateChangeDisplay from "@/Componets/StateChangeDisplay";
+import DBDeleteRemito from "@/db/DBDeleteRemito";
 import DBDesgloseDisplayer from "@/db/DBDesgloseDisplayer";
 import DBEstados from "@/db/DBEstados";
 import DBGeneralData from "@/db/DBGeneralData";
@@ -13,7 +15,7 @@ import DBInsumos from "@/db/DBInsumos";
 import DBReportCategorias from "@/db/DBReportCategorias";
 import DBReportes from "@/db/DBReportes";
 import DBUniqRemito from "@/db/DBUniqRemito";
-import { parsedRemitosDetalles } from "@/utils/parseDesglose";
+import decodeJWT from "@/utils/decodeJWT";
 import refillEmptySpace from "@/utils/refillEmptySpace";
 import sessionCheck from "@/utils/sessionCheck";
 import { hr_style, text_2_t_style } from "@/utils/styles";
@@ -29,24 +31,50 @@ export default async function Page({params}:{params:Promise<{remito:string}>}) {
     const categorias = await DBReportCategorias()
     const insumos = await DBInsumos()
     const configTable = await DBGeneralData()
+    
     if(!remitoUniq){
         alert("No se pudo traer los datos del remito.")
         redirect("/inicio")
     }
+    
     const reportes = await DBReportes(remitoUniq.remito_id)
+    
     const remitoDetalles = await DBDesgloseDisplayer(remitoUniq.remito_id)
+    
     const parseRemitoToString = (pv:number,num:number):string => {
         return refillEmptySpace(5,pv)+"-"+refillEmptySpace(8,num)
     }
+    
     const fechaEntre = remitoUniq.fecha_entregado ? remitoUniq.fecha_entregado.toISOString().split("T")[0] : "NaN"
+    
     const fechaPrep = remitoUniq.fecha_preparado ? remitoUniq.fecha_preparado.toISOString().split("T")[0] : "NaN"
+    
     const fechaDesp = remitoUniq.fecha_despachado ? remitoUniq.fecha_despachado.toISOString().split("T")[0] : "NaN"
+    
     const fechaProcs = remitoUniq.fecha_creado.toISOString().split("T")[0]
+    
     const fact = remitoUniq.numf && remitoUniq.pvf ? refillEmptySpace(5,remitoUniq.pvf)+"-"+refillEmptySpace(8,remitoUniq.numf) : "NaN"
+    
     const tipo = remitoUniq.fortificado ? "ALMUERZO FORTIFICADO" : "COPA DE LECHE"
+    
     const lugarEntreg = remitoUniq.lentrega_id+" - "+remitoUniq.departamento+", "+remitoUniq.localidad
+    
     const venc = configTable ? configTable.configVariables[1].payload: "NAN"
+    
     const cai = configTable ? configTable.configVariables[0].payload: "NAN"
+
+    const user = await decodeJWT()
+
+    const deleteRemito = async ():Promise<boolean> => {
+        "use server"
+        try {
+            await DBDeleteRemito(remitoUniq.remito_id)
+            return true
+        } catch (error) {
+            console.log(error)
+            return false
+        }
+    }
 
     return(
         <div style={{marginBottom: 200}}>
@@ -56,8 +84,13 @@ export default async function Page({params}:{params:Promise<{remito:string}>}) {
             <div style={{display: "flex",justifyContent: "center"}}>
                 <h4 style={text_2_t_style}>{remitoUniq.cabecera}</h4>
             </div>
-            <div>
-                <RemitoUniqPdf insumos={insumos} remito={remitoUniq} detalles={remitoDetalles ? remitoDetalles : [] } venc={venc} cai={cai} />
+            <div style={{display: "flex"}}>
+                <div>
+                    <RemitoUniqPdf insumos={insumos} remito={remitoUniq} detalles={remitoDetalles ? remitoDetalles : [] } venc={venc} cai={cai} />
+                </div>
+                <div style={{marginLeft: 10, alignItems: "baseline"}}>
+                    {(user && user.rol === 1) && <DeleteRemito deleteFn={deleteRemito}/>}
+                </div>
             </div>
             <hr color="#4A6EE8" style={hr_style}/>
             <div style={{marginLeft: 50,marginTop: 40}}>

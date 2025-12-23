@@ -14,7 +14,6 @@ export default async function (estado_id:number,estado:string,remito:number): Pr
                 const insumosRemito: IRemitoUnids[] = (await conn.query(returnRemitoUnidadesSQL(remito))).rows
                 for(const insumo of insumosRemito) {
                     const des = 'REMITO DESPACHADO - '+parseRemitoString(insumo.pv,insumo.numero)
-                    console.log(insumo)
                     await conn.query(stockAddMovSQL(insumo.unidades,false,des,insumo.ins_id))
                 }
                 await conn.query(despacharSQL(remito))

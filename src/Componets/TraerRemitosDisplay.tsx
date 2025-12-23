@@ -51,7 +51,6 @@ export default function TraerRemitosDisplay ({viajes,insumos,venc,cai,getRtViaje
         const getRemitosByViaje = async () => {
             if(viajes[selectedViaje].viaje_id) {
                 const res = await getRtViaje(viajes[selectedViaje].viaje_id)
-                console.log(res)
                 if(res.length > 0) setRemitos(res)
                 else alert("No existen remitos en este viaje.")
             }
@@ -88,7 +87,6 @@ export default function TraerRemitosDisplay ({viajes,insumos,venc,cai,getRtViaje
         const getRemitosByRango = async () => {
             if(range.start && range.end && range.end > range.start) {
                 const res = await getRtRango(range.start,range.end)
-                console.log(res)
                 if(res.length > 0) setRemitos(res)
                 else alert("No existen remitos en este rango.")
             }

@@ -1,4 +1,4 @@
-import { ESTADOS, ROLES } from "@/utils/enums"
+import { ESTADOS } from "@/utils/enums"
 import { IAddDesglose, IAddEnvio, IAddFactura, IAddPlan, IAddPlanDetails, IAddRemito, ICreateInsumo, IEnvioDetalles, IRqReportAdd, IViajeDetalle, IViajeRemito } from "@/utils/interfaces"
 
 export function listRemitosSQL(usr: number): string {
@@ -203,6 +203,16 @@ export function changeStateMultipleSQL (id:number[],estado: number) {
     return `UPDATE public.remito SET ${date} estado_id=${estado} WHERE remito_id IN (${arr});`
 }
 
+export function despacharMultipleSQL (id:number[]) {
+    let arr:string = ""
+    id.forEach((id,i) => {
+        if(i === 0) arr += id+''
+        else arr += ','+id
+    });
+    
+    return `UPDATE public.remito SET despachado=true WHERE remito_id IN (${arr}) AND despachado=false;`
+}
+
 export function addDesgloseSQL (data: IAddDesglose) {
     return `INSERT INTO public.desglose(lentrega_id, cue, des, raciones, fortificado, visible, enviado) VALUES (${data.lentrega_id}, ${data.cue}, '${data.des}', ${data.raciones}, ${data.fortificado}, true, false);`
 }
@@ -297,4 +307,45 @@ export function returnRemitoUnidadesSQL (remito:number) {
     JOIN public.envio e ON r.remito_id = e.remito_id 
     JOIN public.envio_details d ON e.envio_id = d.envio_id 
     WHERE r.remito_id = ${remito} AND r.despachado = false GROUP BY d.ins_id,r.pv,r.numero;`
+}
+
+export function viajeDupSQL (reparto_id: number,des: string) {
+    return `INSERT INTO public.viaje(des, reparto_id,procesado) VALUES ( '${des}', ${reparto_id} ,false) RETURNING viaje_id;`
+}
+
+export function viajeRemitoDupSQL (plan_id: number,viaje_id:number,lentrega:number) {
+    return `INSERT INTO public.viaje_remito(plan_id, viaje_id, lentrega_id) VALUES ( ${plan_id}, ${viaje_id}, ${lentrega}) RETURNING vremito_id;`
+}
+
+export function viajeDetalleDupSQL(desglose_id: number,rt_id: number,raciones: number,reparto_id: number) {
+    return `INSERT INTO public.viaje_detalle(desglose_id, vremito_id, raciones,reparto_id) VALUES (${desglose_id}, ${rt_id}, ${raciones},${reparto_id});`
+}
+
+export function getEnviosIDSQL (remito:number) {
+    return `SELECT envio_id FROM public.envio WHERE remito_id = ${remito};`
+}
+
+export function deleteEnvioDetSQL (envio:number) {
+    return `DELETE FROM public.envio_details WHERE envio_id = ${envio};`
+}
+
+export function deleteEnvioSQL (envio:number) {
+    return `DELETE FROM public.envio WHERE envio_id = ${envio};`
+}
+
+export function deleteRemitoSQL (remito:number) {
+    return `DELETE FROM public.remito WHERE remito_id = ${remito};`
+}
+
+export function enviosExcelSQL (userId:number) {
+    return `
+        SELECT r.fecha_creado,r.fecha_despachado,r.fecha_preparado,
+        r.fecha_entregado,r.fortificado,es.des as estado,
+        r.pv,r.numero,des.des as dependencia,r.lentrega_id as lugar_entrega
+        FROM public.envio e
+        JOIN public.desglose des ON e.desglose_id = des.desglose_id
+        JOIN public.remito r ON e.remito_id = r.remito_id 
+        JOIN public.estado es ON r.estado_id = es.estado_id  
+        WHERE r.reparto_id = (SELECT reparto_id FROM reparto_user WHERE user_id = ${userId});
+        `
 }

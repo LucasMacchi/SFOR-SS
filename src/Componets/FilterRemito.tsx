@@ -55,7 +55,6 @@ export default function FilterRemito ({remitos,estados,planes,stateMultipleFn,vi
         if(selectedFac === 1) arr = arr.filter((rt) => rt.numf)
         if(selectedFac === 2) arr = arr.filter((rt) => !rt.numf)
         if(selectedV > -1) arr = arr.filter((rt) => rt.viaje_id === viajes[selectedV].viaje_id)
-        console.log(selectedV)
         setFilterRemitos(arr)
     },[selectedState,selectedFac,selectedV])
 

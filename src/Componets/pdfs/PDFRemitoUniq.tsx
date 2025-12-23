@@ -132,7 +132,6 @@ const insumosDisplayer = (insumos: IRemitosDetalles[],desgloses: number, dias: n
     let cajasT = 0
     let bolsT = 0
     let racT = 0
-    console.log(insumos)
     for (let j = 0; j < amount; j++) {
         const i = insumos[j]
         elements.push(

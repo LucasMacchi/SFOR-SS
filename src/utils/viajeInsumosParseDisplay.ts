@@ -76,7 +76,6 @@ export default function (insumos: IInsumo[],planes: IPlan[], remitos: IViajeRemi
         ins.unidades = ins.bolsas + ins.cajas * i.unidades_caja + ins.palet * i.caja_palet * i.unidades_caja
         ins.raciones = ins.unidades * i.racunidad
         ins.kilos = ins.unidades * i.gr_unidad / 1000
-        if(ins.unidades > 0) console.log(ins)
         if(ins.unidades > 0) insumosP.push(ins)
     });
     const total:IEnvioDetallesParsed = {
@@ -98,7 +97,6 @@ export default function (insumos: IInsumo[],planes: IPlan[], remitos: IViajeRemi
         total.palet += i.palet ? i.palet : 0
     });
     insumosP.push(total)
-    console.log(insumosP)
     return insumosP
 
 }

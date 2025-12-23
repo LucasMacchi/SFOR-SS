@@ -185,7 +185,7 @@ export default function ViajeAdd ({escuelas,departamentos,planes,insumos,addViaj
             <div style={{display: "flex",width: "100%",justifyContent:"start"}}>
                 <div >
                     <h2 style={{...text_2_t_style, marginTop: 40}}>ELIGE EL DESGLOSE</h2>
-                    <div style={{maxHeight: maxheight,height:maxheight, overflow: "scroll", width: 500}}>
+                    <div style={{maxHeight: maxheight,height:maxheight, overflow: "scroll", width: 400}}>
                     {desgloses.length > -1 && (
                     <table style={{width: "100%", fontSize: 16}}>
                         <tbody>
@@ -225,12 +225,14 @@ export default function ViajeAdd ({escuelas,departamentos,planes,insumos,addViaj
                         <tr style={{backgroundColor: "#4A6EE8",color:"white"}}>
                             <th style={{border: "1px solid", width: "90%"}}>DEPENDENCIA</th>
                             <th style={{border: "1px solid", width: "5%"}}>RACIONES</th>
+                            <th style={{border: "1px solid", width: "5%"}}>RACIONES X DIAS</th>
                             <th style={{border: "1px solid", width: "5%"}}>TIPO</th>
                         </tr>
                         {detallesViaje.map((d,i) => (
                         <tr key={i} onClick={() => delRt(i)} id="del">
                             <th style={{border: "1px solid", width: "90%",textAlign: "left"}}>{d.des}</th>
                             <th style={{border: "1px solid", width: "5%"}}>{d.raciones}</th>
+                            <th style={{border: "1px solid", width: "5%"}}>{d.raciones * planes[selectedP].dias}</th>
                             <th style={{border: "1px solid", width: "5%"}}>{d.fortificado ? "AL" : "CL"}</th>
                         </tr>
                         ))}
@@ -245,7 +247,7 @@ export default function ViajeAdd ({escuelas,departamentos,planes,insumos,addViaj
                 <div>
                     <h2 style={{...text_2_t_style, marginTop: 40}}>REMITOS CREADOS</h2>
                 </div>
-                <div style={{maxHeight: maxheight,height:maxheight, overflow: "scroll",marginLeft: 30, width: 500}}>
+                <div style={{maxHeight: maxheight,height:maxheight, overflow: "scroll",marginLeft: 30, width: 400}}>
                 <table style={{width: "100%", fontSize: 16}}>
                     <tbody>
                         <tr style={{backgroundColor: "#4A6EE8",color:"white"}}>
@@ -284,6 +286,7 @@ export default function ViajeAdd ({escuelas,departamentos,planes,insumos,addViaj
                             <th style={{border: "1px solid", width: "10%"}}>CAJAS</th>
                             <th style={{border: "1px solid", width: "10%"}}>BOLSAS</th>
                             <th style={{border: "1px solid", width: "10%"}}>KILOS</th>
+                            <th style={{border: "1px solid", width: "10%"}}>RACIONES</th>
                         </tr>
                         {prev.map((r,i) => (
                         <tr key={i}>
@@ -293,6 +296,7 @@ export default function ViajeAdd ({escuelas,departamentos,planes,insumos,addViaj
                             <th style={{border: "1px solid", width: "10%"}}>{r.cajas}</th>
                             <th style={{border: "1px solid", width: "10%"}}>{r.bolsas}</th>
                             <th style={{border: "1px solid", width: "10%"}}>{r.kilos.toFixed(2)}</th>
+                            <th style={{border: "1px solid", width: "10%"}}>{r.raciones}</th>
                         </tr>
                         ))}
                     </tbody>

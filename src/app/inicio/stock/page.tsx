@@ -1,5 +1,6 @@
 import DisplayStock from "@/Componets/DisplayStock";
 import StockActions from "@/Componets/StockActions";
+import StockExcel from "@/Componets/StockExcel";
 import DBAddMovStock from "@/db/DBAddMovStock";
 import DBInsumos from "@/db/DBInsumos";
 import DBStockLogs from "@/db/DBStockLogs";
@@ -25,8 +26,11 @@ export default async function Page() {
 
     return (
         <div style={{marginLeft: 15, marginBottom: 100}}> 
-            <div>
-                <h2 style={text_2_t_style}>STOCK</h2>
+            <div >
+                <div style={{display:"flex"}}>
+                    <h2 style={{...text_2_t_style,marginRight: 10}}>STOCK</h2>
+                    <StockExcel insumos={insumos} logs={stockLog} />
+                </div>
                 <hr color="#4A6EE8" style={hr_style}/>
             </div>
             <div style={{display:"flex"}}>

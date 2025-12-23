@@ -441,3 +441,48 @@ export interface IRemitoUnids {
     ins_id: number,
     unidades:number
 }
+
+export interface IEnviosDel {
+    envio_id:number
+}
+
+export interface IStockExcel {
+    COD1: number,
+    COD2: number,
+    COD3: number,
+    INSUMO: string,
+    STOCK: number
+}
+
+export interface IStockLogExcel {
+    FECHA: string,
+    DESCRIPCION:string,
+    PREVIO:number,
+    POSTERIOR:number
+}
+
+export interface IEnviosExcelRQ {
+    fecha_creado: Date,
+    fecha_despachado:Date,
+    fecha_preparado:Date,
+    fecha_entregado:Date,
+    fortificado:boolean,
+    estado:string,
+    pv:number,
+    numero:number,
+    dependencia:string,
+    lugar_entrega:number
+}
+
+export interface IEnviosExcel {
+    R_PV:number,
+    R_NUMERO:number,
+    R_CREADO:string,
+    R_PREPARADO:string,
+    R_DESPACHADO:string,
+    R_ENTREGADO:string,
+    R_TIPO:string,
+    R_ESTADO:string,
+    E_DEPENDENCIA:string,
+    E_ID_ENTREGA:number
+}

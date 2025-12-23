@@ -111,7 +111,7 @@ export default function GenerarIndividual ({escuelas,departamentos,planes,insumo
         return check
     }
     const prevRemitos = () => {
-        setPrev(viajeInsumosParseDisplay(insumos,planes,remitos))    
+        setPrev(viajeInsumosParseDisplay(insumos,planes,remitos))
     }
     const planReturner = (id:number) : string => {
         let des = ""
@@ -255,7 +255,7 @@ export default function GenerarIndividual ({escuelas,departamentos,planes,insumo
                 </table>
                 </div>
                 <div style={{display:"flex",justifyContent:"center",marginTop: 40}}>
-                    <button style={btn_s_style} onClick={() => generarRemitos()}>TST</button>
+                    <button style={btn_s_style} onClick={() => generarRemitos()}>CREAR REMITOS</button>
                     <button style={btn_s_style} onClick={() => prevRemitos()}>?</button>
                 </div>
             </div>
@@ -278,12 +278,13 @@ export default function GenerarIndividual ({escuelas,departamentos,planes,insumo
                             <th style={{border: "1px solid", width: "10%"}}>RACIONES</th>
                         </tr>
                         {prev.map((r,i) => (
-                        <tr key={i}>
+                        <tr key={i} >
                             <th style={{border: "1px solid", width: "60%",textAlign: "left"}}>{r.des}</th>
                             <th style={{border: "1px solid", width: "10%"}}>{r.unidades}</th>
                             <th style={{border: "1px solid", width: "10%"}}>{r.palet}</th>
                             <th style={{border: "1px solid", width: "10%"}}>{r.cajas}</th>
                             <th style={{border: "1px solid", width: "10%"}}>{r.bolsas}</th>
+                            <th style={{border: "1px solid", width: "10%"}}>{r.kilos.toFixed(2)}</th>
                             <th style={{border: "1px solid", width: "10%"}}>{r.raciones}</th>
                         </tr>
                         ))}

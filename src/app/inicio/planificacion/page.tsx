@@ -5,11 +5,13 @@ import DBAddDetalleViaje from "@/db/DBAddDetalleViaje";
 import DBCreateViaje from "@/db/DBCreateViaje";
 import DBDeleteViaje from "@/db/DBDeleteViaje";
 import DBDepartamentos from "@/db/DBDepartamentos";
+import DBDuplicateViaje from "@/db/DBDuplicateViaje";
 import DBEscuelas from "@/db/DBEscuelas";
 import DBInsumos from "@/db/DBInsumos";
+import DBPlanActual from "@/db/DBPlanActual";
 import DBPlanReparto from "@/db/DBPlanReparto";
 import DBViajes from "@/db/DBViajes";
-import { IViaje, IViajeDetalle, IViajeDetalleRQ } from "@/utils/interfaces";
+import { IViaje, IViajeDetalle, IViajeDetalleRQ, IViajeRQ } from "@/utils/interfaces";
 import sessionCheck from "@/utils/sessionCheck";
 import { hr_style, text_2_t_style } from "@/utils/styles";
 
@@ -19,6 +21,7 @@ import { hr_style, text_2_t_style } from "@/utils/styles";
 export default async function Page () {
     await sessionCheck(2)
     const lugares = await DBEscuelas(true)
+    const plan = await DBPlanActual()
     const departamentos = await DBDepartamentos()
     const insumos = await DBInsumos()
     const planes = await DBPlanReparto()
@@ -47,6 +50,16 @@ export default async function Page () {
         "use server"
         try {
             const res = await DBCreateViaje(v)
+            return res
+        } catch (error) {
+            console.log(error)
+            return false
+        }
+    }
+    const createExportFn = async (v: IViajeRQ,reparto: number):Promise<boolean> =>  {
+        "use server"
+        try {
+            const res = await DBDuplicateViaje(v,reparto)
             return res
         } catch (error) {
             console.log(error)
@@ -94,7 +107,8 @@ export default async function Page () {
                 deleteFn={deleteViajeFn} planes={planes ? planes : []} 
                 insumos={insumos} lugares={lugares} 
                 activarViajeFn={changeStateViajeFn}
-                addViajeDetalleFn={addDetalleViaje}/>
+                addViajeDetalleFn={addDetalleViaje} repartos={plan}
+                duplicateViajeFn={createExportFn}/>
             </div>
             <div>
                 <h2 style={text_2_t_style}>CREAR VIAJE</h2>

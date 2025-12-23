@@ -41,11 +41,6 @@ export default function (insumos: IInsumo[],planes: IPlan[], r: IViajeRemitoRQ) 
     detalles.forEach(element => {
         element.detalles.forEach((d) => allDetalles.push(d))
     });
-    let leches = 0
-    detalles.forEach(d => {
-        leches += d.raciones ? d.raciones  : 0
-    });
-    console.log("TOTALES = "+leches)
     insumos.forEach(i => {
         const ins: IEnvioDetallesParsed = {
             unidades: 0,
@@ -69,14 +64,12 @@ export default function (insumos: IInsumo[],planes: IPlan[], r: IViajeRemitoRQ) 
         const cajasToAdd = ins.bolsas >= i.unidades_caja ? Math.floor(ins.bolsas / i.unidades_caja) : 0
         ins.bolsas = cajasToAdd > 0 ? ins.bolsas - cajasToAdd * i.unidades_caja : ins.bolsas
         ins.cajas +=cajasToAdd
-        if(ins.unidades > 0) console.log(ins)
         const paletsToAdd = ins.cajas >= i.caja_palet ? Math.floor(ins.cajas / i.caja_palet) : 0
         ins.cajas = paletsToAdd > 0 ? ins.cajas - paletsToAdd * i.caja_palet : ins.cajas
         ins.palet += paletsToAdd
         ins.unidades = ins.bolsas + ins.cajas * i.unidades_caja + ins.palet * i.caja_palet * i.unidades_caja
         ins.raciones = ins.unidades * i.racunidad
         ins.kilos = ins.unidades * i.gr_unidad / 1000
-        if(ins.unidades > 0) console.log(ins)
         if(ins.unidades > 0) insumosP.push(ins)
     });
     const total:IEnvioDetallesParsed = {
@@ -89,10 +82,16 @@ export default function (insumos: IInsumo[],planes: IPlan[], r: IViajeRemitoRQ) 
         ins_id: 0,
         des: "TOTAL"
     }
+    let calc = 0
+    insumosP.forEach(ins => {
+        insumos.forEach((i) => {
+            if(ins.ins_id === i.ins_id && i.calculable) calc += ins.raciones
+        })
+    });
     insumosP.forEach(i => {
         total.unidades += i.unidades
         total.bolsas += i.bolsas
-        total.raciones += i.raciones
+        total.raciones = calc
         total.cajas += i.cajas
         total.kilos += i.kilos
         total.palet += i.palet ? i.palet : 0

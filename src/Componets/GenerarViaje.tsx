@@ -85,11 +85,13 @@ export default function GenenarViaje ({viajes,planes,insumos,generarFn}:{viajes:
                                         <tr style={{backgroundColor: "#4A6EE8",color:"white"}}>
                                             <th style={{border: "1px solid", width: "80%"}}>CABECERA</th>
                                             <th style={{border: "1px solid", width: "20%"}}>RACIONES</th>
+                                            <th style={{border: "1px solid", width: "20%"}}>RACIONES X DIAS</th>
                                         </tr>
                                         {viajes[selectedViaje].remitos[selectedRT].detalles.map((r,i) => (
                                             <tr key={i}>
                                                 <th style={{border: "1px solid", width: "80%",textAlign: "left"}}>{r.des}</th>
                                                 <th style={{border: "1px solid", width: "20%"}}>{r.raciones}</th>
+                                                <th style={{border: "1px solid", width: "20%"}}>{r.raciones * viajes[selectedViaje].remitos[selectedRT].dias}</th>
                                             </tr>
                                         ))
                                     }

@@ -1,23 +1,26 @@
 "use client"
-import { IDesglose, IEnvioDetallesParsed, IInsumo, ILentrega, IPlan, IViajeDetalle, IViajeRQ } from "@/utils/interfaces";
+import { IDesglose, IEnvioDetallesParsed, IInsumo, ILentrega, IPlan, IReparto, IViajeDetalle, IViajeRQ } from "@/utils/interfaces";
 import { useEffect, useState } from "react";
 
 //@ts-ignore
 import "./css/hoverTableCell.css"
-import { btn_d_style, btn_s_style, text_2_g_style, text_2_t_style } from "@/utils/styles";
+import { btn_d_style, btn_s_style, select_style, text_2_g_style, text_2_t_style } from "@/utils/styles";
 import viajeRemitoInsumoParaseDisplay from "@/utils/viajeRemitoInsumoParaseDisplay";
 
-export default function DisplayPlanes ({viajes,deleteFn,insumos,planes,lugares,addViajeDetalleFn,activarViajeFn}:
-    {viajes:IViajeRQ[],deleteFn:(id:number,table:string,column: string) => Promise<boolean>,
+export default function DisplayPlanes ({viajes,deleteFn,insumos,planes,lugares,repartos,duplicateViajeFn,addViajeDetalleFn,activarViajeFn}:
+    {viajes:IViajeRQ[],repartos: IReparto[],deleteFn:(id:number,table:string,column: string) => Promise<boolean>,
     insumos:IInsumo[],planes: IPlan[],lugares:ILentrega[],
     addViajeDetalleFn: (detail:IViajeDetalle,id:number) => Promise<boolean>,
-    activarViajeFn: (id:number,state:boolean) => Promise<boolean>}) {
+    activarViajeFn: (id:number,state:boolean) => Promise<boolean>,
+    duplicateViajeFn: (v: IViajeRQ,reparto: number) => Promise<boolean>}) {
 
     const [selectedViaje,setSelectedViaje] = useState(-1)
     const [selectedRt,setSelectedRt] = useState(-1)
+    const [selectedRep,setSelectedRep] = useState(-1)
     const [prev,setPrev] = useState<IEnvioDetallesParsed[]>([])
     const [desgloses,setDesgloses] = useState<IDesglose[]>([])
     const [option, setOption] = useState(false)
+    const [exportOpt, setExportOpt] = useState(false)
 
     const deleteRemito = async () => {
         const remito = viajes[selectedViaje].remitos[selectedRt]
@@ -55,7 +58,6 @@ export default function DisplayPlanes ({viajes,deleteFn,insumos,planes,lugares,a
         const desid = id
         if(confirm("¿Quieres eliminar el desglose?")) {
             if(desid) {
-                console.log(id)
                 const res = await deleteFn(desid,'viaje_detalle','detalle_id')
                 if(res) {
                     alert("Desglose eliminado")
@@ -75,11 +77,26 @@ export default function DisplayPlanes ({viajes,deleteFn,insumos,planes,lugares,a
             else alert ("Error al activar el viaje.")
         }
     }
+    const exportar = async () => {
+        if(selectedRep > -1 && selectedViaje > -1) {
+            const reparto = repartos[selectedRep].numero + " - "+repartos[selectedRep].periodo
+            if(confirm("¿Quieres exportar este viaje al plan "+reparto+" ?")) {
+                const res = await duplicateViajeFn(viajes[selectedViaje],repartos[selectedRep].reparto_id)
+                if(res){
+                    alert("Viaje exportado correctamente.")
+                    window.location.reload()
+                }
+                else alert ("Error al exportado el viaje.")
+            }
+        }
+        else alert("Seleccione un viaje o un plan existente.")
+    }
     useEffect(() => {
         setSelectedRt(-1)
         setDesgloses([])
         setOption(false)
         setPrev([])
+        setSelectedRep(-1)
     },[selectedViaje])
     useEffect(() => {
         if(selectedRt > -1 && selectedViaje > -1) {
@@ -120,6 +137,25 @@ export default function DisplayPlanes ({viajes,deleteFn,insumos,planes,lugares,a
                 </div>
                 {selectedViaje > -1 &&
                 <div>
+                    {(viajes[selectedViaje]) && (
+                        <div >
+                            <button style={{...btn_s_style,margin:5}} onClick={() => setExportOpt(!exportOpt)}>EXPORTAR VIAJE A OTRO PLAN</button>
+                        </div>
+                    )}
+                    {(viajes[selectedViaje] && exportOpt) && (
+                        <div >
+                            <h2 style={{...text_2_t_style, marginTop: 40}}>ELIGE EL PLAN</h2>
+                            <select name="rp_sel" id="rp_sl" value={selectedRep}
+                            onChange={(e) => setSelectedRep(parseInt(e.target.value))}
+                            style={select_style}>
+                                <option value={-1}>---</option>
+                                {repartos.map((p,i) => (
+                                    <option key={i} value={i}>{p.numero+"-"+p.periodo}</option>
+                                ))}
+                            </select>
+                            <button style={{...btn_s_style,margin:5}} onClick={() => exportar()}>EXPORTAR</button>
+                        </div>
+                    )}
                     {viajes[selectedViaje].procesado && (
                         <div >
                             <h2 style={{...text_2_g_style, marginTop: 40}}>VIAJE YA PROCESADO</h2>
@@ -166,12 +202,14 @@ export default function DisplayPlanes ({viajes,deleteFn,insumos,planes,lugares,a
                             <tr style={{backgroundColor: "#4A6EE8",color:"white"}}>
                                 <th style={{border: "1px solid", width: "80%"}}>DEPENDENCIA</th>
                                 <th style={{border: "1px solid", width: "5%"}}>RACIONES</th>
+                                <th style={{border: "1px solid", width: "5%"}}>RACIONES X DIAS</th>
                             </tr>
                             {viajes[selectedViaje].remitos[selectedRt].detalles.map((d,i) => {
                                 return (
                                 <tr key={i} id="del" onClick={() => deleteDesglose(d.detalle_id)}>
                                     <th style={{border: "1px solid", width: "80%",textAlign: "left"}}>{d.des}</th>
                                     <th style={{border: "1px solid", width: "5%"}}>{d.raciones}</th>
+                                    <th style={{border: "1px solid", width: "5%"}}>{d.raciones * viajes[selectedViaje].remitos[selectedRt].dias}</th>
                                 </tr>
                                 )
                             })
@@ -194,6 +232,7 @@ export default function DisplayPlanes ({viajes,deleteFn,insumos,planes,lugares,a
                             <th style={{border: "1px solid", width: "10%"}}>CAJAS</th>
                             <th style={{border: "1px solid", width: "10%"}}>BOLSAS</th>
                             <th style={{border: "1px solid", width: "10%"}}>KILOS</th>
+                            <th style={{border: "1px solid", width: "10%"}}>RAC</th>
                         </tr>
                         {prev.map((r,i) => (
                         <tr key={i}>
@@ -203,6 +242,7 @@ export default function DisplayPlanes ({viajes,deleteFn,insumos,planes,lugares,a
                             <th style={{border: "1px solid", width: "10%"}}>{r.cajas}</th>
                             <th style={{border: "1px solid", width: "10%"}}>{r.bolsas}</th>
                             <th style={{border: "1px solid", width: "10%"}}>{r.kilos.toFixed(2)}</th>
+                            <th style={{border: "1px solid", width: "10%"}}>{r.raciones}</th>
                         </tr>
                         ))}
                     </tbody>
