@@ -29,7 +29,7 @@ export default async function Page () {
     const getRemitosRange = async (start:number,end:number):Promise<IRemitoT[]> => {
         "use server"
         try {
-            const res = await DBTRemitos(0,start,end)
+            const res = DBTRemitos(0,start,end)
             return res
         } catch (error) {
             console.log(error)

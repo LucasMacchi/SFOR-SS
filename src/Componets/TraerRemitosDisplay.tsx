@@ -9,6 +9,7 @@ import PDFRemitos from "./pdfs/PDFRemitos"
 import { pdf } from "@react-pdf/renderer"
 import PDFDesglose from "./pdfs/PDFDesglose"
 import PDFActas from "./pdfs/PDFActas"
+import hojarutaParsed from "@/utils/hojarutaParsed"
 
 
 export default function TraerRemitosDisplay ({viajes,insumos,venc,cai,getRtViaje,getRtRango}:
@@ -24,6 +25,7 @@ export default function TraerRemitosDisplay ({viajes,insumos,venc,cai,getRtViaje
     const [selectedViaje,setSelectedViaje] = useState(-1)
     const [remitos, setRemitos] = useState<IRemitoT[]>([])
     const [range, setRange] = useState({start:0,end:0})
+    
     useEffect(() => {
         setSelectedViaje(-1)
         setRemitos([])
@@ -44,6 +46,10 @@ export default function TraerRemitosDisplay ({viajes,insumos,venc,cai,getRtViaje
     const downloadActas = async ():Promise<Blob> => {
         const blob = await pdf(<PDFActas remitos={remitos} />).toBlob()
         return blob
+    }
+
+    const downloadHojaRuta = () => {
+        hojarutaParsed(insumos,remitos)
     }
 
     const displayViaje = () => {
@@ -82,8 +88,6 @@ export default function TraerRemitosDisplay ({viajes,insumos,venc,cai,getRtViaje
     }
 
     const displayRangos = () => {
-
-
         const getRemitosByRango = async () => {
             if(range.start && range.end && range.end > range.start) {
                 const res = await getRtRango(range.start,range.end)
@@ -137,6 +141,7 @@ export default function TraerRemitosDisplay ({viajes,insumos,venc,cai,getRtViaje
                         <PdfBtn disable={false} title="REMITOS" pdf={downloadRemitos()}/>
                         <PdfBtn disable={false} title="DESGLOSES" pdf={downloadDesglose()}/>
                         <PdfBtn disable={false} title="ACTAS" pdf={downloadActas()}/>
+                        <button onClick={() => downloadHojaRuta()}>test</button>
                     </div>
 
                 </div>

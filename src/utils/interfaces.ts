@@ -115,7 +115,7 @@ export interface IRemitosDetalles {
 }
 export interface IEnvioDetallesParsed {
     unidades: number,
-    bolsas: number
+    bolsas: number,
     raciones: number,
     cajas: number,
     kilos: number,
