@@ -486,3 +486,36 @@ export interface IEnviosExcel {
     E_DEPENDENCIA:string,
     E_ID_ENTREGA:number
 }
+
+export interface IViajeExcelComplete {
+    name:string,
+    detalles: IViajeExcel[]
+}
+
+export interface IViajeExcelRQ {
+    cue: number,
+    lentrega_id: number,
+    completo:string,
+    dependencia:string,
+    localidad:string,
+    departamento:string,
+    direccion:string,
+    dias:number,
+    plan:string,
+    raciones: number,
+    viaje_id: number
+}
+
+export interface IViajeExcel {
+    CUE:number,
+    ID: number,
+    CABECERA:string,
+    DEPENDENCIA:string,
+    LOCALIDAD:string,
+    DEPARTAMENTO:string,
+    DIRECCION:string,
+    DIAS:number,
+    PLAN:string,
+    RACIONES:number,
+    RACIONES_TOTAL:number
+}

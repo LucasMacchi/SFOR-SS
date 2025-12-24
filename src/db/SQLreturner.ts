@@ -349,3 +349,20 @@ export function enviosExcelSQL (userId:number) {
         WHERE r.reparto_id = (SELECT reparto_id FROM reparto_user WHERE user_id = ${userId});
         `
 }
+
+export function addRepartoSQL (plan:number,year:number) {
+    return `INSERT INTO public.reparto(numero, periodo) VALUES (${plan}, ${year});`
+}
+
+export function dataExcelViajesSQL (userId:number) {
+    return `
+    SELECT v.viaje_id,de.cue,l.lentrega_id,l.completo,de.des as dependencia,l.localidad,l.departamento,l.direccion,p.dias,p.des as plan,d.raciones
+    FROM public.viaje v JOIN public.viaje_remito r ON v.viaje_id = r.viaje_id 
+    JOIN public.viaje_detalle d ON d.vremito_id = r.vremito_id
+    JOIN public.desglose de ON de.desglose_id = d.desglose_id
+    JOIN public.lentrega l ON de.lentrega_id = l.lentrega_id
+    JOIN public.plan p ON p.plan_id = r.plan_id 
+    WHERE v.reparto_id = (SELECT reparto_id FROM reparto_user WHERE user_id = ${userId})
+    ORDER BY d.detalle_id;
+    `
+}

@@ -1,6 +1,9 @@
 import EnviosExcel from "@/Componets/EnviosExcel";
+import ViajesExcel from "@/Componets/ViajesExcel";
 import DBEnviosExcel from "@/db/DBEnviosExcel";
-import { IEnviosExcel } from "@/utils/interfaces";
+import DBViajes from "@/db/DBViajes";
+import DBViajesExcel from "@/db/DBViajesExcel";
+import { IEnviosExcel, IViajeExcel, IViajeExcelComplete } from "@/utils/interfaces";
 import sessionCheck from "@/utils/sessionCheck";
 import { hr_style, text_2_t_style } from "@/utils/styles";
 
@@ -8,7 +11,7 @@ import { hr_style, text_2_t_style } from "@/utils/styles";
 
 export default async function Page() {
     await sessionCheck(3)
-
+    const viajes = await DBViajes()
 
     const getEnviosData = async () => {
         "use server"
@@ -35,6 +38,44 @@ export default async function Page() {
         }
     }
 
+
+    const getViajesData = async ():Promise<IViajeExcelComplete[]> => {
+        "use server"
+        try {
+            const res = await DBViajesExcel()
+            const viajesExcel:IViajeExcelComplete[] = []
+            viajes.forEach(v => {
+                const excelData: IViajeExcel[] = []
+                res.forEach(e => {
+                    if(e.viaje_id === v.viaje_id) {
+                        excelData.push({
+                            CUE:e.cue,
+                            ID: e.lentrega_id,
+                            CABECERA:e.completo,
+                            DEPENDENCIA:e.dependencia,
+                            LOCALIDAD:e.localidad,
+                            DEPARTAMENTO:e.departamento,
+                            DIRECCION:e.direccion,
+                            DIAS:e.dias,
+                            PLAN:e.plan,
+                            RACIONES:e.raciones,
+                            RACIONES_TOTAL:e.raciones * e.dias
+                        })
+                    }
+                });
+                viajesExcel.push({
+                    name: v.des,
+                    detalles: excelData
+                })
+            });
+
+            return viajesExcel
+        } catch (error) {
+            console.log(error)
+            return []
+        }
+    }
+
     return (
         <div>
             <div>
@@ -46,6 +87,13 @@ export default async function Page() {
                 <hr color="#4A6EE8" style={hr_style}/>
                 <div style={{display:"flex",justifyContent:"center"}}>
                     <EnviosExcel getDataExcelFn={getEnviosData}/>
+                </div>
+            </div>
+            <div>
+                <h2 style={text_2_t_style}>VIAJES</h2>
+                <hr color="#4A6EE8" style={hr_style}/>
+                <div style={{display:"flex",justifyContent:"center"}}>
+                    <ViajesExcel getViajeDataExcelFn={getViajesData}/>
                 </div>
             </div>
         </div>
