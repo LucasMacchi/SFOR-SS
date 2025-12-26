@@ -1,7 +1,5 @@
 import { IUserData } from "@/utils/interfaces";
 import clientReturner from "./clientReturner";
-import jwt from 'jsonwebtoken'
-import { cookies } from "next/headers";
 
 const secret = process.env.TOKEN_SECRET ?? "sistemsdesoluciones"
 const expireTime = process.env.TOKEN_EXPIRE ?? '60s'
