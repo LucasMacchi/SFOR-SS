@@ -36,8 +36,7 @@ export default function Login ({loginFun}:{loginFun: (username:string,password:s
         setPassword("")
         try {
             const res = await axios.post('/login/api',{username,password})
-            console.log(res)
-            if(res) router.push("/inicio")
+            if(res.data) router.push("/inicio")
         } catch (error) {
             console.error(error)
             return false
