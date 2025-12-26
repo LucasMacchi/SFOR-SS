@@ -141,7 +141,7 @@ export default function TraerRemitosDisplay ({viajes,insumos,venc,cai,getRtViaje
                         <PdfBtn disable={false} title="REMITOS" pdf={downloadRemitos()}/>
                         <PdfBtn disable={false} title="DESGLOSES" pdf={downloadDesglose()}/>
                         <PdfBtn disable={false} title="ACTAS" pdf={downloadActas()}/>
-                        <button onClick={() => downloadHojaRuta()}>test</button>
+                        {/*<button onClick={() => downloadHojaRuta()}>test</button>*/}
                     </div>
 
                 </div>

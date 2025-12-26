@@ -256,8 +256,8 @@ const pageContruct = (e: IRemitoT, copia: boolean,venc:string,cai:string,insumos
             </View>
             <View style={stylePedido.viewdata}>
                 <View >
-                    <Text style={stylePedido.body}>Telefono: 3794-586633</Text>
-                    <Text style={stylePedido.body}>Correo: info@solucionesyservicios.com.ar</Text>
+                    <Text style={{...stylePedido.body,fontWeight: 900}}>Telefono: 3794-586633</Text>
+                    <Text style={{...stylePedido.body,fontWeight: 900}}>Correo: info@solucionesyservicios.com.ar</Text>
                     <Text style={stylePedido.body}>IVA: Responsable Inscripto</Text>
                     <Text style={stylePedido.body}>Ing. Brutos: 905-302000-1</Text>
                 </View>
@@ -276,8 +276,12 @@ const pageContruct = (e: IRemitoT, copia: boolean,venc:string,cai:string,insumos
                     <Text style={stylePedido.body}>IVA: Exento</Text>
                 </View>
                 <View >
-                    <Text style={stylePedido.body}>Cliente: 000001</Text>
                     <Text style={stylePedido.body}>CUIT: 30-70731824-0</Text>
+                </View>
+                <View style={stylePedido.viewdata}>
+                    <Text style={{...stylePedido.body,fontWeight: 900}}>Lugar de Entrega: {e.completo}</Text>
+                    <Text style={{...stylePedido.body,fontWeight: 900}}>Localidad: {e.localidad}</Text>
+                    <Text style={{...stylePedido.body,fontWeight: 900}}>Direccion: {e.direccion}</Text>
                 </View>
             </View>
             <View style={stylePedido.view}>
@@ -304,11 +308,6 @@ const pageContruct = (e: IRemitoT, copia: boolean,venc:string,cai:string,insumos
                 </View>
                 </View>
                 {insumosDisplayer(e.envios,insumos,e.envios.length,e.dias)}
-            </View>
-            <View style={stylePedido.viewdata}>
-                <Text style={stylePedido.body}>Lugar de Entrega: {e.completo}</Text>
-                <Text style={stylePedido.body}>Localidad: {e.localidad}</Text>
-                <Text style={stylePedido.body}>Direccion: {e.direccion}</Text>
             </View>
             <View style={stylePedido.viewdataFooter}>
                 <Text style={stylePedido.body}>Sello institucion</Text>

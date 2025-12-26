@@ -56,7 +56,8 @@ export default function (insumos: IInsumo[],planes: IPlan[], remitos: IViajeRemi
             kilos: 0,
             palet: 0,
             ins_id: i.ins_id,
-            des: i.des
+            des: i.des,
+            calculable:i.calculable
         }
         allDetalles.forEach(d => {
             if(d.ins_id === i.ins_id) {
@@ -91,7 +92,7 @@ export default function (insumos: IInsumo[],planes: IPlan[], remitos: IViajeRemi
     insumosP.forEach(i => {
         total.unidades += i.unidades
         total.bolsas += i.bolsas
-        total.raciones += i.raciones
+        if(i.calculable) total.raciones += i.raciones
         total.cajas += i.cajas
         total.kilos += i.kilos
         total.palet += i.palet ? i.palet : 0
