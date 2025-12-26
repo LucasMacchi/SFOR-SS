@@ -38,6 +38,8 @@ export default function ViajeAdd ({escuelas,departamentos,planes,insumos,addViaj
         setDesgloses([])
     },[selectedP])
 
+
+
     useEffect(() => {
         setDesgloses([])
         setDetallesViaje([])
@@ -134,6 +136,10 @@ export default function ViajeAdd ({escuelas,departamentos,planes,insumos,addViaj
                     des: viajeDes,
                     remitos: remitos
                 }
+                if(viajeDes.length > 25){
+                    alert("La descripcion supera los 25 caracteres")
+                    return 0
+                }
                 const res = await addViajeFn(viaje)
                 if(res) {
                     alert("Viaje "+viajeDes+" creado correctamente.")
@@ -148,10 +154,10 @@ export default function ViajeAdd ({escuelas,departamentos,planes,insumos,addViaj
     }
     return (
         <div style={{marginLeft: 25, marginBottom: 100}}>
-            <div style={{display: "flex",marginLeft: 10}}>
+            <div style={{marginLeft: 10}}>
                 <div>
-                    <h2 style={{...text_2_t_style, marginTop: 40}}>DESCRIPCION</h2>
-                    <input name="plan-inpt" value={viajeDes} style={{width: 250,fontSize:24,marginBottom: 20}}
+                    <h2 style={{...text_2_t_style, marginTop: 40,color: viajeDes.length < 25 ? "#4A6EE8" : "red"}}>DESCRIPCION (MAXIMO 25 CARACTERES - ACTUAL {viajeDes.length})</h2>
+                    <input type="text" name="plan-inpt" value={viajeDes} max={25} style={{width: 400,fontSize:24,marginBottom: 20}}
                     onChange={(e) => setViajeDes(e.target.value)}/>
                 </div>
                 <div>
