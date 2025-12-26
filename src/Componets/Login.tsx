@@ -36,6 +36,7 @@ export default function Login () {
         setPassword("")
         try {
             const res = await axios.post('/login/api',{username,password})
+            console.log(res.data)
             if(res.data) router.push("/inicio")
         } catch (error) {
             console.error(error)
