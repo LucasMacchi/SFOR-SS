@@ -10,14 +10,17 @@ export async function POST(req: Request) {
     try {
         if(b.username && b.password) {
             const res = await DBLogin(b.username,b.password)
+            console.log("ts")
             if(!res) return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
             const token = jwt.sign(res,secret,{expiresIn: '72h'});
             const response = NextResponse.json({ success: true, check: res });
             response.cookies.set('JWTKN',token,{httpOnly: true,secure:true,path:'/',sameSite:'lax'})
             return response
         }
+        const response = NextResponse.json({ success: false },{ status: 401 });
+        return response
     } catch (error) {
         console.error(error);
-        return NextResponse.json({ error: error })   
+        return NextResponse.json({ success: false },{ status: 401 })   
     }
 }
