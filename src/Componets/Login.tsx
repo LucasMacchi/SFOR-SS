@@ -5,7 +5,7 @@ import axios from "axios"
 import { CSSProperties, useState } from "react"
 import { useRouter } from "next/navigation"
 
-export default function Login ({loginFun}:{loginFun: (username:string,password:string) => Promise<boolean>}) {
+export default function Login () {
 
     const router = useRouter()
     const loginContainerStyle: CSSProperties = {
