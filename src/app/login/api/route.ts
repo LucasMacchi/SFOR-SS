@@ -14,6 +14,7 @@ export async function POST(req: Request) {
             const token = jwt.sign(res,secret,{expiresIn: '72h'});
             const response = NextResponse.json({ success: true, check: res });
             response.cookies.set('JWTKN',token,{httpOnly: true,secure:true,path:'/',sameSite:'lax'})
+            console.log(response)
             return response
         }
     } catch (error) {
