@@ -13,6 +13,7 @@ export default async function (username: string, password: string): Promise<IUse
         await conn.connect()
         const data:IUserData = (await conn.query(sql)).rows[0]
         await conn.end()
+        console.log("BASE DE DATOS CHECK === ",data)
         if(data.username === username && expireTime && secret) {
             //CAMBIAR EL TIEMPO DE EXPIRACION
             return data
