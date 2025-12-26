@@ -140,7 +140,7 @@ const PDFActas = ({remitos}:{remitos:IRemitoT[]}) => (
                 </Text>  
             </View>
             <View style={stylePedido.viewData}>
-                <Text style={stylePedido.subtitleActa}>Comentarios:</Text> 
+                <Text style={stylePedido.subtitleActa}>Observaciones:</Text> 
             </View>
             <View style={stylePedido.viewData}>
                 <Text style={stylePedido.subtitleActa}>.............................................................................................................</Text> 

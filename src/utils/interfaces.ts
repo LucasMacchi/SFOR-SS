@@ -121,7 +121,8 @@ export interface IEnvioDetallesParsed {
     kilos: number,
     palet: number,
     ins_id: number,
-    des: string
+    des: string,
+    calculable?:boolean
 }
 export interface IReporte {
     reporte_id: number,
@@ -518,4 +519,12 @@ export interface IViajeExcel {
     PLAN:string,
     RACIONES:number,
     RACIONES_TOTAL:number
+}
+
+export interface IUsuario {
+    userId: number,
+    username:string,
+    email:string,
+    password:string,
+    rol: number
 }

@@ -1,5 +1,5 @@
 import { ESTADOS } from "@/utils/enums"
-import { IAddDesglose, IAddEnvio, IAddFactura, IAddPlan, IAddPlanDetails, IAddRemito, ICreateInsumo, IEnvioDetalles, IRqReportAdd, IViajeDetalle, IViajeRemito } from "@/utils/interfaces"
+import { IAddDesglose, IAddEnvio, IAddFactura, IAddPlan, IAddPlanDetails, IAddRemito, ICreateInsumo, IEnvioDetalles, IRqReportAdd, IUsuario, IViajeDetalle, IViajeRemito } from "@/utils/interfaces"
 
 export function listRemitosSQL(usr: number): string {
     return `SELECT r.remito_id,r.pv,r.numero,r.estado_id,e.des as estado,r.fortificado,r.dias,
@@ -365,4 +365,16 @@ export function dataExcelViajesSQL (userId:number) {
     WHERE v.reparto_id = (SELECT reparto_id FROM reparto_user WHERE user_id = ${userId})
     ORDER BY d.detalle_id;
     `
+}
+
+export function getAllUsersSQL () {
+    return `SELECT * FROM public."user" ORDER BY "userId" ASC;`
+}
+
+export function userEditSQL (column: string,ins: number,value:string) {
+    return `UPDATE public.user SET ${column}=${value} WHERE "userId" = ${ins};`
+}
+
+export function createUserSQL (u: IUsuario) {
+    return `INSERT INTO public."user"(username, email, password, rol) VALUES ('${u.username}', '${u.email}', '${u.password}', ${u.rol});`
 }
