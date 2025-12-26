@@ -34,9 +34,12 @@ export default function Login ({loginFun}:{loginFun: (username:string,password:s
     const loginFn = async () => {
         setUsername("")
         setPassword("")
-        const res:boolean = await loginFun(username,password)
-        if(res) {
+        try {
+            const res = await axios.post('/login/api',{username,password})
             router.push("/inicio")
+        } catch (error) {
+            console.error(error)
+            return false
         }
     }
 

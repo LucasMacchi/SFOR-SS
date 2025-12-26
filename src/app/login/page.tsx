@@ -1,12 +1,12 @@
 import Login from "@/Componets/Login";
-import DBLogin from "@/db/DBLogin";
+import axios from "axios";
 
 export default function Page() {
     
     const loginFn = async (username:string,password:string): Promise<boolean> => {
         "use server"
         try {
-            const res = await DBLogin(username,password)
+            const res = await axios.post('/login/api',{username,password})
             if(res) return true
             return false
         } catch (error) {

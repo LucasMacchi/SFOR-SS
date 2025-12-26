@@ -1,7 +1,5 @@
 import DeleteRemito from "@/Componets/DeleteRemito";
 import DesgloseDisplay from "@/Componets/DesgloseDisplay";
-import PdfBtn from "@/Componets/PdfBtn";
-import PDFRemitoUniq from "@/Componets/pdfs/PDFRemitoUniq";
 import RemitoInsumosDisplay from "@/Componets/RemitoInsumosDisplay";
 import RemitoUniqPdf from "@/Componets/RemitoUniqPdf";
 import ReporteAdd from "@/Componets/ReporteAdd";
@@ -19,7 +17,6 @@ import decodeJWT from "@/utils/decodeJWT";
 import refillEmptySpace from "@/utils/refillEmptySpace";
 import sessionCheck from "@/utils/sessionCheck";
 import { hr_style, text_2_t_style } from "@/utils/styles";
-import { pdf } from "@react-pdf/renderer";
 import { redirect } from "next/navigation";
 
 
