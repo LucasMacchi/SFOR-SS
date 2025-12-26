@@ -90,6 +90,16 @@ export default function ViajeAdd ({escuelas,departamentos,planes,insumos,addViaj
         return status
     }
 
+    
+    const addAllDesgloses = () => {
+        desgloses.forEach(d => {
+            if(selectedP > -1 && d.fortificado === planes[selectedP].fortificado && !checkDesglose(d.desglose_id) && !checkDesgloseRemitos(d.desglose_id) && !d.selected) {
+                setDetallesViaje(prev => [...prev,d])
+            }
+        });
+
+    }
+
     const createRemito = () => {
         if(detallesViaje.length > 0) {
             if(checkNoRepeat()) {
@@ -211,7 +221,7 @@ export default function ViajeAdd ({escuelas,departamentos,planes,insumos,addViaj
                     )}
                     </div>
                     <div style={{display:"flex",justifyContent:"center",marginTop: 40}}>
-                        <button style={btn_s_style} onClick={() => createRemito()}>AGREGAR TODOS</button>
+                        <button style={btn_s_style} onClick={() => addAllDesgloses()}>AGREGAR TODOS</button>
                     </div>
 
                 </div>
