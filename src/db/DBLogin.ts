@@ -23,7 +23,7 @@ export default async function (username: string, password: string): Promise<IUse
             return null
         }
     } catch (error) {
-        console.log("err")
+        console.log(error)
         await conn.end()
         throw new Error("Error al intentar logearse")
     }
