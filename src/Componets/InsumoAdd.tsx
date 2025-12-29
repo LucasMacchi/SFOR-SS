@@ -22,7 +22,7 @@ export default function InsumoAdd ({addFn}:{addFn: (data: ICreateInsumo) => Prom
     })
 
     const createInsumos = async() => {
-        if(insumo.cod1 && insumo.cod2 && insumo.cod3 && insumo.gr_racion && insumo.gr_total && insumo.rac_caja && insumo.rac_unidad && insumo.des.length > 0) {
+        if(insumo.cod1 && insumo.cod2 && insumo.gr_racion && insumo.gr_total && insumo.rac_caja && insumo.rac_unidad && insumo.des.length > 0) {
             const res = await addFn(insumo)
             if(res) {
                 alert("Insumo creado exitosamente")
@@ -48,6 +48,7 @@ export default function InsumoAdd ({addFn}:{addFn: (data: ICreateInsumo) => Prom
                             <th style={{border: "1px solid", width: "5%"}}>RAC. X UNIDAD</th>
                             <th style={{border: "1px solid", width: "5%"}}>RAC. X CAJA</th>
                             <th style={{border: "1px solid", width: "5%"}}>GR. X RACION</th>
+                            <th style={{border: "1px solid", width: "5%"}}>GR. X TOTALES</th>
                             <th style={{border: "1px solid", width: "5%"}}>CALCULABLE</th>
                         </tr>
                         <tr >
@@ -85,6 +86,10 @@ export default function InsumoAdd ({addFn}:{addFn: (data: ICreateInsumo) => Prom
                             </th>
                             <th style={{border: "1px solid", width: "5%"}}>
                                 <input style={{width: 50}} type="number" value={insumo.gr_racion} 
+                                onChange={(e) => setInsumo({...insumo,gr_racion: parseFloat(e.target.value)})}/>     
+                            </th>
+                            <th style={{border: "1px solid", width: "5%"}}>
+                                <input style={{width: 50}} type="number" value={insumo.gr_total} 
                                 onChange={(e) => setInsumo({...insumo,gr_racion: parseFloat(e.target.value)})}/>     
                             </th>
                             <th style={{border: "1px solid", width: "5%"}}>
