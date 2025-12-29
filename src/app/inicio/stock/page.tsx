@@ -7,8 +7,7 @@ import DBInsumosNoDespachados from "@/db/DBInsumosNoDespachados";
 import DBPlanReparto from "@/db/DBPlanReparto";
 import DBStockLogs from "@/db/DBStockLogs";
 import DBViajes from "@/db/DBViajes";
-import DBViajesDespachados from "@/db/DBViajesDespachados";
-import { IInsumoStock, IStockAdd, IViaje, IViajeRQ } from "@/utils/interfaces";
+import { IInsumoStock, IStockAdd, IViajeRQ } from "@/utils/interfaces";
 import { hr_style, text_2_t_style } from "@/utils/styles";
 import viajesParseDisplayAll from "@/utils/viajesParseDisplayAll";
 
@@ -19,7 +18,7 @@ export default async function Page() {
     const stockLog = await DBStockLogs()
     const viajes = await DBViajes()
     const planes = await DBPlanReparto()
-    const despachados = await DBViajesDespachados()
+    //const despachados = await DBViajesDespachados()
     const noDespachado = await DBInsumosNoDespachados()
     const updateStock = async (stockAdd: IStockAdd) => {
         "use server"
@@ -33,12 +32,6 @@ export default async function Page() {
     }
     const viajesParsed:IViajeRQ[] = []
     viajes.forEach(v => {
-        let status = false
-        if(despachados.length > 0) {
-            despachados.forEach(d => {
-                if(v.viaje_id === d) status = true
-            });
-        }
         if(!v.procesado) viajesParsed.push(v)
     });
     const stockViajes = viajesParseDisplayAll(insumos,planes ? planes : [],viajesParsed)
