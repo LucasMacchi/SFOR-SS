@@ -14,7 +14,7 @@ export default function StockExcel ({insumos,logs}:{insumos:IInsumo[],logs:IStoc
         insumos.forEach(i => {
             stock.push({
                 COD1: i.cod1,
-                COD2: i.cod2,
+                COD2: i.cod2 ? i.cod2 : 0,
                 COD3: i.cod3 ? i.cod3 : 0,
                 INSUMO: i.des,
                 STOCK: i.stock
