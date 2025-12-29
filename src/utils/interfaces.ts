@@ -528,3 +528,7 @@ export interface IUsuario {
     password:string,
     rol: number
 }
+
+export interface ViajesDespachadosRQ {
+    viaje_id: number
+}
