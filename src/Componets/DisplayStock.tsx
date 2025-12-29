@@ -1,9 +1,9 @@
 
 
-import { IEnvioDetallesParsed, IInsumo } from "@/utils/interfaces";
+import { IEnvioDetallesParsed, IInsumo, IInsumoStock } from "@/utils/interfaces";
 import { text_2_t_style } from "@/utils/styles";
 
-export default function DisplayStock ({insumos,viajesStock}:{insumos:IInsumo[],viajesStock: IEnvioDetallesParsed[]}) {
+export default function DisplayStock ({insumos,viajesStock}:{insumos:IInsumoStock[],viajesStock: IEnvioDetallesParsed[]}) {
 
 
     const stockCalcV = (ins: number, stock: number): number =>  {
@@ -27,6 +27,7 @@ export default function DisplayStock ({insumos,viajesStock}:{insumos:IInsumo[],v
                             <th style={{border: "1px solid", width: "8%"}}>COD 3</th>
                             <th style={{border: "1px solid", width: "50%"}}>DESCRIPCION</th>
                             <th style={{border: "1px solid", width: "20%"}}>STOCK FISICO</th>
+                            <th style={{border: "1px solid", width: "20%"}}>STOCK PEND</th>
                             <th style={{border: "1px solid", width: "20%"}}>STOCK PLANIFICADO</th>
                         </tr>
                         {insumos.map((i) => (
@@ -36,7 +37,8 @@ export default function DisplayStock ({insumos,viajesStock}:{insumos:IInsumo[],v
                             <th style={{border: "1px solid", width: "8%"}}>{i.cod3}</th>
                             <th style={{border: "1px solid", width: "50%"}}>{i.des}</th>
                             <th style={{border: "1px solid", width: "20%"}}>{i.stock}</th>
-                            <th style={{border: "1px solid", width: "20%"}}>{stockCalcV(i.ins_id,i.stock)}</th>
+                            <th style={{border: "1px solid", width: "20%"}}>{i.stockNoD}</th>
+                            <th style={{border: "1px solid", width: "20%"}}>{i.stockPlan}</th>
                         </tr>
                         ))}
                     </tbody>

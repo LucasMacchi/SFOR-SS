@@ -384,3 +384,10 @@ export function viajesDespachadosSQL (u: number) {
             WHERE r.despachado = true AND v.reparto_id = (SELECT reparto_id FROM reparto_user WHERE user_id = ${u}) 
             GROUP BY v.viaje_id;`
 }
+
+export function remitosNoDespachadoInsSQL (user: number) {
+    return `SELECT d.ins_id, SUM(d.unidades) FROM public.remito r JOIN public.envio e ON r.remito_id = e.remito_id 
+            JOIN public.envio_details d ON e.envio_id = d.envio_id 
+            WHERE r.despachado = false AND r.reparto_id = (SELECT reparto_id FROM reparto_user WHERE user_id = ${user}) 
+            GROUP BY d.ins_id;`
+}
