@@ -1,9 +1,8 @@
 
 import { Page, Text, View, Document, StyleSheet, Image } from '@react-pdf/renderer';
 import {IFacturaAgrupado, IRemitoInFactura } from '../../utils/interfaces';
-import logoBig from "../../assets/logo_big.png"
 import { ToWords } from 'to-words';
-import refillEmptySpace from '@/utils/refillEmptySpace';
+import parseRemitoString from '@/utils/parseRemitoString';
 const stylePedido = StyleSheet.create({
     logo: {
         width: 120,
@@ -143,7 +142,7 @@ const insumosDisplayer = (remitos: IRemitoInFactura[],count: number,last:boolean
         elements.push(
             <View style={stylePedido.tableRow}>
                 <View style={stylePedido.tableColcod2}>
-                    <Text style={stylePedido.tableCell}>{remitos[i] ? "RT R "+parseRemitoToString(remitos[i].pv,remitos[i].numero) : " "}</Text>
+                    <Text style={stylePedido.tableCell}>{remitos[i] ? "RT R "+parseRemitoString(remitos[i].pv,remitos[i].numero) : " "}</Text>
                 </View>
                 <View style={stylePedido.tableColIns2}>
                     <Text style={stylePedido.tableCell}>{remitos[i] ? remitos[i].completo : " "}</Text>
@@ -251,6 +250,3 @@ const PDFfactura = ({factura,valor}:{factura: IFacturaAgrupado,valor:number}) =>
 
 export default PDFfactura
 
-function parseRemitoToString(pv: number, numero: number) {
-    throw new Error('Function not implemented.');
-}

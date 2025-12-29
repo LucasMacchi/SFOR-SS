@@ -40,7 +40,7 @@ export default async function Page () {
     return (
         <div style={{marginLeft: 25, marginBottom: 100}}>
             <div>
-                <h2 style={text_2_t_style}>TRAER REMITOS</h2>
+                <h2 style={text_2_t_style}>CONSULTAR REMITOS</h2>
                 <hr color="#4A6EE8" style={hr_style}/>
             </div>
             <div>

@@ -98,7 +98,7 @@ export default function TraerRemitosDisplay ({viajes,insumos,venc,cai,getRtViaje
         return(
             <div>
                 <div>
-                    <h2 style={{...text_2_t_style, marginTop: 40}}>INGRESE EL PRIMER Y ULTIMO REMITO A OBTENER</h2>
+                    <h2 style={{...text_2_t_style, marginTop: 40}}>INGRESE EL PRIMER Y ULTIMO REMITO A CONSULTAR</h2>
                     <div style={{display:"flex",justifyContent:"space-between",width: "20%", marginTop:20}}>
                         <input style={inputRtStyle} type="number" value={refillEmptySpace(8,range.start)} onChange={(e) => setRange({...range, start: parseInt(e.target.value)})}/>
                         <input style={inputRtStyle} type="number" value={refillEmptySpace(8,range.end)} onChange={(e) => setRange({...range, end: parseInt(e.target.value)})}/>
@@ -107,7 +107,7 @@ export default function TraerRemitosDisplay ({viajes,insumos,venc,cai,getRtViaje
                 {(range.start && range.end && range.end > range.start) ?
                     <div style={{marginTop: 20, display: "flex",justifyContent: "center",width: "20%"}}>
                         <button style={btn_s_style} onClick={() => getRemitosByRango()}>
-                            TRAER REMITOS
+                            CONSULTAR REMITOS
                         </button>
                     </div>
                 :
@@ -127,8 +127,8 @@ export default function TraerRemitosDisplay ({viajes,insumos,venc,cai,getRtViaje
                 onChange={(e) => setOption(parseInt(e.target.value))}
                 style={{width: 500,fontSize:24,marginBottom: 20}}>
                     <option value={0}>---</option>
-                    <option value={1}>TRAER POR VIAJE</option>
-                    <option value={2}>TRAER POR RANGO</option>
+                    <option value={1}>CONSULTAR POR VIAJE</option>
+                    <option value={2}>CONSULTAR POR RANGO</option>
                 </select>
             </div>
             {option === 1 && displayViaje()}

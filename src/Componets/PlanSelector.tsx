@@ -33,7 +33,7 @@ export default function PlanSelector ({planes,userPlan,rol,createRepartoFn}:{pla
 
     return(
         <div>
-            <h2 style={text_2_s_style}>PLAN:</h2>
+            <h2 style={text_2_s_style}>PLAN REPARTO:</h2>
             <select name="rp_sel" id="rp_sl" value={userPlan}
             onChange={(e) => changePlan(parseInt(e.target.value))}
             style={select_style}>
