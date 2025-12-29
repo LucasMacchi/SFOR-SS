@@ -56,7 +56,7 @@ export default function FacturasDisplay ({facturas,valor}:{facturas:IFacturaAgru
         }
     }
     const downloadPdf = async ():Promise<Blob> => {
-        const blob: Blob = await pdf(<PDFfactura valor={valor} factura={facturas[selectedF]}/>).toBlob()
+        const blob = await pdf(<PDFfactura valor={valor} factura={facturas[selectedF]}/>).toBlob()
         return blob
     }
     return (

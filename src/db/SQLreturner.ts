@@ -140,9 +140,9 @@ export function insumoEditSQL (column: string,ins: number,value:string) {
 
 export function insumoAddSQL (d: ICreateInsumo) {
     return `INSERT INTO public.insumo(
-    cod1, cod2, cod3, des, caja_palet, gr_racion, gr_unidad, 
+    cod1, cod2, ${d.cod3 ? "cod3," : ''} des, caja_palet, gr_racion, gr_unidad, 
     unidades_caja, racunidad, raccaja, calculable)
-    VALUES ( ${d.cod1}, ${d.cod2}, ${d.cod3}, '${d.des}', ${d.caja_palet}, ${d.gr_racion}, ${d.gr_total}, ${d.unitades_caja}, ${d.rac_unidad}, ${d.rac_caja}, ${d.calculable});`
+    VALUES ( ${d.cod1}, ${d.cod2}, ${d.cod3 ? d.cod3+"," : ''} '${d.des}', ${d.caja_palet}, ${d.gr_racion}, ${d.gr_total}, ${d.unitades_caja}, ${d.rac_unidad}, ${d.rac_caja}, ${d.calculable});`
 }
 
 export function planDetSQL (id:number) {
