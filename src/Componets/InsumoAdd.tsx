@@ -90,7 +90,7 @@ export default function InsumoAdd ({addFn}:{addFn: (data: ICreateInsumo) => Prom
                             </th>
                             <th style={{border: "1px solid", width: "5%"}}>
                                 <input style={{width: 50}} type="number" value={insumo.gr_total} 
-                                onChange={(e) => setInsumo({...insumo,gr_racion: parseFloat(e.target.value)})}/>     
+                                onChange={(e) => setInsumo({...insumo,gr_total: parseFloat(e.target.value)})}/>     
                             </th>
                             <th style={{border: "1px solid", width: "5%"}}>
                                 <input style={{width: 50}} type="checkbox" checked={insumo.calculable}
