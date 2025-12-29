@@ -70,7 +70,7 @@ export interface IEnvioDetalles {
 export interface IInsumo {
     ins_id: number,
     cod1: number,
-    cod2: number,
+    cod2: number | null,
     cod3: number | null,
     des: string,
     caja_palet: number,
