@@ -22,7 +22,7 @@ export default function InsumoAdd ({addFn}:{addFn: (data: ICreateInsumo) => Prom
     })
 
     const createInsumos = async() => {
-        if(insumo.cod1 && insumo.cod2 && insumo.gr_racion && insumo.gr_total && insumo.rac_caja && insumo.rac_unidad && insumo.des.length > 0) {
+        if(insumo.cod1 && insumo.cod2 && insumo.gr_racion && insumo.gr_total && insumo.rac_unidad && insumo.des.length > 0) {
             const res = await addFn(insumo)
             if(res) {
                 alert("Insumo creado exitosamente")
