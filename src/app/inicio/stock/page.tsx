@@ -64,10 +64,10 @@ export default async function Page() {
                 <hr color="#4A6EE8" style={hr_style}/>
             </div>
             <div style={{display:"flex"}}>
-                <div style={{width: "70%"}}>
+                <div style={{width: "60%"}}>
                     <DisplayStock insumos={parseStockAll()} viajesStock={stockViajes}/>
                 </div>
-                <div style={{width:"30%"}}>
+                <div style={{width:"40%"}}>
                     <StockActions stock={stockLog} insumos={insumos} changeStock={updateStock}/>
                 </div>
             </div>
