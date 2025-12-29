@@ -84,6 +84,11 @@ export interface IInsumo {
     [key: string]: any
 
 }
+
+export interface IInsumoStock extends IInsumo {
+    stockPlan: number,
+    stockNoD: number
+}
 export interface ICreateInsumo {
     cod1:number,
     cod2:number,
