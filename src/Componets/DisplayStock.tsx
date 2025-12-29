@@ -6,15 +6,6 @@ import { text_2_t_style } from "@/utils/styles";
 export default function DisplayStock ({insumos,viajesStock}:{insumos:IInsumoStock[],viajesStock: IEnvioDetallesParsed[]}) {
 
 
-    const stockCalcV = (ins: number, stock: number): number =>  {
-        let result = 0
-        viajesStock.forEach(v => {
-            if(v.ins_id === ins) result = stock - v.unidades
-        });
-
-        return result
-    }
-
     return (
         <div>
             <h2 style={{...text_2_t_style}}>INSUMOS</h2>
