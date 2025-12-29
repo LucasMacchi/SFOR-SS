@@ -378,3 +378,9 @@ export function userEditSQL (column: string,ins: number,value:string) {
 export function createUserSQL (u: IUsuario) {
     return `INSERT INTO public."user"(username, email, password, rol) VALUES ('${u.username}', '${u.email}', '${u.password}', ${u.rol});`
 }
+
+export function viajesDespachadosSQL (u: number) {
+    return `SELECT v.viaje_id FROM public.remito r JOIN public.viaje v ON v.viaje_id = r.viaje_id 
+            WHERE r.despachado = true AND v.reparto_id = (SELECT reparto_id FROM reparto_user WHERE user_id = ${u}) 
+            GROUP BY v.viaje_id;`
+}
