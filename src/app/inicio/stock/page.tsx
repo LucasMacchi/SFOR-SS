@@ -47,7 +47,7 @@ export default async function Page() {
                 }
             });
             stockViajes.forEach(s => {
-                if(s.ins_id === i.ins_id) planificado = noDes - s.unidades
+                if(s.ins_id === i.ins_id) planificado = (noDes ? noDes : i.stock) - s.unidades
             });
             newStock.push({...i,stockNoD: noDes,stockPlan:planificado})
         });

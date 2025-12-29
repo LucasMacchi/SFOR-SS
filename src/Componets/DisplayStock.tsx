@@ -19,7 +19,7 @@ export default function DisplayStock ({insumos,viajesStock}:{insumos:IInsumoStoc
                             <th style={{border: "1px solid", width: "40%"}}>DESCRIPCION</th>
                             <th style={{border: "1px solid", width: "20%"}}>STOCK FISICO</th>
                             <th style={{border: "1px solid", width: "20%"}}>STOCK PEND</th>
-                            <th style={{border: "1px solid", width: "20%"}}>STOCK PLANIFICADO</th>
+                            <th style={{border: "1px solid", width: "20%"}}>STOCK PLANIFICADO FINAL</th>
                         </tr>
                         {insumos.map((i) => (
                         <tr key={i.ins_id}>
