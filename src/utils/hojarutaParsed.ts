@@ -43,4 +43,6 @@ export default function (insumos: IInsumo[], r: IRemitoT[]) {
     });
     console.log(detalles)
 
+    return detalles
+
 }
