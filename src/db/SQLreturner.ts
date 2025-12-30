@@ -391,3 +391,11 @@ export function remitosNoDespachadoInsSQL (user: number) {
             WHERE r.despachado = false AND r.reparto_id = (SELECT reparto_id FROM reparto_user WHERE user_id = ${user}) 
             GROUP BY d.ins_id;`
 }
+
+export function viajeJoinSQL () {
+    return `UPDATE public.viaje_remito SET viaje_id = $1 WHERE viaje_id = $2;`
+}
+
+export function viajeDelSQL() {
+    return `DELETE FROM public.viaje WHERE viaje_id = $1`
+}

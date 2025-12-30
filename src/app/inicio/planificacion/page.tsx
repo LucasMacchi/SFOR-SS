@@ -1,3 +1,4 @@
+import DBJoinViajes from "@/Componets/DBJoinViajes";
 import DisplayViajes from "@/Componets/DisplayViajes";
 import ViajeAdd from "@/Componets/ViajeAdd";
 import DBActivarViaje from "@/db/DBActivarViaje";
@@ -45,6 +46,28 @@ export default async function Page () {
             });
         }
     });
+
+    const updateDesgloses = async () => {
+        "use server"
+        try {
+            const lugaresU = await DBEscuelas(true)
+            lugaresU.forEach(lgs => {
+                if(lgs.desgloses) {
+                    desglosesViajes.forEach(dv => {
+                        if(lgs.desgloses){
+                            lgs.desgloses.forEach((d) => {
+                                if(dv.desglose_id === d.desglose_id) d.selected = true
+                            })
+                        }
+                    });
+                }
+            });
+            return lugaresU
+        } catch (error) {
+            console.log(error)
+            return []
+        }
+    }
 
     const createViajeFn = async (v: IViaje):Promise<boolean> =>  {
         "use server"
@@ -96,6 +119,17 @@ export default async function Page () {
             return false
         }
     }
+
+    const joinViajes = async (viaje: number, nuevo:number):Promise<boolean> => {
+        "use server"
+        try {
+            const res = await DBJoinViajes(viaje,nuevo)
+            return res
+        } catch (error) {
+            console.log(error)
+            return false
+        }
+    }
     return (
         <div style={{marginLeft: 25, marginBottom: 100}}>
             <div>
@@ -108,7 +142,7 @@ export default async function Page () {
                 insumos={insumos} lugares={lugares} 
                 activarViajeFn={changeStateViajeFn}
                 addViajeDetalleFn={addDetalleViaje} repartos={plan}
-                duplicateViajeFn={createExportFn}/>
+                duplicateViajeFn={createExportFn} unirViajesFn={joinViajes}/>
             </div>
             <div>
                 <h2 style={text_2_t_style}>CREAR VIAJE</h2>
@@ -117,7 +151,8 @@ export default async function Page () {
             <div>
                 <ViajeAdd escuelas={lugares} departamentos={departamentos} 
                 planes={planes ? planes : []} 
-                insumos={insumos} addViajeFn={createViajeFn}/>
+                insumos={insumos} addViajeFn={createViajeFn}
+                updateDesglose={updateDesgloses}/>
             </div>
         </div>
     )

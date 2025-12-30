@@ -7,20 +7,24 @@ import "./css/hoverTableCell.css"
 import { btn_d_style, btn_s_style, select_style, text_2_g_style, text_2_t_style } from "@/utils/styles";
 import viajeRemitoInsumoParaseDisplay from "@/utils/viajeRemitoInsumoParaseDisplay";
 
-export default function DisplayPlanes ({viajes,deleteFn,insumos,planes,lugares,repartos,duplicateViajeFn,addViajeDetalleFn,activarViajeFn}:
+export default function DisplayPlanes ({viajes,deleteFn,insumos,planes,lugares,repartos,duplicateViajeFn,addViajeDetalleFn,
+    activarViajeFn,unirViajesFn}:
     {viajes:IViajeRQ[],repartos: IReparto[],deleteFn:(id:number,table:string,column: string) => Promise<boolean>,
     insumos:IInsumo[],planes: IPlan[],lugares:ILentrega[],
     addViajeDetalleFn: (detail:IViajeDetalle,id:number) => Promise<boolean>,
     activarViajeFn: (id:number,state:boolean) => Promise<boolean>,
-    duplicateViajeFn: (v: IViajeRQ,reparto: number) => Promise<boolean>}) {
+    duplicateViajeFn: (v: IViajeRQ,reparto: number) => Promise<boolean>,
+    unirViajesFn: (viaje:number, nuevo:number) => Promise<boolean>}) {
 
     const [selectedViaje,setSelectedViaje] = useState(-1)
+    const [selectedViajeU,setSelectedViajeU] = useState(-1)
     const [selectedRt,setSelectedRt] = useState(-1)
     const [selectedRep,setSelectedRep] = useState(-1)
     const [prev,setPrev] = useState<IEnvioDetallesParsed[]>([])
     const [desgloses,setDesgloses] = useState<IDesglose[]>([])
     const [option, setOption] = useState(false)
     const [exportOpt, setExportOpt] = useState(false)
+    const [unirOpt, setUnirOpt] = useState(false)
 
     const deleteRemito = async () => {
         const remito = viajes[selectedViaje].remitos[selectedRt]
@@ -77,6 +81,23 @@ export default function DisplayPlanes ({viajes,deleteFn,insumos,planes,lugares,r
             else alert ("Error al activar el viaje.")
         }
     }
+    const unirViaje = async () => {
+        if(selectedViajeU > -1 && selectedViaje > -1) {
+            const viaje = viajes[selectedViaje].viaje_id
+            const nuevo = viajes[selectedViajeU].viaje_id
+            const viajeDes = viajes[selectedViaje].des
+            const viajeNDes = viajes[selectedViajeU].des
+            const unirDes = `Viajes unidos: ${viajeDes} => ${viajeNDes}`
+            if(viaje && nuevo && confirm("¿Quieres unir estos dos viajes? Al hacerlo el primer viaje seleccionado se eliminara."+unirDes)) {
+                const res = await unirViajesFn(viaje, nuevo)
+                if(res) {
+                    alert(unirDes)
+                    window.location.reload()
+                }
+                else alert(`Erro al unir los viajes. `+unirDes)
+            }
+        }
+    }
     const exportar = async () => {
         if(selectedRep > -1 && selectedViaje > -1) {
             const reparto = repartos[selectedRep].numero + " - "+repartos[selectedRep].periodo
@@ -95,15 +116,19 @@ export default function DisplayPlanes ({viajes,deleteFn,insumos,planes,lugares,r
         setSelectedRt(-1)
         setDesgloses([])
         setOption(false)
+        setUnirOpt(false)
+        setSelectedViajeU(-1)
         setPrev([])
         setSelectedRep(-1)
     },[selectedViaje])
+
     useEffect(() => {
         if(selectedRt > -1 && selectedViaje > -1) {
             const rto = viajes[selectedViaje].remitos[selectedRt]
             setPrev(viajeRemitoInsumoParaseDisplay(insumos,planes,rto)) 
         }
     },[selectedRt])
+
     useEffect(() => {
         if(selectedRt > -1 && selectedViaje > -1 && viajes[selectedViaje]) {
             const lgr = viajes[selectedViaje].remitos[selectedRt] ? viajes[selectedViaje].remitos[selectedRt].lentrega_id : 0
@@ -119,6 +144,7 @@ export default function DisplayPlanes ({viajes,deleteFn,insumos,planes,lugares,r
     const typePlanReturner = (id:number) => {
         return planes.find(pls => pls.plan_id === id)?.fortificado || false
     }
+    
     return (
         <div>
             <div>
@@ -138,9 +164,15 @@ export default function DisplayPlanes ({viajes,deleteFn,insumos,planes,lugares,r
                 {selectedViaje > -1 &&
                 <div>
                     {(viajes[selectedViaje]) && (
-                        <div >
-                            <button style={{...btn_s_style,margin:5}} onClick={() => setExportOpt(!exportOpt)}>EXPORTAR VIAJE A OTRO PLAN</button>
+                        <div style={{display:"flex"}}>
+                            <div >
+                                {!viajes[selectedViaje].procesado &&<button style={{...btn_s_style,margin:5}} onClick={() => setExportOpt(!exportOpt)}>EXPORTAR VIAJE A OTRO PLAN</button>}
+                            </div>
+                            <div >
+                                <button style={{...btn_s_style,margin:5}} onClick={() => setUnirOpt(!unirOpt)}>UNIR VIAJE</button>
+                            </div>
                         </div>
+
                     )}
                     {(viajes[selectedViaje] && exportOpt) && (
                         <div >
@@ -154,6 +186,24 @@ export default function DisplayPlanes ({viajes,deleteFn,insumos,planes,lugares,r
                                 ))}
                             </select>
                             <button style={{...btn_s_style,margin:5}} onClick={() => exportar()}>EXPORTAR</button>
+                        </div>
+                    )}
+                    {(viajes[selectedViaje] && unirOpt) && (
+                        <div >
+                            <div>
+                                <h2 style={{...text_2_t_style, marginTop: 40}}>SELECCIONA EL VIAJE A UNIR</h2>
+                                <select name="estados_sel" id="state_sl" value={selectedViajeU}
+                                onChange={(e) => setSelectedViajeU(parseInt(e.target.value))}
+                                style={{width: 500,fontSize:24,marginBottom: 20}}>
+                                    <option value={-1}>---</option>
+                                    {viajes.map((p,i) => {
+                                        if(p.remitos.length > 0 && !p.procesado && i !== selectedViaje) {
+                                            return <option key={i} value={i}>{p.des}</option>
+                                        }
+                                    })}
+                                </select>
+                            </div>
+                            <button style={{...btn_s_style,margin:5}} onClick={() => unirViaje()}>UNIR</button>
                         </div>
                     )}
                     {viajes[selectedViaje].procesado && (

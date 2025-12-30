@@ -1,7 +1,6 @@
 
 import { Page, Text, View, Document, StyleSheet, Image } from '@react-pdf/renderer';
 import { IDesgloseDisplay, IInsumo, IRemitosDetalles, IUniqRemito } from '../../utils/interfaces';
-import logoBig from "../../assets/logo_big.png"
 import parseRemitoString from '@/utils/parseRemitoString';
 import { parsedRemitosDetalles } from '@/utils/parseDesglose';
 

@@ -537,3 +537,5 @@ export interface IUsuario {
 export interface ViajesDespachadosRQ {
     viaje_id: number
 }
+
+

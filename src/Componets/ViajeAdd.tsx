@@ -7,10 +7,9 @@ import { useEffect, useState } from "react"
 import "./css/hoverTableCell.css"
 import viajeInsumosParse from "@/utils/viajeInsumosParseDisplay"
 
-export default function ViajeAdd ({escuelas,departamentos,planes,insumos,addViajeFn} : {escuelas: ILentrega[],departamentos:string[],planes:IPlan[],insumos:IInsumo[],
-    addViajeFn: (v:IViaje) => Promise<boolean>
+export default function ViajeAdd ({escuelas,departamentos,planes,insumos,addViajeFn,updateDesglose} : {escuelas: ILentrega[],departamentos:string[],planes:IPlan[],insumos:IInsumo[],
+    addViajeFn: (v:IViaje) => Promise<boolean>, updateDesglose: () => Promise<ILentrega[]>
 }) {
-
     const [selectedDep, setSelectedDep] = useState("")
     const [selectedLgr, setSelectedLgr] = useState(-1)
     const [filteredLgrs, setFilteredLgrs] = useState<ILentrega[]>(escuelas)
@@ -38,7 +37,12 @@ export default function ViajeAdd ({escuelas,departamentos,planes,insumos,addViaj
         setDesgloses([])
     },[selectedP])
 
+    const updateEscuelas = async () => {
+        setSelectedDep("")
+        setSelectedLgr(-1)
+        setFilteredLgrs(await updateDesglose())
 
+    }
 
     useEffect(() => {
         setDesgloses([])
@@ -197,6 +201,9 @@ export default function ViajeAdd ({escuelas,departamentos,planes,insumos,addViaj
                         })}
                     </select>
                 </div>
+                    <div style={{display:"flex",justifyContent:"center",marginTop: 40,marginLeft: 10}}>
+                        <button style={btn_s_style} onClick={() => updateEscuelas()}>ACTUALIZAR</button>
+                    </div>
             </div>
             <div style={{display: "flex",width: "100%",justifyContent:"start"}}>
                 <div >

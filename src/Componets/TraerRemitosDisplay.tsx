@@ -10,6 +10,7 @@ import { pdf } from "@react-pdf/renderer"
 import PDFDesglose from "./pdfs/PDFDesglose"
 import PDFActas from "./pdfs/PDFActas"
 import hojarutaParsed from "@/utils/hojarutaParsed"
+import PDFHojaRuta from "./pdfs/PDFHojaRuta"
 
 
 export default function TraerRemitosDisplay ({viajes,insumos,venc,cai,getRtViaje,getRtRango}:
@@ -48,8 +49,10 @@ export default function TraerRemitosDisplay ({viajes,insumos,venc,cai,getRtViaje
         return blob
     }
 
-    const downloadHojaRuta = () => {
-        hojarutaParsed(insumos,remitos)
+    const downloadHojaRuta = async () => {
+        const detalles = hojarutaParsed(insumos,remitos)
+        const blob = await pdf(<PDFHojaRuta detalles={detalles} remitos={remitos} />).toBlob()
+        return blob
     }
 
     const displayViaje = () => {
@@ -141,7 +144,7 @@ export default function TraerRemitosDisplay ({viajes,insumos,venc,cai,getRtViaje
                         <PdfBtn disable={false} title="REMITOS" pdf={downloadRemitos()}/>
                         <PdfBtn disable={false} title="DESGLOSES" pdf={downloadDesglose()}/>
                         <PdfBtn disable={false} title="ACTAS" pdf={downloadActas()}/>
-                        {/*<button onClick={() => downloadHojaRuta()}>test</button>*/}
+                        <PdfBtn disable={false} title="HOJA DE RUTA" pdf={downloadHojaRuta()}/>
                     </div>
 
                 </div>
