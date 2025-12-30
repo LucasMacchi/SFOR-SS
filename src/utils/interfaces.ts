@@ -240,7 +240,11 @@ export interface IRemitoInFactura {
     raciones:number,
     remito_id: number,
     completo: string,
-    factura?:string
+    factura?:string,
+    fortificado:boolean,
+    localidad: string,
+    departamento:string,
+    fecha_entregado: Date
 }
 
 
@@ -265,8 +269,10 @@ export interface IExcelFactura {
     REMITO:string,
     CABECERA: string,
     RACIONES: number,
-    MONTO:number
-    FACTURA?:string
+    MONTO:number,
+    FACTURA?:string,
+    LOCALIDAD: string,
+    DEPARTAMENTO:string
 }
 
 export interface IExcelRemito {

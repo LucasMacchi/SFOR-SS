@@ -1,11 +1,15 @@
 import EnviosExcel from "@/Componets/EnviosExcel";
+import FacturasExcel from "@/Componets/FacturasExcel";
 import ViajesExcel from "@/Componets/ViajesExcel";
 import DBEnviosExcel from "@/db/DBEnviosExcel";
+import DBFacturacion from "@/db/DBFacturacion";
+import DBValorRacion from "@/db/DBValorRacion";
 import DBViajes from "@/db/DBViajes";
 import DBViajesExcel from "@/db/DBViajesExcel";
-import { IEnviosExcel, IViajeExcel, IViajeExcelComplete } from "@/utils/interfaces";
+import { IEnviosExcel, IExcelFactura, IRemitoInFactura, IViajeExcel, IViajeExcelComplete } from "@/utils/interfaces";
 import sessionCheck from "@/utils/sessionCheck";
 import { hr_style, text_2_t_style } from "@/utils/styles";
+import parseRemitoString from "@/utils/parseRemitoString";
 
 
 
@@ -38,6 +42,39 @@ export default async function Page() {
         }
     }
 
+    const getAllFacturas = async ():Promise<IExcelFactura[]> => {
+        "use server"
+        try {
+            const facturas = await DBFacturacion()
+            const valRac = await DBValorRacion()
+            const data: IExcelFactura[] = []
+            if(facturas){
+                console.log("aca")
+                facturas.forEach(f => {
+                    f.remitos?.forEach((rt) => {
+                        if(rt){
+                            data.push({
+                                REMITO: parseRemitoString(rt.pv,rt.numero),
+                                RACIONES: rt.raciones,
+                                CABECERA: rt.completo,
+                                MONTO: rt.raciones * valRac,
+                                FACTURA: parseRemitoString(f.pv,f.numero),
+                                LOCALIDAD: rt.localidad,
+                                DEPARTAMENTO: rt.departamento
+                            })
+                        }
+                    })
+                });
+
+                return data
+            }
+
+            return []
+        } catch (error) {
+            console.log(error)
+            return []
+        }
+    }
 
     const getViajesData = async ():Promise<IViajeExcelComplete[]> => {
         "use server"
@@ -96,6 +133,15 @@ export default async function Page() {
                     <ViajesExcel getViajeDataExcelFn={getViajesData}/>
                 </div>
             </div>
+            <div>
+                <h2 style={text_2_t_style}>FACTURACION</h2>
+                <hr color="#4A6EE8" style={hr_style}/>
+                <div style={{display:"flex",justifyContent:"center"}}>
+                    <FacturasExcel getFacturasDataExcelFn={getAllFacturas}/>
+                </div>
+            </div>
         </div>
     )
 }
+
+

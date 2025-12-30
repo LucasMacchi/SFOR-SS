@@ -3,6 +3,8 @@ import { Page, Text, View, Document, StyleSheet, Image } from '@react-pdf/render
 import {IFacturaAgrupado, IRemitoInFactura } from '../../utils/interfaces';
 import { ToWords } from 'to-words';
 import parseRemitoString from '@/utils/parseRemitoString';
+import convertToMoney from '@/utils/convertToMoney';
+import convertToNumbers from '@/utils/convertToNumbers';
 const stylePedido = StyleSheet.create({
     logo: {
         width: 120,
@@ -181,10 +183,10 @@ const insumosDisplayer = (remitos: IRemitoInFactura[],count: number,last:boolean
                 <Text style={stylePedido.tableCell}>{"Remitos: "+totalRts}</Text>
             </View>
             <View style={stylePedido.tableColcod2}>
-                <Text style={stylePedido.tableCell2}>{totalRac}</Text>
+                <Text style={stylePedido.tableCell2}>{convertToNumbers(totalRac)}</Text>
             </View>
             <View style={stylePedido.tableColcod2}>
-                <Text style={stylePedido.tableCell2}>{Intl.NumberFormat("es-AR",{style: "currency", currency: "ARS"}).format(totalAmount)}</Text>
+                <Text style={stylePedido.tableCell2}>{convertToMoney(totalAmount)}</Text>
             </View>
         </View>
     )
@@ -205,8 +207,11 @@ const insumosDisplayer = (remitos: IRemitoInFactura[],count: number,last:boolean
 const PDFfactura = ({factura,valor}:{factura: IFacturaAgrupado,valor:number}) => {
     const paginasCount = 32
     const pages: IRemitoInFactura[][] = []
+    const facturaComplet = parseRemitoString(factura.pv,factura.numero)
+    let titleDes = "Detalle de Relaciones de Refrigerios Fortificados Reforzados\nAnexo Factura Nro. FC B "+facturaComplet
     const remitos:IRemitoInFactura[] = factura.remitos ? factura.remitos : []
     for (let i = 0; i < remitos.length; i += paginasCount) {
+        if(remitos[i].fortificado) titleDes = "Detalle de Relaciones de Almuerzos Fortificados Reforzados\nAnexo Factura Nro. FC B "+facturaComplet
       const arr = remitos.slice(i,i + paginasCount)
       pages.push(arr)
     }
@@ -230,7 +235,7 @@ const PDFfactura = ({factura,valor}:{factura: IFacturaAgrupado,valor:number}) =>
                     </View>
                 </View>
                 <View style={{flexDirection: 'row', justifyContent: "center"}}>
-                    <Text style={stylePedido.title}>{}</Text>
+                    <Text style={stylePedido.title}>{titleDes}</Text>
                 </View>
                 {insumosDisplayer(pages[0],paginasCount,pages.length === 1 ? true : false,amountTotal,racionesTotal,remitos.length,valor)}
             </Page>

@@ -107,7 +107,7 @@ export function changeTableConfigSQL (id:number,payload:string) {
 }
 
 export function remitoInFacturaSQL (pv:number,nro:number) {
-    return `SELECT r.remito_id,r.pv,r.numero,f.raciones,l.completo FROM public.factura f JOIN public.remito r ON r.remito_id = f.remito_id JOIN public.lentrega l ON r.lentrega_id = l.lentrega_id WHERE f.pv = ${pv} and f.numero = ${nro};`
+    return `SELECT r.remito_id,r.pv,r.numero,f.raciones,l.completo,r.fortificado,l.departamento,l.localidad FROM public.factura f JOIN public.remito r ON r.remito_id = f.remito_id JOIN public.lentrega l ON r.lentrega_id = l.lentrega_id WHERE f.pv = ${pv} and f.numero = ${nro};`
 }
 
 export function pvFacturacionSQL () {
