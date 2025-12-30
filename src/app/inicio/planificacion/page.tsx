@@ -1,4 +1,4 @@
-import DBJoinViajes from "@/Componets/DBJoinViajes";
+import DBJoinViajes from "@/db/DBJoinViajes";
 import DisplayViajes from "@/Componets/DisplayViajes";
 import ViajeAdd from "@/Componets/ViajeAdd";
 import DBActivarViaje from "@/db/DBActivarViaje";
@@ -21,7 +21,7 @@ import { hr_style, text_2_t_style } from "@/utils/styles";
 
 export default async function Page () {
     await sessionCheck(2)
-    const lugares = await DBEscuelas(true)
+    const lugares = await DBEscuelas(true,false)
     const plan = await DBPlanActual()
     const departamentos = await DBDepartamentos()
     const insumos = await DBInsumos()
@@ -50,7 +50,7 @@ export default async function Page () {
     const updateDesgloses = async () => {
         "use server"
         try {
-            const lugaresU = await DBEscuelas(true)
+            const lugaresU = await DBEscuelas(true,false)
             lugaresU.forEach(lgs => {
                 if(lgs.desgloses) {
                     desglosesViajes.forEach(dv => {

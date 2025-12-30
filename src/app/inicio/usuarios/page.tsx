@@ -18,6 +18,7 @@ export default async function Page() {
     }
 
     const addUserFn = async (u: IUsuario):Promise<boolean> => {
+        "use server"
         try {
             const res = await DBCreateUser(u)
             return res            
@@ -41,7 +42,7 @@ export default async function Page() {
                 <hr color="#4A6EE8" style={hr_style}/>
             </div>
             <div>
-                <AddUser />
+                <AddUser addUserFn={addUserFn}/>
             </div>
         </div>
     )

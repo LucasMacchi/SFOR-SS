@@ -5,14 +5,14 @@ import { ILentrega } from "@/utils/interfaces"
 
 
 
-export default async function (sent:boolean): Promise<ILentrega[]> {
+export default async function (sent:boolean,hidden:boolean): Promise<ILentrega[]> {
     const conn = clientReturner()
     try {
         if(await authJwt(3)) {
             await conn.connect()
             const lugares: ILentrega[] = (await conn.query(allLugaresEntregaSQL())).rows
             for(const l of lugares) {
-                l.desgloses = (await conn.query(desgloseByLentregaSQL(l.lentrega_id,sent))).rows
+                l.desgloses = (await conn.query(desgloseByLentregaSQL(l.lentrega_id,sent,hidden))).rows
             }
             await conn.end()
             return lugares

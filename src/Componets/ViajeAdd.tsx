@@ -240,7 +240,7 @@ export default function ViajeAdd ({escuelas,departamentos,planes,insumos,addViaj
                 </div>
             <div>
                 <div>
-                    <h2 style={{...text_2_t_style, marginTop: 40}}>DESGLOSES AGREGADOS</h2>
+                    <h2 style={{...text_2_t_style, marginTop: 40}}>DESGLOSES AGREGADOS - {detallesViaje.length}</h2>
                 </div>
                 <div style={{maxHeight: maxheight,height:maxheight, overflow: "scroll",marginLeft: 30, width: 500}}>
                 <table style={{width: "100%", fontSize: 16}}>
@@ -268,7 +268,7 @@ export default function ViajeAdd ({escuelas,departamentos,planes,insumos,addViaj
             </div>
             <div >
                 <div>
-                    <h2 style={{...text_2_t_style, marginTop: 40}}>REMITOS CREADOS</h2>
+                    <h2 style={{...text_2_t_style, marginTop: 40}}>REMITOS CREADOS - {remitos.length}</h2>
                 </div>
                 <div style={{maxHeight: maxheight,height:maxheight, overflow: "scroll",marginLeft: 30, width: 400}}>
                 <table style={{width: "100%", fontSize: 16}}>
