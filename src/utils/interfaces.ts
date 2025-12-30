@@ -265,6 +265,7 @@ export interface IExcelFactura {
     REMITO:string,
     CABECERA: string,
     RACIONES: number,
+    MONTO:number
     FACTURA?:string
 }
 

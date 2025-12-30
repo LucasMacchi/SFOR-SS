@@ -28,6 +28,7 @@ export default function FacturasDisplay ({facturas,valor}:{facturas:IFacturaAgru
                 data.push({
                     REMITO: parseRemitoToString(rt.pv,rt.numero),
                     RACIONES: rt.raciones,
+                    MONTO: rt.raciones * valor,
                     CABECERA: rt.completo
                 })
             });
@@ -49,6 +50,7 @@ export default function FacturasDisplay ({facturas,valor}:{facturas:IFacturaAgru
                     REMITO: parseRemitoToString(rt.pv,rt.numero),
                     RACIONES: rt.raciones,
                     CABECERA: rt.completo,
+                    MONTO: rt.raciones * valor,
                     FACTURA: rt.factura ? rt.factura : ""
                 })
             });

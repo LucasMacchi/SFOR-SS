@@ -1,14 +1,15 @@
 import clientReturner from "./clientReturner";
 import authJwt from "@/utils/authJwt";
 import { IUsuario } from "@/utils/interfaces";
-import { createUserSQL } from "./SQLreturner";
+import { createPlanNewUserSQL, createUserSQL } from "./SQLreturner";
 
 export default async function (u:IUsuario): Promise<boolean> {
     const conn = clientReturner()
     try {
         if(await authJwt(1)) {
             await conn.connect()
-            await conn.query(createUserSQL(u))
+            const id = (await conn.query(createUserSQL(u))).rows[0]["userId"]
+            await conn.query(createPlanNewUserSQL(), [id])
             await conn.end()
             return true
         }
