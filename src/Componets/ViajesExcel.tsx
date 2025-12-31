@@ -4,7 +4,7 @@ import Image from "next/image"
 import * as XLSX from 'xlsx';
 
 
-export default function EnviosExcel ({getViajeDataExcelFn}:{getViajeDataExcelFn: () => Promise<IViajeExcelComplete[]>}) {
+export default function ViajesExcel ({getViajeDataExcelFn}:{getViajeDataExcelFn: () => Promise<IViajeExcelComplete[]>}) {
 
     const color = "#32CD32"
 

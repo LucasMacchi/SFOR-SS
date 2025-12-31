@@ -10,6 +10,7 @@ import { IEnviosExcel, IExcelFactura, IRemitoInFactura, IViajeExcel, IViajeExcel
 import sessionCheck from "@/utils/sessionCheck";
 import { hr_style, text_2_t_style } from "@/utils/styles";
 import parseRemitoString from "@/utils/parseRemitoString";
+import ViajesExcelDiv from "@/Componets/ViajesExcelDiv";
 
 
 
@@ -113,6 +114,40 @@ export default async function Page() {
         }
     }
 
+
+    const getViajesDataDivided = async ():Promise<IViajeExcel[]> => {
+        "use server"
+        try {
+            const res = await DBViajesExcel()
+            const excelData: IViajeExcel[] = []
+            viajes.forEach(v => {
+                res.forEach(e => {
+                    if(e.viaje_id === v.viaje_id) {
+                        excelData.push({
+                            CUE:e.cue,
+                            ID: e.lentrega_id,
+                            CABECERA:e.completo,
+                            DEPENDENCIA:e.dependencia,
+                            LOCALIDAD:e.localidad,
+                            DEPARTAMENTO:e.departamento,
+                            DIRECCION:e.direccion,
+                            DIAS:e.dias,
+                            PLAN:e.plan,
+                            RACIONES:e.raciones,
+                            RACIONES_TOTAL:e.raciones * e.dias
+                        })
+                    }
+                });
+            });
+
+            return excelData
+        } catch (error) {
+            console.log(error)
+            return []
+        }
+    }
+
+
     return (
         <div>
             <div>
@@ -131,6 +166,9 @@ export default async function Page() {
                 <hr color="#4A6EE8" style={hr_style}/>
                 <div style={{display:"flex",justifyContent:"center"}}>
                     <ViajesExcel getViajeDataExcelFn={getViajesData}/>
+                </div>
+                <div style={{display:"flex",justifyContent:"center",marginTop: 20}}>
+                    <ViajesExcelDiv getViajeDataExcelDivFn={getViajesDataDivided}/>
                 </div>
             </div>
             <div>

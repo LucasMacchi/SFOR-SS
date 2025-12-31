@@ -222,7 +222,7 @@ export default function DisplayPlanes ({viajes,deleteFn,insumos,planes,lugares,r
                     style={{width: 500,fontSize:24,marginBottom: 20}}>
                         <option value={-1}>---</option>
                         {viajes[selectedViaje].remitos.map((r,i) => (
-                            <option key={i} value={i}>{r.completo}</option>
+                            <option key={i} value={i}>{r.lentrega_id+"-"+r.completo}</option>
                         ))}
                     </select>
                     {(option && desgloses.length > 0) && (
