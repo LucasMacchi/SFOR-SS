@@ -530,7 +530,8 @@ export interface IViajeExcel {
     DIAS:number,
     PLAN:string,
     RACIONES:number,
-    RACIONES_TOTAL:number
+    RACIONES_TOTAL:number,
+    VIAJE?:string
 }
 
 export interface IUsuario {
