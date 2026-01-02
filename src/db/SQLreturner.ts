@@ -401,6 +401,13 @@ export function viajeDelSQL() {
 }
 
 export function createPlanNewUserSQL () {
-    return `INSERT INTO public.reparto_user(reparto_id, user_id) VALUES ((SELECT MAX(reparto_id) FROM public.reparto), $1);
-`
+    return `INSERT INTO public.reparto_user(reparto_id, user_id) VALUES ((SELECT MAX(reparto_id) FROM public.reparto), $1);`
+}
+
+export function getAllNonExportedRtsSQL () {
+    return `SELECT r.remito_id,r.pv, r.numero, d.ins_id, SUM(unidades) as unidades FROM public.remito r 
+            JOIN public.envio e ON r.remito_id = e.envio_id 
+            JOIN public.envio_details d ON e.envio_id = d.envio_id
+            WHERE r.despachado = true AND r.exportado = false GROUP BY r.remito_id,r.pv,r.numero, d.ins_id
+            ORDER BY r.remito_id;;`
 }

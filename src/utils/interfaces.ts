@@ -505,6 +505,20 @@ export interface IViajeExcelComplete {
     detalles: IViajeExcel[]
 }
 
+export interface IViajeExcelCompleteInsumos {
+    name:string,
+    detalles: IViajeRemitoDetalleExcel[]
+}
+
+export interface IViajeRemitoDetalleExcel {
+    UNIDADES: number,
+    BOLSAS: number,
+    RACIONES: number,
+    CAJAS: number,
+    KILOS: number,
+    INSUMO: string,
+}
+
 export interface IViajeExcelRQ {
     cue: number,
     lentrega_id: number,
@@ -542,8 +556,16 @@ export interface IUsuario {
     rol: number
 }
 
-export interface ViajesDespachadosRQ {
+export interface IViajesDespachadosRQ {
     viaje_id: number
+}
+
+export interface IRemitoNoExportedRQ {
+    remito_id:number,
+    pv:number,
+    numero:number,
+    ins_id: number,
+    unidades:number
 }
 
 
