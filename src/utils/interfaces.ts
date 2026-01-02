@@ -517,6 +517,7 @@ export interface IViajeRemitoDetalleExcel {
     CAJAS: number,
     KILOS: number,
     INSUMO: string,
+    VIAJE?:string
 }
 
 export interface IViajeExcelRQ {

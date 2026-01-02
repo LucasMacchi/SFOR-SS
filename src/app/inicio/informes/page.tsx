@@ -15,6 +15,7 @@ import DBInsumos from "@/db/DBInsumos";
 import viajeInsumosParseDisplay from "@/utils/viajeInsumosParseDisplay";
 import DBPlanReparto from "@/db/DBPlanReparto";
 import ViajesExcelData from "@/Componets/ViajesExcelData";
+import ViajesExcelDataCombinado from "@/Componets/ViajeExcelDataCombinado";
 
 
 
@@ -182,6 +183,33 @@ export default async function Page() {
             return []
         }
     }
+    const getViajesDataProcesedCombinado = async () => {
+        "use server"
+        try {
+            const viajes = await DBViajes()
+            const insumos = await DBInsumos()
+            const planes = await DBPlanReparto()
+            const excelDet:IViajeRemitoDetalleExcel[] = []
+            viajes.forEach(v => {
+                const detalles = viajeInsumosParseDisplay(insumos,planes ? planes : [],v.remitos)
+                detalles.forEach(dt => {
+                    excelDet.push({
+                        UNIDADES:dt.unidades,
+                        BOLSAS: dt.bolsas,
+                        RACIONES: dt.raciones,
+                        CAJAS: dt.cajas,
+                        INSUMO:dt.des,
+                        KILOS: dt.kilos,
+                        VIAJE: v.des
+                    })
+                });
+            });
+            return excelDet
+        } catch (error) {
+            console.log(error)
+            return []
+        }
+    }
 
     return (
         <div>
@@ -207,6 +235,9 @@ export default async function Page() {
                 </div>
                 <div style={{display:"flex",justifyContent:"center",marginTop: 20}}>
                     <ViajesExcelData getViajesDataProcesed={getViajesDataProcesed}/>
+                </div>
+                <div style={{display:"flex",justifyContent:"center",marginTop: 20}}>
+                    <ViajesExcelDataCombinado getViajesDataProcesedCombinado={getViajesDataProcesedCombinado}/>
                 </div>
             </div>
             <div>
