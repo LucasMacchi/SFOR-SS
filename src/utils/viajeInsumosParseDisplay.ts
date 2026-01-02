@@ -1,6 +1,6 @@
-import { IDesgloseParsed, IEnvioDetallesParsed, IInsumo, IPlan, IViajeRemito } from "./interfaces";
+import { IDesgloseParsed, IEnvioDetallesParsed, IInsumo, IPlan, IViajeRemito, IViajeRemitoRQ } from "./interfaces";
 
-export default function (insumos: IInsumo[],planes: IPlan[], remitos: IViajeRemito[]) {
+export default function (insumos: IInsumo[],planes: IPlan[], remitos: IViajeRemito[] | IViajeRemitoRQ[]) {
 
     const detalles: IDesgloseParsed[] = []
 

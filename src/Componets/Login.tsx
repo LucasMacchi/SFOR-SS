@@ -40,6 +40,7 @@ export default function Login () {
             if(res.data) router.push("/inicio")
         } catch (error) {
             console.error(error)
+            alert("Credenciales incorrectas.")
             return false
         }
     }

@@ -6,11 +6,15 @@ import DBFacturacion from "@/db/DBFacturacion";
 import DBValorRacion from "@/db/DBValorRacion";
 import DBViajes from "@/db/DBViajes";
 import DBViajesExcel from "@/db/DBViajesExcel";
-import { IEnviosExcel, IExcelFactura, IRemitoInFactura, IViajeExcel, IViajeExcelComplete } from "@/utils/interfaces";
+import { IEnviosExcel, IExcelFactura, IRemitoInFactura, IViajeExcel, IViajeExcelComplete, IViajeExcelCompleteInsumos, IViajeRemitoDetalleExcel } from "@/utils/interfaces";
 import sessionCheck from "@/utils/sessionCheck";
 import { hr_style, text_2_t_style } from "@/utils/styles";
 import parseRemitoString from "@/utils/parseRemitoString";
 import ViajesExcelDiv from "@/Componets/ViajesExcelDiv";
+import DBInsumos from "@/db/DBInsumos";
+import viajeInsumosParseDisplay from "@/utils/viajeInsumosParseDisplay";
+import DBPlanReparto from "@/db/DBPlanReparto";
+import ViajesExcelData from "@/Componets/ViajesExcelData";
 
 
 
@@ -148,6 +152,36 @@ export default async function Page() {
         }
     }
 
+    const getViajesDataProcesed = async () => {
+        "use server"
+        try {
+            const viajes = await DBViajes()
+            const insumos = await DBInsumos()
+            const planes = await DBPlanReparto()
+            const viajesExcel:IViajeExcelCompleteInsumos[] = []
+            viajes.forEach(v => {
+                const detalles = viajeInsumosParseDisplay(insumos,planes ? planes : [],v.remitos)
+                const excelDet:IViajeRemitoDetalleExcel[] = detalles.map((dt) => {
+                    return{
+                        UNIDADES:dt.unidades,
+                        BOLSAS: dt.bolsas,
+                        RACIONES: dt.raciones,
+                        CAJAS: dt.cajas,
+                        INSUMO:dt.des,
+                        KILOS: dt.kilos
+                    }
+                })
+                viajesExcel.push({
+                    name: v.des,
+                    detalles: excelDet
+                })
+            });
+            return viajesExcel
+        } catch (error) {
+            console.log(error)
+            return []
+        }
+    }
 
     return (
         <div>
@@ -170,6 +204,9 @@ export default async function Page() {
                 </div>
                 <div style={{display:"flex",justifyContent:"center",marginTop: 20}}>
                     <ViajesExcelDiv getViajeDataExcelDivFn={getViajesDataDivided}/>
+                </div>
+                <div style={{display:"flex",justifyContent:"center",marginTop: 20}}>
+                    <ViajesExcelData getViajesDataProcesed={getViajesDataProcesed}/>
                 </div>
             </div>
             <div>

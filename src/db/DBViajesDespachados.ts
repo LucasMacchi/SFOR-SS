@@ -2,7 +2,7 @@ import authJwt from "@/utils/authJwt";
 import clientReturner from "./clientReturner";
 import { viajesDespachadosSQL } from "./SQLreturner";
 import decodeJWT from "@/utils/decodeJWT";
-import { ViajesDespachadosRQ } from "@/utils/interfaces";
+import { IViajesDespachadosRQ } from "@/utils/interfaces";
 
 
 export default async function () {
@@ -11,7 +11,7 @@ export default async function () {
         const user = await decodeJWT()
         if(await authJwt(2) && user) {
             await conn.connect()
-            const viajes:ViajesDespachadosRQ[] = (await conn.query(viajesDespachadosSQL(user.userId))).rows
+            const viajes:IViajesDespachadosRQ[] = (await conn.query(viajesDespachadosSQL(user.userId))).rows
             const parsed = viajes.map(v => v.viaje_id)
             await conn.end()
             return parsed
