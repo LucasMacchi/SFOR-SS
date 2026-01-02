@@ -1,5 +1,5 @@
 import { ESTADOS } from "@/utils/enums"
-import { IAddDesglose, IAddEnvio, IAddFactura, IAddPlan, IAddPlanDetails, IAddRemito, ICreateInsumo, IEnvioDetalles, IRqReportAdd, IUsuario, IViajeDetalle, IViajeRemito } from "@/utils/interfaces"
+import { IAddDesglose, IAddEnvio, IAddFactura, IAddPlan, IAddPlanDetails, IAddRemito, ICreateInsumo, IEnvioDetalles, IRemitoNoExportedRQ, IRqReportAdd, IUsuario, IViajeDetalle, IViajeRemito } from "@/utils/interfaces"
 
 export function listRemitosSQL(usr: number): string {
     return `SELECT r.remito_id,r.pv,r.numero,r.estado_id,e.des as estado,r.fortificado,r.dias,
@@ -405,9 +405,20 @@ export function createPlanNewUserSQL () {
 }
 
 export function getAllNonExportedRtsSQL () {
-    return `SELECT r.remito_id,r.pv, r.numero, d.ins_id, SUM(unidades) as unidades FROM public.remito r 
-            JOIN public.envio e ON r.remito_id = e.envio_id 
+    return `SELECT r.remito_id,r.pv, r.numero, d.ins_id,r.lentrega_id,i.des,i.cod1,i.cod2,i.cod3, SUM(unidades) as unidades FROM public.remito r 
+            JOIN public.envio e ON r.remito_id = e.remito_id 
             JOIN public.envio_details d ON e.envio_id = d.envio_id
-            WHERE r.despachado = true AND r.exportado = false GROUP BY r.remito_id,r.pv,r.numero, d.ins_id
-            ORDER BY r.remito_id;;`
+			JOIN public.insumo i ON i.ins_id = d.ins_id
+            WHERE r.despachado = true AND r.exportado = false GROUP BY r.remito_id,r.pv,r.numero, d.ins_id, r.lentrega_id,i.des,i.cod1,i.cod2,i.cod3
+            ORDER BY r.remito_id;`
+}
+
+export function exportRemitosSQL (remitos:IRemitoNoExportedRQ[]) {
+    
+    let ids = ""
+    remitos.forEach((rt,i) => {
+        if(i === 0) ids += rt.remito_id+""
+        else ids += ","+rt.remito_id
+    });
+    return `UPDATE public.remito SET exportado = true WHERE remito_id IN (${ids});`
 }

@@ -6,7 +6,7 @@ import DBFacturacion from "@/db/DBFacturacion";
 import DBValorRacion from "@/db/DBValorRacion";
 import DBViajes from "@/db/DBViajes";
 import DBViajesExcel from "@/db/DBViajesExcel";
-import { IEnviosExcel, IExcelFactura, IRemitoInFactura, IViajeExcel, IViajeExcelComplete, IViajeExcelCompleteInsumos, IViajeRemitoDetalleExcel } from "@/utils/interfaces";
+import { IEnviosExcel, IExcelFactura, IRemitoInFactura, IRemitoNoExportedRQ, IViajeExcel, IViajeExcelComplete, IViajeExcelCompleteInsumos, IViajeRemitoDetalleExcel } from "@/utils/interfaces";
 import sessionCheck from "@/utils/sessionCheck";
 import { hr_style, text_2_t_style } from "@/utils/styles";
 import parseRemitoString from "@/utils/parseRemitoString";
@@ -16,6 +16,9 @@ import viajeInsumosParseDisplay from "@/utils/viajeInsumosParseDisplay";
 import DBPlanReparto from "@/db/DBPlanReparto";
 import ViajesExcelData from "@/Componets/ViajesExcelData";
 import ViajesExcelDataCombinado from "@/Componets/ViajeExcelDataCombinado";
+import ExportRemitos from "@/Componets/ExportRemitos";
+import DBExportData from "@/db/DBExportData";
+import DBExportRemito from "@/db/DBExportRemito";
 
 
 
@@ -211,11 +214,40 @@ export default async function Page() {
         }
     }
 
+    const getExportData = async () => {
+        "use server"
+        try {
+            const exportar = await DBExportData()
+            return exportar
+        } catch (error) {
+            console.log(error)
+            return []
+        }
+    }
+
+    const exportRemitos = async (remitos: IRemitoNoExportedRQ[]): Promise<boolean> => {
+        "use server"
+        try {
+            const resEnd = await DBExportRemito(remitos)
+            return resEnd
+        } catch (error) {
+            console.log(error)
+            return false
+        }
+    }
+
     return (
         <div>
             <div>
                 <h2 style={text_2_t_style}>INFORMES</h2>
                 <hr color="#4A6EE8" style={hr_style}/>
+            </div>
+            <div>
+                <h2 style={text_2_t_style}>REMITOS</h2>
+                <hr color="#4A6EE8" style={hr_style}/>
+                <div style={{display:"flex",justifyContent:"center"}}>
+                    <ExportRemitos getExportData={getExportData} exportarRemitos={exportRemitos}/>
+                </div>
             </div>
             <div>
                 <h2 style={text_2_t_style}>ENVIOS</h2>

@@ -566,7 +566,12 @@ export interface IRemitoNoExportedRQ {
     pv:number,
     numero:number,
     ins_id: number,
-    unidades:number
+    unidades:number,
+    lentrega_id:number,
+    des: string,
+    cod1:number,
+    cod2:number | null,
+    cod3:number | null
 }
 
 
