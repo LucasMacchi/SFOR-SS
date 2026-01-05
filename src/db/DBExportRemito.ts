@@ -1,19 +1,19 @@
 import { IRemitoNoExportedRQ } from "@/utils/interfaces";
 import clientReturner from "./clientReturner";
 import authJwt from "@/utils/authJwt";
-import { getAllNonExportedRtsSQL } from "./SQLreturner";
+import { exportRemitosSQL } from "./SQLreturner";
 
-export default async function (): Promise<IRemitoNoExportedRQ[]> {
+export default async function (remitos:IRemitoNoExportedRQ[]): Promise<boolean> {
     const conn = clientReturner()
     try {
         if(await authJwt(2)) {
             await conn.connect()
-            const rq: IRemitoNoExportedRQ[] = (await conn.query(getAllNonExportedRtsSQL())).rows
-            console.log(rq)
+            await conn.query(exportRemitosSQL(remitos))
             await conn.end()
-            return rq
+            return true
         }
-        return []
+        await conn.end()
+        return false
     } catch (error) {
         await conn.end()
         console.log(error)
