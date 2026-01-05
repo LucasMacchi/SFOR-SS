@@ -15,3 +15,9 @@ export enum ROLES {
     ADMINSTRATIVO = 2,
     DEPOSITO = 3
 }
+
+export enum ESPECIALES {
+    DIABETES = 1,
+    CELIACOS = 2,
+    MIXTO = 3
+}

@@ -162,7 +162,7 @@ export function planAddDetailSQL (d: IAddPlanDetails) {
 }
 
 export function planAddPlanSQL (d: IAddPlan) {
-    return `INSERT INTO public.plan(dias, fortificado, des) VALUES (${d.days}, ${d.fortificado}, '${d.descripcion}') RETURNING plan_id;`
+    return `INSERT INTO public.plan(dias, fortificado, des,celiacos,diabetes,mixto) VALUES (${d.days}, ${d.fortificado}, '${d.descripcion}',${d.celiacos},${d.diabetes},${d.mixto}) RETURNING plan_id;`
 }
 
 export function deleteDetailSQL (id:number) {

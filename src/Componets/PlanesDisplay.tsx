@@ -14,7 +14,7 @@ export default function PlanesDisplay ({planes,insumos,editDaysFn,addPlanFn,addD
     const [selectedP, setSelectedP] = useState(-1)
     const [plan, setPlan] = useState<IPlan>()
     const [up,setUpd] = useState(0)
-    const [addPlan, setAddPlan] = useState<IAddPlan>({days:0,descripcion:"",fortificado: false})
+    const [addPlan, setAddPlan] = useState<IAddPlan>({days:0,descripcion:"",fortificado: false,diabetes: false,celiacos:false,mixto:false})
     const [arrayInsumos, setArrayInsumos] = useState<IAddPlanDetails[]>([])
     useEffect(() => {
         if(selectedP > -1) {
@@ -118,6 +118,18 @@ export default function PlanesDisplay ({planes,insumos,editDaysFn,addPlanFn,addD
         else alert("Faltan datos.")
     }
 
+    const addEspecial = (opt:number) => {
+        if(opt === 1){
+            setAddPlan({...addPlan,celiacos: false,mixto: false,diabetes: true})
+        }
+        if(opt === 2){
+            setAddPlan({...addPlan,celiacos: true,mixto: false,diabetes: false})
+        }
+        if(opt === 3){
+            setAddPlan({...addPlan,celiacos: false,mixto: true,diabetes: false})
+        }
+    }
+
     return (
         <div style={{marginLeft: 10}}>
             <div style={{display: "flex"}}>
@@ -184,6 +196,17 @@ export default function PlanesDisplay ({planes,insumos,editDaysFn,addPlanFn,addD
                         style={{width: 300,fontSize:24,marginBottom: 20}}>
                             <option value={1}>COPA DE LECHE</option>
                             <option value={2}>ALMUERZO</option>
+                        </select>
+                    </div>
+                    <div style={{marginLeft: 30}}>
+                        <h4 style={{...text_2_t_style, marginTop: 40}}>ESPECIAL</h4>
+                        <select name="estados_sel" id="state_sl"
+                        onChange={(e) => addEspecial(parseInt(e.target.value))}
+                        style={{width: 300,fontSize:24,marginBottom: 20}}>
+                            <option value={0}>---</option>
+                            <option value={1}>DIABETICOS</option>
+                            <option value={2}>CELICACOS</option>
+                            <option value={3}>MIXTO</option>
                         </select>
                     </div>
                 </div>

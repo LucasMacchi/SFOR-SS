@@ -297,6 +297,9 @@ export interface IPlan {
     fortificado: boolean,
     plan_id: number,
     des: string,
+    diabetes: boolean,
+    celiacos: boolean,
+    mixto: boolean,
     detalles: IPlanDetails[]
 }
 
@@ -318,7 +321,10 @@ export interface IAddPlanDetails {
 export interface IAddPlan {
     days: number,
     descripcion: string,
-    fortificado:boolean
+    fortificado:boolean,
+    celiacos: boolean,
+    diabetes: boolean,
+    mixto: boolean
 }
 
 export interface ILentrega {
