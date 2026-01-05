@@ -9,7 +9,7 @@ export default function (insumos: IInsumo[],planes: IPlan[], r: IViajeRemitoRQ) 
             console.log(p)
             if(p.celiacos || p.diabetes || p.mixto) {
                 r.detalles.forEach((rd) => {
-                    const racionesT = rd.raciones * p.dias
+                    const racionesT = rd.raciones
                     const arrDetallesIns: IEnvioDetallesParsed[] = []
                     p.detalles.forEach(pd => {
                         insumos.forEach(ins => {
