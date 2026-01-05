@@ -8,23 +8,26 @@ import { btn_d_style, btn_s_style, select_style, text_2_g_style, text_2_t_style 
 import viajeRemitoInsumoParaseDisplay from "@/utils/viajeRemitoInsumoParaseDisplay";
 
 export default function DisplayPlanes ({viajes,deleteFn,insumos,planes,lugares,repartos,duplicateViajeFn,addViajeDetalleFn,
-    activarViajeFn,unirViajesFn}:
+    activarViajeFn,unirViajesFn,editVRemitoFn}:
     {viajes:IViajeRQ[],repartos: IReparto[],deleteFn:(id:number,table:string,column: string) => Promise<boolean>,
     insumos:IInsumo[],planes: IPlan[],lugares:ILentrega[],
     addViajeDetalleFn: (detail:IViajeDetalle,id:number) => Promise<boolean>,
     activarViajeFn: (id:number,state:boolean) => Promise<boolean>,
     duplicateViajeFn: (v: IViajeRQ,reparto: number) => Promise<boolean>,
-    unirViajesFn: (viaje:number, nuevo:number) => Promise<boolean>}) {
+    unirViajesFn: (viaje:number, nuevo:number) => Promise<boolean>,
+    editVRemitoFn:(vremito: number,plan: number) => Promise<boolean>}) {
 
     const [selectedViaje,setSelectedViaje] = useState(-1)
     const [selectedViajeU,setSelectedViajeU] = useState(-1)
     const [selectedRt,setSelectedRt] = useState(-1)
+    const [selectPlan, setSelectPlan] = useState(-1)
     const [selectedRep,setSelectedRep] = useState(-1)
     const [prev,setPrev] = useState<IEnvioDetallesParsed[]>([])
     const [desgloses,setDesgloses] = useState<IDesglose[]>([])
     const [option, setOption] = useState(false)
     const [exportOpt, setExportOpt] = useState(false)
     const [unirOpt, setUnirOpt] = useState(false)
+    const [planOpt, setPlanOpt] = useState(false)
 
     const deleteRemito = async () => {
         const remito = viajes[selectedViaje].remitos[selectedRt]
@@ -68,6 +71,20 @@ export default function DisplayPlanes ({viajes,deleteFn,insumos,planes,lugares,r
                     window.location.reload()
                 }
                 else alert("Error al eliminar.")
+            }
+        }
+    }
+    const editPlanRemito = async (id:number) => {
+        if(confirm("¿Quieres cambiar el plan del remito?")) {
+            const planId = id
+            const vremitoId = viajes[selectedViaje].remitos[selectedRt].vremito_id
+            if(planId && vremitoId) {
+                const res = await editVRemitoFn(vremitoId,planId)
+                if(res) {
+                    alert("Plan de Remito modificado")
+                    window.location.reload()
+                }
+                else alert("Error al modificar.")
             }
         }
     }
@@ -176,7 +193,7 @@ export default function DisplayPlanes ({viajes,deleteFn,insumos,planes,lugares,r
                     )}
                     {(viajes[selectedViaje] && exportOpt) && (
                         <div >
-                            <h2 style={{...text_2_t_style, marginTop: 40}}>ELIGE EL PLAN</h2>
+                            <h2 style={{...text_2_t_style, marginTop: 40}}>ELIGE EL REPARTO</h2>
                             <select name="rp_sel" id="rp_sl" value={selectedRep}
                             onChange={(e) => setSelectedRep(parseInt(e.target.value))}
                             style={select_style}>
@@ -225,6 +242,23 @@ export default function DisplayPlanes ({viajes,deleteFn,insumos,planes,lugares,r
                             <option key={i} value={i}>{r.lentrega_id+"-"+r.completo}</option>
                         ))}
                     </select>
+                    {selectedRt > -1 && (
+                    <div >
+                        <button style={{...btn_s_style,margin:5}} onClick={() => setPlanOpt(!planOpt)}>{planOpt ? "CANCELAR CAMBIO":"CAMBIAR PLAN"}</button>
+                    </div>
+                    )}
+                    {planOpt && (
+                    <div>
+                        <h2 style={{...text_2_t_style, marginTop: 40}}>SELECCIONA EL PLAN</h2>
+                        <select name="estados_sel" id="state_sl" onChange={async (e) => await editPlanRemito(parseInt(e.target.value))}
+                        style={{width: 500,fontSize:24,marginBottom: 20}}>
+                            <option value={0}>---</option>
+                            {planes.map((p,i) => (
+                                <option key={i} value={p.plan_id}>{p.des+" - "+p.dias+" DIAS"}</option>
+                            ))}
+                        </select>
+                    </div>
+                    )}
                     {(option && desgloses.length > 0) && (
                     <div>
                         <h2 style={{...text_2_t_style, marginTop: 40}}>SELECCIONA EL DESGLOSE A AGREGAR</h2>
