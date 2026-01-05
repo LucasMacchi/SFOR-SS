@@ -574,4 +574,9 @@ export interface IRemitoNoExportedRQ {
     cod3:number | null
 }
 
+export interface IFacturasExcel {
+    factura:string,
+    detalles: IExcelFactura[]
+}
+
 

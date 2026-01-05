@@ -6,7 +6,7 @@ import DBFacturacion from "@/db/DBFacturacion";
 import DBValorRacion from "@/db/DBValorRacion";
 import DBViajes from "@/db/DBViajes";
 import DBViajesExcel from "@/db/DBViajesExcel";
-import { IEnviosExcel, IExcelFactura, IRemitoInFactura, IRemitoNoExportedRQ, IViajeExcel, IViajeExcelComplete, IViajeExcelCompleteInsumos, IViajeRemitoDetalleExcel } from "@/utils/interfaces";
+import { IEnviosExcel, IExcelFactura, IFacturasExcel, IRemitoInFactura, IRemitoNoExportedRQ, IViajeExcel, IViajeExcelComplete, IViajeExcelCompleteInsumos, IViajeRemitoDetalleExcel } from "@/utils/interfaces";
 import sessionCheck from "@/utils/sessionCheck";
 import { hr_style, text_2_t_style } from "@/utils/styles";
 import parseRemitoString from "@/utils/parseRemitoString";
@@ -19,6 +19,7 @@ import ViajesExcelDataCombinado from "@/Componets/ViajeExcelDataCombinado";
 import ExportRemitos from "@/Componets/ExportRemitos";
 import DBExportData from "@/db/DBExportData";
 import DBExportRemito from "@/db/DBExportRemito";
+import FacturasEachExcel from "@/Componets/FacturasEachExcel";
 
 
 
@@ -58,7 +59,6 @@ export default async function Page() {
             const valRac = await DBValorRacion()
             const data: IExcelFactura[] = []
             if(facturas){
-                console.log("aca")
                 facturas.forEach(f => {
                     f.remitos?.forEach((rt) => {
                         if(rt){
@@ -76,6 +76,44 @@ export default async function Page() {
                 });
 
                 return data
+            }
+
+            return []
+        } catch (error) {
+            console.log(error)
+            return []
+        }
+    }
+
+    const getEachFacturasFn = async ():Promise<IFacturasExcel[]> => {
+        "use server"
+        try {
+            const facturas = await DBFacturacion()
+            const valRac = await DBValorRacion()
+            const sheet: IFacturasExcel[] = []
+            if(facturas){
+                facturas.forEach(f => {
+                    const data: IExcelFactura[] = []
+                    f.remitos?.forEach((rt) => {
+                        if(rt){
+                            data.push({
+                                REMITO: parseRemitoString(rt.pv,rt.numero),
+                                RACIONES: rt.raciones,
+                                CABECERA: rt.completo,
+                                MONTO: rt.raciones * valRac,
+                                FACTURA: parseRemitoString(f.pv,f.numero),
+                                LOCALIDAD: rt.localidad,
+                                DEPARTAMENTO: rt.departamento
+                            })
+                        }
+                    })
+                    sheet.push({
+                        factura: parseRemitoString(f.pv,f.numero),
+                        detalles: data 
+                    })
+                });
+
+                return sheet
             }
 
             return []
@@ -277,6 +315,9 @@ export default async function Page() {
                 <hr color="#4A6EE8" style={hr_style}/>
                 <div style={{display:"flex",justifyContent:"center"}}>
                     <FacturasExcel getFacturasDataExcelFn={getAllFacturas}/>
+                </div>
+                <div style={{display:"flex",justifyContent:"center",marginTop: 20}}>
+                    <FacturasEachExcel getEachFacturasFn={getEachFacturasFn}/>
                 </div>
             </div>
         </div>
