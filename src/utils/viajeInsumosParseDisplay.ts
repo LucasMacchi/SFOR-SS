@@ -7,34 +7,68 @@ export default function (insumos: IInsumo[],planes: IPlan[], remitos: IViajeRemi
     remitos.forEach(r => {
         planes.forEach(p => {
             if(p.plan_id === r.plan_id) {
-                r.detalles.forEach((rd) => {
-                    const racionesT = rd.raciones * p.dias
-                    const arrDetallesIns: IEnvioDetallesParsed[] = []
-                    p.detalles.forEach(pd => {
-                        insumos.forEach(ins => {
-                            if(ins.ins_id === pd.ins_id) {
-                                const unidadesN = Math.ceil((rd.raciones * pd.dias) / ins.racunidad)
-                                let cajasN = (unidadesN >= ins.unidades_caja && ins.unidades_caja) ? Math.floor(unidadesN / ins.unidades_caja) : 0
-                                arrDetallesIns.push({
-                                    unidades: unidadesN,
-                                    bolsas: cajasN ? unidadesN - (cajasN* ins.unidades_caja) : unidadesN,
-                                    raciones: unidadesN * ins.racunidad,
-                                    cajas: cajasN,
-                                    kilos: unidadesN * ins.gr_unidad / 1000,
-                                    palet: 0,
-                                    ins_id: ins.ins_id,
-                                    des: ins.des
-                                })
-                            }
+                if(p.celiacos || p.diabetes || p.mixto) {
+                    r.detalles.forEach((rd) => {
+                        const racionesT = rd.raciones
+                        const arrDetallesIns: IEnvioDetallesParsed[] = []
+                        p.detalles.forEach(pd => {
+                            insumos.forEach(ins => {
+                                if(ins.ins_id === pd.ins_id) {
+                                    const unidadesN = racionesT * pd.dias
+                                    //let cajasN = unidadesN >= ins.unidades_caja ? Math.floor(unidadesN / ins.unidades_caja) : 0
+                                    arrDetallesIns.push({
+                                        unidades: unidadesN,
+                                        bolsas: unidadesN,//unidadesN - (cajasN* ins.unidades_caja),
+                                        raciones: unidadesN * ins.racunidad,
+                                        cajas: 0,//cajasN,
+                                        kilos: unidadesN * ins.gr_unidad / 1000,
+                                        palet: 0,
+                                        ins_id: ins.ins_id,
+                                        des: ins.des
+                                    })
+                                    
+                                }
+                            });
                         });
-                    });
-                    detalles.push({
-                        envio_id: rd.desglose_id,
-                        raciones: racionesT,
-                        dependencia: "DESGLOSE",
-                        detalles: arrDetallesIns
+                        detalles.push({
+                            envio_id: rd.desglose_id,
+                            raciones: racionesT,
+                            dependencia: "DESGLOSE",
+                            detalles: arrDetallesIns
+                        })
                     })
-                })
+                }
+                else {
+                    r.detalles.forEach((rd) => {
+                        const racionesT = rd.raciones * p.dias
+                        const arrDetallesIns: IEnvioDetallesParsed[] = []
+                        p.detalles.forEach(pd => {
+                            insumos.forEach(ins => {
+                                if(ins.ins_id === pd.ins_id) {
+                                    const unidadesN = Math.ceil((rd.raciones * pd.dias) / ins.racunidad)
+                                    let cajasN = (unidadesN >= ins.unidades_caja && ins.unidades_caja) ? Math.floor(unidadesN / ins.unidades_caja) : 0
+                                    arrDetallesIns.push({
+                                        unidades: unidadesN,
+                                        bolsas: cajasN ? unidadesN - (cajasN* ins.unidades_caja) : unidadesN,
+                                        raciones: unidadesN * ins.racunidad,
+                                        cajas: cajasN,
+                                        kilos: unidadesN * ins.gr_unidad / 1000,
+                                        palet: 0,
+                                        ins_id: ins.ins_id,
+                                        des: ins.des
+                                    })
+                                }
+                            });
+                        });
+                        detalles.push({
+                            envio_id: rd.desglose_id,
+                            raciones: racionesT,
+                            dependencia: "DESGLOSE",
+                            detalles: arrDetallesIns
+                        })
+                    })
+                }
+
             }
         });
     });
@@ -74,7 +108,8 @@ export default function (insumos: IInsumo[],planes: IPlan[], remitos: IViajeRemi
         const paletsToAdd = ins.cajas >= i.caja_palet ? Math.floor(ins.cajas / i.caja_palet) : 0
         ins.cajas = paletsToAdd > 0 ? ins.cajas - paletsToAdd * i.caja_palet : ins.cajas
         ins.palet += paletsToAdd
-        ins.unidades = ins.bolsas + ins.cajas * i.unidades_caja + ins.palet * i.caja_palet * i.unidades_caja
+        const preCalcUnid = ins.bolsas + ins.cajas * i.unidades_caja + ins.palet * i.caja_palet * i.unidades_caja
+        if(preCalcUnid) ins.unidades = preCalcUnid
         ins.raciones = ins.unidades * i.racunidad
         ins.kilos = ins.unidades * i.gr_unidad / 1000
         if(ins.unidades > 0) insumosP.push(ins)
