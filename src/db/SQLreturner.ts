@@ -422,3 +422,7 @@ export function exportRemitosSQL (remitos:IRemitoNoExportedRQ[]) {
     });
     return `UPDATE public.remito SET exportado = true WHERE remito_id IN (${ids});`
 }
+
+export function editvremitoPlan ()  {
+    return `UPDATE public.viaje_remito SET plan_id=$1 WHERE vremito_id = $2;`
+}

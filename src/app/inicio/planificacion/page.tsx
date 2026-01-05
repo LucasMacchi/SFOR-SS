@@ -15,6 +15,7 @@ import DBViajes from "@/db/DBViajes";
 import { IViaje, IViajeDetalle, IViajeDetalleRQ, IViajeRQ } from "@/utils/interfaces";
 import sessionCheck from "@/utils/sessionCheck";
 import { hr_style, text_2_t_style } from "@/utils/styles";
+import DBEditPlanVRemito from "@/db/DBEditPlanVRemito";
 
 
 
@@ -79,6 +80,19 @@ export default async function Page () {
             return false
         }
     }
+
+    const editVRemitoFn = async (vremito: number,plan: number):Promise<boolean> =>  {
+        "use server"
+        try {
+            const res = await DBEditPlanVRemito(vremito,plan)
+            return res
+        } catch (error) {
+            console.log(error)
+            return false
+        }
+    }
+
+
     const createExportFn = async (v: IViajeRQ,reparto: number):Promise<boolean> =>  {
         "use server"
         try {
@@ -142,7 +156,8 @@ export default async function Page () {
                 insumos={insumos} lugares={lugares} 
                 activarViajeFn={changeStateViajeFn}
                 addViajeDetalleFn={addDetalleViaje} repartos={plan}
-                duplicateViajeFn={createExportFn} unirViajesFn={joinViajes}/>
+                duplicateViajeFn={createExportFn} unirViajesFn={joinViajes}
+                editVRemitoFn={editVRemitoFn}/>
             </div>
             <div>
                 <h2 style={text_2_t_style}>CREAR VIAJE</h2>
