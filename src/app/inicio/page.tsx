@@ -4,6 +4,7 @@ import DBChangeRemitoStateMultiple from "@/db/DBChangeRemitoStateMultiple";
 import DBEstados from "@/db/DBEstados";
 import DBPlanActual from "@/db/DBPlanActual";
 import DBRemitos from "@/db/DBRemitos";
+import DBValorRacion from "@/db/DBValorRacion";
 import DBViajes from "@/db/DBViajes";
 import sessionCheck from "@/utils/sessionCheck";
 
@@ -14,6 +15,7 @@ export default async function Page() {
     const estados = await DBEstados()
     const plan = await DBPlanActual()
     const viajes = await DBViajes()
+    const valRac = await DBValorRacion()
     const updateStateMultiple = async (remitos: number[],state:number): Promise<boolean> => {
         "use server"
         try {
@@ -30,7 +32,8 @@ export default async function Page() {
                 <SearchRemito />
             </div>
             <div style={{display: "flex",justifyContent: "center"}}>
-                <FilterRemito viajes={viajes} key={"filter-view"} remitos={remitos} estados={estados} planes={plan} stateMultipleFn={updateStateMultiple}/>
+                <FilterRemito viajes={viajes} key={"filter-view"} remitos={remitos} estados={estados} planes={plan} 
+                stateMultipleFn={updateStateMultiple} valRac={valRac}/>
             </div>
         </div>
     )
