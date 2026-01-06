@@ -7,7 +7,7 @@ import { IConfigTable, IFactura, IReparto } from "@/utils/interfaces";
 export default async function () {
     const conn = clientReturner()
     try {
-        if(await authJwt(2)) {
+        if(await authJwt(3)) {
             await conn.connect()
             const nextRem:number = (await conn.query(nextRemitoSQL())).rows[0]['last_value']
             const config:IConfigTable[] = (await conn.query(configTableGETSQL())).rows

@@ -8,7 +8,7 @@ export default async function (): Promise<IViajeRQ[]> {
     const conn = clientReturner()
     try {
         const user = await decodeJWT()
-        if(await authJwt(2) && user) {
+        if(await authJwt(3) && user) {
             await conn.connect()
             const viajes:IViajeRQ[] = (await conn.query(viajeSQL(user.userId))).rows
             for(const v of viajes) {
