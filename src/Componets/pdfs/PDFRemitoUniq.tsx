@@ -123,9 +123,9 @@ const dateReturner = () => {
 }
 
 
-const insumosDisplayer = (insumos: IRemitosDetalles[],desgloses: number, dias: number) => {
+const insumosDisplayer = (insumos: IRemitosDetalles[],desgloses: number, dias: number,especial:string) => {
     const elements = []
-    const amount = insumos.length > 24 ? insumos.length : 24
+    const amount = insumos.length > 18 ? insumos.length : 18
     let undT = 0
     let kgT = 0
     let cajasT = 0
@@ -179,6 +179,30 @@ const insumosDisplayer = (insumos: IRemitosDetalles[],desgloses: number, dias: n
                 </View>
             </View>
         )
+        if(especial.length > 0) {
+            elements.push(
+                <View style={stylePedido.tableRow} key={100}>
+                    <View style={stylePedido.tableColIns}>
+                        <Text style={{...stylePedido.tableCell2,fontWeight: 900}}>{especial}</Text>
+                    </View>
+                    <View style={stylePedido.tableColcod}>
+                        <Text style={stylePedido.tableCell}>{" "}</Text>
+                    </View>
+                    <View style={stylePedido.tableColcod}>
+                        <Text style={stylePedido.tableCell}>{" "}</Text>
+                    </View>
+                    <View style={stylePedido.tableColcod}>
+                        <Text style={stylePedido.tableCell}>{" "}</Text>
+                    </View>
+                    <View style={stylePedido.tableColcod}>
+                        <Text style={stylePedido.tableCell}>{" "}</Text>
+                    </View>
+                    <View style={stylePedido.tableColcod}>
+                        <Text style={stylePedido.tableCell}>{" "}</Text>
+                    </View>
+                </View>
+            )
+        }
         elements.push(
             <View style={stylePedido.tableRow} key={100}>
                 <View style={stylePedido.tableColIns}>
@@ -226,7 +250,7 @@ const insumosDisplayer = (insumos: IRemitosDetalles[],desgloses: number, dias: n
     return elements
 }
 
-const pageContruct = (e: IUniqRemito, copia: boolean,desgloses: IDesgloseDisplay[],venc:string,cai:string,insumos:IInsumo[]) => (
+const pageContruct = (e: IUniqRemito, copia: boolean,desgloses: IDesgloseDisplay[],venc:string,cai:string,insumos:IInsumo[],especial:string) => (
         <Page size={'A4'} style={stylePedido.page}>
             <View style={{flexDirection: 'row', justifyContent: "center"}}>
                 <Image src={"/logo_big.png"} style={stylePedido.logo}/>
@@ -301,7 +325,7 @@ const pageContruct = (e: IUniqRemito, copia: boolean,desgloses: IDesgloseDisplay
                     </View>
                 </View>
                 </View>
-                {insumosDisplayer(parsedRemitosDetalles(desgloses,insumos),desgloses.length,e.dias)}
+                {insumosDisplayer(parsedRemitosDetalles(desgloses,insumos),desgloses.length,e.dias,especial)}
             </View>
             <View style={stylePedido.viewdataFooter}>
                 <Text style={stylePedido.body}>Sello institucion</Text>
@@ -323,10 +347,10 @@ const pageContruct = (e: IUniqRemito, copia: boolean,desgloses: IDesgloseDisplay
 )
 
 
-const PDFRemitoUniq = ({remito,desgloses,venc,cai,insumos}:{remito: IUniqRemito,desgloses: IDesgloseDisplay[],venc:string,cai:string,insumos: IInsumo[]}) => (
+const PDFRemitoUniq = ({remito,desgloses,venc,cai,insumos,especial}:{remito: IUniqRemito,desgloses: IDesgloseDisplay[],venc:string,cai:string,insumos: IInsumo[],especial:string}) => (
     <Document>
-        {pageContruct(remito,false,desgloses,venc,cai,insumos)}
-        {pageContruct(remito,true,desgloses,venc,cai,insumos)}
+        {pageContruct(remito,false,desgloses,venc,cai,insumos,especial)}
+        {pageContruct(remito,true,desgloses,venc,cai,insumos,especial)}
     </Document>
 )
 
