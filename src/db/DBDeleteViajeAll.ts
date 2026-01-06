@@ -6,7 +6,7 @@ import { deleteViajeAllSQL } from "./SQLreturner";
 export default async function (viaje:number): Promise<boolean> {
     const conn = clientReturner()
     try {
-        if(await authJwt(1)) {
+        if(await authJwt(2)) {
             await conn.connect()
             await conn.query(deleteViajeAllSQL(),[viaje])
             await conn.end()
