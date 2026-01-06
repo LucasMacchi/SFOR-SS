@@ -6,7 +6,7 @@ import { desglosesDisplayRemitoSQL, detalleEnvioSQL } from "./SQLreturner";
 export default async function (remito_id: number): Promise<IDesgloseDisplay[] | null> {
     const conn = clientReturner()
     try {
-        if(await authJwt(2)) {
+        if(await authJwt(3)) {
             await conn.connect()
             const res: IDesgloseDisplay[] = (await conn.query(desglosesDisplayRemitoSQL(remito_id))).rows
             for(const envios of res) {

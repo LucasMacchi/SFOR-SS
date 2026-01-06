@@ -197,8 +197,8 @@ const DesglosePdf = ({remitos,insumos}:{remitos:IRemitoT[],insumos:IInsumo[]}) =
             const chld = rts.envios.flatMap((e,i) => {
                 const hojC = i + 1
                 return[
-                    pageContruct(e,false,hojC,rts.completo,rts.localidad,rts.direccion,insumos,rts.dias,rts.pv,rts.numero),
-                    pageContruct(e,true,hojC,rts.completo,rts.localidad,rts.direccion,insumos,rts.dias,rts.pv,rts.numero)
+                    pageContruct(e,false,hojC,rts.completo,rts.localidad,rts.direccion,insumos,rts.dias,rts.numero,rts.pv),
+                    pageContruct(e,true,hojC,rts.completo,rts.localidad,rts.direccion,insumos,rts.dias,rts.numero,rts.pv)
                 ]
             })
             return(chld)

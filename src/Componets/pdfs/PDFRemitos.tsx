@@ -121,11 +121,23 @@ const dateReturner = () => {
     return date + "/"+mes+"/"+year
 }
 
+const especialReturner = (opt: number) => {
+    if(opt === 1) return "UNA CAJA POR BENEFICIARIO DIETA ESPECIAL DIABETES."
+    if(opt === 2) return "UNA CAJA POR BENEFICIARIO DIETA ESPECIAL CELIAQUIA."
+    if(opt === 3) return "UNA CAJA POR BENEFICIARIO DIETA ESPECIAL MIXTO."
+    return ""
+}
 
 const insumosDisplayer = (envios: IEnvioT[],insumosArr: IInsumo[],desgloses: number, dias: number) => {
     const elements = []
     const insumos: IRemitosDetalles[] = remitoEnviosInsumosReturner(insumosArr,envios)
-    const amount = insumos.length > 20 ? insumos.length : 20
+    let opt = 0
+    envios.forEach(e => {
+        if(e.des.includes("DIABETES")) opt = 1
+        if(e.des.includes("CELIAQUIA")) opt = 2
+        if(e.des.includes("MIXTO")) opt = 3
+    });
+    const amount = insumos.length > 18 ? insumos.length : 18
     let undT = 0
     let kgT = 0
     let cajasT = 0
@@ -163,7 +175,30 @@ const insumosDisplayer = (envios: IEnvioT[],insumosArr: IInsumo[],desgloses: num
             </View>
         )
     }
-
+        if(opt > 0) {
+            elements.push(
+                <View style={stylePedido.tableRow} key={99}>
+                    <View style={stylePedido.tableColIns2}>
+                        <Text style={stylePedido.tableCell}>{especialReturner(opt)}</Text>
+                    </View>
+                    <View style={stylePedido.tableColcod2}>
+                        <Text style={stylePedido.tableCell}>{" "}</Text>
+                    </View>
+                    <View style={stylePedido.tableColcod2}>
+                        <Text style={stylePedido.tableCell}>{" "}</Text>
+                    </View>
+                    <View style={stylePedido.tableColcod2}>
+                        <Text style={stylePedido.tableCell}>{" "}</Text>
+                    </View>
+                    <View style={stylePedido.tableColcod2}>
+                        <Text style={stylePedido.tableCell}>{" "}</Text>
+                    </View>
+                    <View style={stylePedido.tableColcod}>
+                        <Text style={stylePedido.tableCell}>{" "}</Text>
+                    </View>
+                </View>
+            )
+        }
         elements.push(
             <View style={stylePedido.tableRow} key={99}>
                 <View style={stylePedido.tableColIns2}>
