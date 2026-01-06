@@ -13,7 +13,7 @@ export default async function (): Promise<IInsumoNoDesp[]> {
     const conn = clientReturner()
     try {
         const user = await decodeJWT()
-        if(await authJwt(2) && user) {
+        if(await authJwt(3) && user) {
             await conn.connect()
             const res: IInsumoNoDesp[] = (await conn.query(remitosNoDespachadoInsSQL(user.userId))).rows
             await conn.end()

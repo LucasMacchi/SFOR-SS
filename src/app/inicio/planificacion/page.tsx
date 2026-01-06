@@ -16,6 +16,7 @@ import { IViaje, IViajeDetalle, IViajeDetalleRQ, IViajeRQ } from "@/utils/interf
 import sessionCheck from "@/utils/sessionCheck";
 import { hr_style, text_2_t_style } from "@/utils/styles";
 import DBEditPlanVRemito from "@/db/DBEditPlanVRemito";
+import DBDeleteViajeAll from "@/db/DBDeleteViajeAll";
 
 
 
@@ -74,6 +75,17 @@ export default async function Page () {
         "use server"
         try {
             const res = await DBCreateViaje(v)
+            return res
+        } catch (error) {
+            console.log(error)
+            return false
+        }
+    }
+
+    const deleteViajeAllFn = async (v: number):Promise<boolean> =>  {
+        "use server"
+        try {
+            const res = await DBDeleteViajeAll(v)
             return res
         } catch (error) {
             console.log(error)
@@ -157,7 +169,7 @@ export default async function Page () {
                 activarViajeFn={changeStateViajeFn}
                 addViajeDetalleFn={addDetalleViaje} repartos={plan}
                 duplicateViajeFn={createExportFn} unirViajesFn={joinViajes}
-                editVRemitoFn={editVRemitoFn}/>
+                editVRemitoFn={editVRemitoFn} deleteViajeAllFn={deleteViajeAllFn}/>
             </div>
             <div>
                 <h2 style={text_2_t_style}>CREAR VIAJE</h2>

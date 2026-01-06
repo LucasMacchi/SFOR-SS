@@ -155,6 +155,7 @@ export interface IUniqRemito {
     pvf: number,
     cabecera: string,
     periodo: number,
+    numrep: number,
     reportes: number,
     direccion: string
 }
@@ -413,15 +414,17 @@ export interface IRemitoT {
     pv:number,
     numero:number,
     estado_id:number,
-    descipcion: string,
+    descripcion: string,
     direccion:string,
     lentrega_id:number,
     dias:number,
     viaje_id:number,
     fortificado: boolean,
     completo:string,
-    plan_id:number,
     localidad:string,
+    numerop:number,
+    periodo:number,
+    reparto_id:number,
     envios:IEnvioT[]
 }
 export interface IEnvioT {
