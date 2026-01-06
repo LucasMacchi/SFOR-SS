@@ -468,3 +468,9 @@ export function editvremitoPlan ()  {
 export function deleteViajeAllSQL ()  {
     return `DELETE FROM public.viaje WHERE viaje_id = $1;`
 }
+
+export function getRacionesRemito () {
+    return`SELECT SUM(raciones) as raciones FROM public.remito r JOIN public.envio e ON r.remito_id = e.remito_id 
+            JOIN public.envio_details d ON d.envio_id = e.envio_id JOIN public.insumo i ON i.ins_id = d.ins_id 
+            WHERE i.calculable = true and r.remito_id = $1 GROUP BY d.ins_id,i.des`
+}

@@ -174,6 +174,10 @@ export interface IReporteCategoria {
     des: string
 }
 
+export interface IRacionesRemito {
+    raciones:string
+}
+
 export interface IRemitosEnvio {
     remito_id:number,
     pv:number,
@@ -197,7 +201,8 @@ export interface IRemitosEnvio {
     fecha_entregado: Date,
     reportes: number,
     checked:boolean,
-    viaje_id:number
+    viaje_id:number,
+    raciones: number
 
 }
 export interface IRemitoFacturacionResponse {
@@ -291,6 +296,7 @@ export interface IExcelRemito {
     FACTURA: string,
     CABECERA: string,
     PLAN: string,
+    RACIONES: number
 }
 
 export interface IPlan {

@@ -87,7 +87,8 @@ export default function FilterRemito ({remitos,estados,planes,stateMultipleFn,vi
                     LOCALIDAD: r.localidad,
                     CABECERA:r.cabecera,
                     PLAN:r.pernumero+"-"+r.periodo,
-                    FACTURA: r.pvf && r.numf ? parseRemitoToString(r.pvf,r.numf) : ""
+                    FACTURA: r.pvf && r.numf ? parseRemitoToString(r.pvf,r.numf) : "",
+                    RACIONES: r.raciones
                 })
             });
             return data
