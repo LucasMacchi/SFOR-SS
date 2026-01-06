@@ -1,7 +1,7 @@
 import authJwt from "@/utils/authJwt";
 import clientReturner from "./clientReturner";
-import {IRemitosEnvio } from "@/utils/interfaces";
-import { listRemitosSQL } from "@/db/SQLreturner";
+import {IRacionesRemito, IRemitosEnvio } from "@/utils/interfaces";
+import { getRacionesRemito, listRemitosSQL } from "@/db/SQLreturner";
 import decodeJWT from "@/utils/decodeJWT";
 
 export default async function (): Promise<IRemitosEnvio[]> {
@@ -12,9 +12,15 @@ export default async function (): Promise<IRemitosEnvio[]> {
             const sql = listRemitosSQL(user.userId)
             await conn.connect()
             const remitos: IRemitosEnvio[] = (await conn.query(sql)).rows
-            remitos.forEach(element => {
-                element.checked = false
-            });
+            for(const ret of remitos) {
+                ret.checked = false
+                const racs:IRacionesRemito[] = (await conn.query(getRacionesRemito(),[ret.remito_id])).rows
+                let sum = 0
+                for(const ins of racs){
+                    sum += parseInt(ins.raciones)
+                }
+                ret.raciones = sum
+            }
             await conn.end()
             return remitos
         }
