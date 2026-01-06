@@ -132,10 +132,15 @@ const insumosDisplayer = (envios: IEnvioT[],insumosArr: IInsumo[],desgloses: num
     const elements = []
     const insumos: IRemitosDetalles[] = remitoEnviosInsumosReturner(insumosArr,envios)
     let opt = 0
+    const regCeliaco = /\CEALIQUIA\b/
+    const regCeliaco2 = /\CELIAQUIA\b/
+    const regDiabetes = /\DIABETES\b/
+    const regMixto = /\MIXTO\b/
     envios.forEach(e => {
-        if(e.des.includes("DIABETES")) opt = 1
-        if(e.des.includes("CELIAQUIA")) opt = 2
-        if(e.des.includes("MIXTO")) opt = 3
+        console.log(e.des,e.des.includes("CEALIQUIA"))
+        if(regDiabetes.test(e.des)) opt = 1
+        if(regCeliaco.test(e.des) || regCeliaco2.test(e.des)) opt = 2
+        if(regMixto.test(e.des)) opt = 3
     });
     const amount = insumos.length > 18 ? insumos.length : 18
     let undT = 0
@@ -175,30 +180,6 @@ const insumosDisplayer = (envios: IEnvioT[],insumosArr: IInsumo[],desgloses: num
             </View>
         )
     }
-        if(opt > 0) {
-            elements.push(
-                <View style={stylePedido.tableRow} key={99}>
-                    <View style={stylePedido.tableColIns2}>
-                        <Text style={stylePedido.tableCell}>{especialReturner(opt)}</Text>
-                    </View>
-                    <View style={stylePedido.tableColcod2}>
-                        <Text style={stylePedido.tableCell}>{" "}</Text>
-                    </View>
-                    <View style={stylePedido.tableColcod2}>
-                        <Text style={stylePedido.tableCell}>{" "}</Text>
-                    </View>
-                    <View style={stylePedido.tableColcod2}>
-                        <Text style={stylePedido.tableCell}>{" "}</Text>
-                    </View>
-                    <View style={stylePedido.tableColcod2}>
-                        <Text style={stylePedido.tableCell}>{" "}</Text>
-                    </View>
-                    <View style={stylePedido.tableColcod}>
-                        <Text style={stylePedido.tableCell}>{" "}</Text>
-                    </View>
-                </View>
-            )
-        }
         elements.push(
             <View style={stylePedido.tableRow} key={99}>
                 <View style={stylePedido.tableColIns2}>
@@ -221,6 +202,30 @@ const insumosDisplayer = (envios: IEnvioT[],insumosArr: IInsumo[],desgloses: num
                 </View>
             </View>
         )
+        if(opt > 0) {
+            elements.push(
+                <View style={stylePedido.tableRow} key={100}>
+                    <View style={stylePedido.tableColIns}>
+                        <Text style={{...stylePedido.tableCell2,fontWeight: 900}}>{especialReturner(opt)}</Text>
+                    </View>
+                    <View style={stylePedido.tableColcod}>
+                        <Text style={stylePedido.tableCell}>{" "}</Text>
+                    </View>
+                    <View style={stylePedido.tableColcod}>
+                        <Text style={stylePedido.tableCell}>{" "}</Text>
+                    </View>
+                    <View style={stylePedido.tableColcod}>
+                        <Text style={stylePedido.tableCell}>{" "}</Text>
+                    </View>
+                    <View style={stylePedido.tableColcod}>
+                        <Text style={stylePedido.tableCell}>{" "}</Text>
+                    </View>
+                    <View style={stylePedido.tableColcod}>
+                        <Text style={stylePedido.tableCell}>{" "}</Text>
+                    </View>
+                </View>
+            )
+        }
         elements.push(
             <View style={stylePedido.tableRow} key={100}>
                 <View style={stylePedido.tableColIns}>

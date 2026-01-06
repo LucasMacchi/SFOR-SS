@@ -8,11 +8,11 @@ import PDFRemitoUniq from "./pdfs/PDFRemitoUniq";
 
 
 
-export default function RemitoUniqPdf ({remito,detalles,insumos,venc,cai}:{remito: IUniqRemito,detalles: IDesgloseDisplay[],insumos:IInsumo[],venc:string,cai:string}) {
+export default function RemitoUniqPdf ({remito,detalles,insumos,venc,cai,especial}:{remito: IUniqRemito,detalles: IDesgloseDisplay[],insumos:IInsumo[],venc:string,cai:string,especial: string}) {
     
     const download = async ():Promise<Blob> => {
         const blob = await pdf(<PDFRemitoUniq remito={remito} desgloses={detalles} insumos={insumos}
-        venc={venc} cai={cai}/>).toBlob()
+        venc={venc} cai={cai} especial={especial}/>).toBlob()
         return blob
     }
 

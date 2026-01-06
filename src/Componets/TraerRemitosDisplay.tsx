@@ -98,7 +98,7 @@ export default function TraerRemitosDisplay ({viajes,insumos,venc,cai,getRtViaje
 
     const displayRangos = () => {
         const getRemitosByRango = async () => {
-            if(range.start && range.end && range.end > range.start) {
+            if(range.start && range.end && range.end >= range.start) {
                 const res = await getRtRango(range.start,range.end)
                 if(res.length > 0) setRemitos(res)
                 else alert("No existen remitos en este rango.")
@@ -113,7 +113,7 @@ export default function TraerRemitosDisplay ({viajes,insumos,venc,cai,getRtViaje
                         <input style={inputRtStyle} type="number" value={refillEmptySpace(8,range.end)} onChange={(e) => setRange({...range, end: parseInt(e.target.value)})}/>
                     </div>
                 </div>
-                {(range.start && range.end && range.end > range.start) ?
+                {(range.start && range.end && range.end >= range.start) ?
                     <div style={{marginTop: 20, display: "flex",justifyContent: "center",width: "20%"}}>
                         <button style={btn_s_style} onClick={() => getRemitosByRango()}>
                             CONSULTAR REMITOS

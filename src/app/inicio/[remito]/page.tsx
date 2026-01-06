@@ -38,6 +38,20 @@ export default async function Page({params}:{params:Promise<{remito:string}>}) {
     
     const remitoDetalles = await DBDesgloseDisplayer(remitoUniq.remito_id)
     
+    let opt = ""
+    const regCeliaco = /\CEALIQUIA\b/
+    const regCeliaco2 = /\CELIAQUIA\b/
+    const regDiabetes = /\DIABETES\b/
+    const regMixto = /\MIXTO\b/
+    if(remitoDetalles) {
+        remitoDetalles.forEach(e => {
+            if(regDiabetes.test(e.dependencia)) opt = "UNA CAJA POR BENEFICIARIO DIETA ESPECIAL DIABETES."
+            if(regCeliaco.test(e.dependencia) || regCeliaco2.test(e.dependencia)) opt = "UNA CAJA POR BENEFICIARIO DIETA ESPECIAL CELIAQUIA."
+            if(regMixto.test(e.dependencia)) opt = "UNA CAJA POR BENEFICIARIO DIETA ESPECIAL MIXTO."
+        });
+    }
+
+
     const parseRemitoToString = (pv:number,num:number):string => {
         return refillEmptySpace(5,pv)+"-"+refillEmptySpace(8,num)
     }
@@ -83,7 +97,7 @@ export default async function Page({params}:{params:Promise<{remito:string}>}) {
             </div>
             <div style={{display: "flex"}}>
                 <div>
-                    <RemitoUniqPdf insumos={insumos} remito={remitoUniq} detalles={remitoDetalles ? remitoDetalles : [] } venc={venc} cai={cai} />
+                    <RemitoUniqPdf insumos={insumos} remito={remitoUniq} detalles={remitoDetalles ? remitoDetalles : [] } venc={venc} cai={cai} especial={opt}/>
                 </div>
                 <div style={{marginLeft: 10, alignItems: "baseline"}}>
                     {(user && user.rol === 1) && <DeleteRemito deleteFn={deleteRemito}/>}
