@@ -296,7 +296,8 @@ export interface IExcelRemito {
     FACTURA: string,
     CABECERA: string,
     PLAN: string,
-    RACIONES: number
+    RACIONES: number,
+    MONTO:number
 }
 
 export interface IPlan {
