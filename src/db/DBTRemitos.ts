@@ -8,7 +8,7 @@ export default async function (viaje:number,start:number,end:number): Promise<IR
     const conn = clientReturner()
     try {
         const user = await decodeJWT()
-        if(await authJwt(2) && user) {
+        if(await authJwt(3) && user) {
             await conn.connect()
             let remitos: IRemitoT[] = []
             if(viaje) {
