@@ -269,12 +269,11 @@ export function changeStateViajeSQL (id:number,state:boolean) {
 }
 
 export function traerRemitosViajeSQL (user:number,viaje:number) {
-    return`SELECT * FROM public.remito r JOIN public.lentrega l ON r.lentrega_id = l.lentrega_id JOIN public.plan p ON p.plan_id = r.plan_id WHERE reparto_id = (SELECT reparto_id FROM reparto_user WHERE user_id = ${user}) and viaje_id = ${viaje} ORDER BY numero DESC;`
+    return`SELECT * FROM public.remito r JOIN public.lentrega l ON r.lentrega_id = l.lentrega_id WHERE reparto_id = (SELECT reparto_id FROM reparto_user WHERE user_id = ${user}) and viaje_id = ${viaje} ORDER BY numero DESC;`
 }
 
 export function traerRemitosRangoSQL (user:number,start:number,end:number) {
     return`SELECT * FROM public.remito r JOIN public.lentrega l ON r.lentrega_id = l.lentrega_id
-            JOIN public.plan p ON p.plan_id = r.plan_id
             WHERE reparto_id = (SELECT reparto_id FROM reparto_user WHERE user_id = ${user}) 
             AND numero BETWEEN ${start} and ${end} ORDER BY numero DESC;`
 }
