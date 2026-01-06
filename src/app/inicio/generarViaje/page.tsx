@@ -1,7 +1,4 @@
-import GenerarIndividual from "@/Componets/GenerarIndividual";
 import GenenarViaje from "@/Componets/GenerarViaje";
-import DBDepartamentos from "@/db/DBDepartamentos";
-import DBEscuelas from "@/db/DBEscuelas";
 import DBGenerateRemitoPlan from "@/db/DBGenerateRemitoPlan";
 import DBInsumos from "@/db/DBInsumos";
 import DBPlanReparto from "@/db/DBPlanReparto";

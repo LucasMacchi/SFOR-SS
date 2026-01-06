@@ -6,7 +6,7 @@ import { IStockAdd } from "@/utils/interfaces";
 export default async function (data: IStockAdd): Promise<boolean> {
     const conn = clientReturner()
     try {
-        if(await authJwt(2)) {
+        if(await authJwt(3)) {
             await conn.connect()
             data.des = data.title + " - "+data.des
             const sql = stockAddMovSQL(data.value,data.sum,data.des,data.ins_id)

@@ -32,8 +32,8 @@ export function uniqRemitoSQL (id: string) {
             r.fecha_creado,r.fecha_preparado,r.fecha_despachado,
             r.fecha_entregado,r.lentrega_id,l.departamento,l.localidad,
             f.numero as numF,f.pv as pvF, (SELECT COUNT(*) FROM public.reporte o WHERE o.remito_id = r.remito_id) as reportes,
-            l.completo as cabecera, re.numero as numRep, re.periodo
-            FROM public.remito r 
+            l.completo as cabecera, re.numero as numrep, re.periodo
+            FROM public.remito r
             JOIN estado e ON r.estado_id = e.estado_id 
             JOIN lentrega l ON r.lentrega_id = l.lentrega_id 
             LEFT JOIN factura f on r.remito_id = f.remito_id
@@ -269,13 +269,51 @@ export function changeStateViajeSQL (id:number,state:boolean) {
 }
 
 export function traerRemitosViajeSQL (user:number,viaje:number) {
-    return`SELECT * FROM public.remito r JOIN public.lentrega l ON r.lentrega_id = l.lentrega_id WHERE reparto_id = (SELECT reparto_id FROM reparto_user WHERE user_id = ${user}) and viaje_id = ${viaje} ORDER BY numero DESC;`
+    return`SELECT 
+        r.remito_id,
+        r.pv,
+        r.numero,
+        r.estado_id,
+        l.descripcion,
+        l.direccion,
+        r.lentrega_id,
+        r.dias,
+        r.viaje_id,
+        r.fortificado,
+        l.completo,
+        l.localidad,
+        r.reparto_id,
+        re.numero as numerop,
+        re.periodo
+        FROM public.remito r 
+        JOIN public.lentrega l ON r.lentrega_id = l.lentrega_id 
+        JOIN reparto re ON r.reparto_id = re.reparto_id 
+        WHERE r.reparto_id = (SELECT reparto_id FROM reparto_user WHERE user_id = ${user}) and viaje_id = ${viaje} 
+        ORDER BY numero DESC;`
 }
 
 export function traerRemitosRangoSQL (user:number,start:number,end:number) {
-    return`SELECT * FROM public.remito r JOIN public.lentrega l ON r.lentrega_id = l.lentrega_id
-            WHERE reparto_id = (SELECT reparto_id FROM reparto_user WHERE user_id = ${user}) 
-            AND numero BETWEEN ${start} and ${end} ORDER BY numero DESC;`
+    return`SELECT 
+            r.remito_id,
+            r.pv,
+            r.numero,
+            r.estado_id,
+            l.descripcion,
+            l.direccion,
+            r.lentrega_id,
+            r.dias,
+            r.viaje_id,
+            r.fortificado,
+            l.completo,
+            l.localidad,
+            r.reparto_id,
+            re.numero as numerop,
+            re.periodo 
+            FROM public.remito r 
+            JOIN public.lentrega l ON r.lentrega_id = l.lentrega_id
+            JOIN reparto re ON r.reparto_id = re.reparto_id 
+            WHERE r.reparto_id = (SELECT reparto_id FROM reparto_user WHERE user_id = ${user}) 
+            AND r.numero BETWEEN ${start} and ${end} ORDER BY numero DESC;`
 }
 
 export function traerEnviosRemitoSQL (id:number) {
@@ -425,4 +463,8 @@ export function exportRemitosSQL (remitos:IRemitoNoExportedRQ[]) {
 
 export function editvremitoPlan ()  {
     return `UPDATE public.viaje_remito SET plan_id=$1 WHERE vremito_id = $2;`
+}
+
+export function deleteViajeAllSQL ()  {
+    return `DELETE FROM public.viaje WHERE viaje_id = $1;`
 }

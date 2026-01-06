@@ -20,6 +20,7 @@ export default async function Page () {
         "use server"
         try {
             const res = await DBTRemitos(viaje,0,0)
+            console.log(res[0])
             return res
         } catch (error) {
             console.log(error)

@@ -1,6 +1,6 @@
 "use client"
 
-import { IInsumo, IRemitoT, IViajeRQ } from "@/utils/interfaces"
+import { IEnvioDetallesParsed, IInsumo, IRemitoT, IViajeRQ } from "@/utils/interfaces"
 import refillEmptySpace from "@/utils/refillEmptySpace"
 import { btn_s_style, text_2_t_style } from "@/utils/styles"
 import { CSSProperties, useEffect, useState } from "react"
@@ -26,6 +26,7 @@ export default function TraerRemitosDisplay ({viajes,insumos,venc,cai,getRtViaje
     const [selectedViaje,setSelectedViaje] = useState(-1)
     const [remitos, setRemitos] = useState<IRemitoT[]>([])
     const [range, setRange] = useState({start:0,end:0})
+    const [loading, setLoading] = useState(false)
     
     useEffect(() => {
         setSelectedViaje(-1)
@@ -34,24 +35,28 @@ export default function TraerRemitosDisplay ({viajes,insumos,venc,cai,getRtViaje
     },[option])
 
     const downloadRemitos = async ():Promise<Blob> => {
-        const blob = await pdf(<PDFRemitos remito={remitos} insumos={insumos}
+        const remits = remitos
+        const blob = await pdf(<PDFRemitos remito={remits} insumos={insumos}
         venc={venc} cai={cai}/>).toBlob()
         return blob
     }
 
     const downloadDesglose = async ():Promise<Blob> => {
-        const blob = await pdf(<PDFDesglose insumos={insumos} remitos={remitos} />).toBlob()
+        const remits = remitos
+        const blob = await pdf(<PDFDesglose insumos={insumos} remitos={remits} />).toBlob()
         return blob
     }
 
     const downloadActas = async ():Promise<Blob> => {
-        const blob = await pdf(<PDFActas remitos={remitos} />).toBlob()
+        const remits = remitos
+        const blob = await pdf(<PDFActas remitos={remits} />).toBlob()
         return blob
     }
 
     const downloadHojaRuta = async () => {
-        const detalles = hojarutaParsed(insumos,remitos)
-        const blob = await pdf(<PDFHojaRuta detalles={detalles} remitos={remitos} />).toBlob()
+        const remits = remitos
+        const detalles:IEnvioDetallesParsed[] = hojarutaParsed(insumos,remits)
+        const blob = await pdf(<PDFHojaRuta detalles={detalles} remitos={remits} />).toBlob()
         return blob
     }
 
@@ -62,6 +67,7 @@ export default function TraerRemitosDisplay ({viajes,insumos,venc,cai,getRtViaje
                 const res = await getRtViaje(viajes[selectedViaje].viaje_id)
                 if(res.length > 0) setRemitos(res)
                 else alert("No existen remitos en este viaje.")
+
             }
         }
         return(
@@ -136,7 +142,7 @@ export default function TraerRemitosDisplay ({viajes,insumos,venc,cai,getRtViaje
             </div>
             {option === 1 && displayViaje()}
             {option === 2 && displayRangos()}
-            {remitos.length > 0 && 
+            {(remitos.length > 0 && !loading) && 
             <div>
                 <div>
                     <h2 style={{...text_2_t_style, marginTop: 40}}>REMITOS TOTALES - {remitos.length}</h2>

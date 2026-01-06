@@ -8,14 +8,15 @@ import { btn_d_style, btn_s_style, select_style, text_2_g_style, text_2_t_style 
 import viajeRemitoInsumoParaseDisplay from "@/utils/viajeRemitoInsumoParaseDisplay";
 
 export default function DisplayPlanes ({viajes,deleteFn,insumos,planes,lugares,repartos,duplicateViajeFn,addViajeDetalleFn,
-    activarViajeFn,unirViajesFn,editVRemitoFn}:
+    activarViajeFn,unirViajesFn,editVRemitoFn,deleteViajeAllFn}:
     {viajes:IViajeRQ[],repartos: IReparto[],deleteFn:(id:number,table:string,column: string) => Promise<boolean>,
     insumos:IInsumo[],planes: IPlan[],lugares:ILentrega[],
     addViajeDetalleFn: (detail:IViajeDetalle,id:number) => Promise<boolean>,
     activarViajeFn: (id:number,state:boolean) => Promise<boolean>,
     duplicateViajeFn: (v: IViajeRQ,reparto: number) => Promise<boolean>,
     unirViajesFn: (viaje:number, nuevo:number) => Promise<boolean>,
-    editVRemitoFn:(vremito: number,plan: number) => Promise<boolean>}) {
+    editVRemitoFn:(vremito: number,plan: number) => Promise<boolean>,
+    deleteViajeAllFn: (v:number) => Promise<boolean>}) {
 
     const [selectedViaje,setSelectedViaje] = useState(-1)
     const [selectedViajeU,setSelectedViajeU] = useState(-1)
@@ -40,6 +41,23 @@ export default function DisplayPlanes ({viajes,deleteFn,insumos,planes,lugares,r
                 }
                 else alert("Error al eliminar.")
             }
+        }
+    }
+    const deleteViajeCompleto = async () => {
+        const viaje = viajes[selectedViaje]
+        if(confirm(`¿Quieres eliminar el viaje ${viaje.des} de forma permantente? (No podra ser restablecido)`)) {
+            if(!viaje.procesado) {
+                if(viaje.viaje_id) {
+                    const res = await deleteViajeAllFn(viaje.viaje_id)
+                    if(res) {
+                        alert("Viaje eliminado")
+                        window.location.reload()
+                    }
+                    else alert("Error al eliminar.")
+                }
+            }
+            else alert("Viaje ya procesado.")
+
         }
     }
     const addDesglose = async (d:IDesglose) => {
@@ -187,6 +205,7 @@ export default function DisplayPlanes ({viajes,deleteFn,insumos,planes,lugares,r
                             </div>
                             <div >
                                 <button style={{...btn_s_style,margin:5}} onClick={() => setUnirOpt(!unirOpt)}>UNIR VIAJE</button>
+                                <button style={{...btn_d_style,margin:5}} onClick={() => deleteViajeCompleto()}>ELIMINAR</button>
                             </div>
                         </div>
 

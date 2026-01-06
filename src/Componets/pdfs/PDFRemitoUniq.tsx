@@ -142,7 +142,7 @@ const insumosDisplayer = (insumos: IRemitosDetalles[],desgloses: number, dias: n
                     <Text style={stylePedido.tableCell}>{i ? i.unidades : " "}</Text>
                 </View>
                 <View style={stylePedido.tableColcod2}>
-                    <Text style={stylePedido.tableCell}>{i ? i.kilos : " "}</Text>
+                    <Text style={stylePedido.tableCell}>{i ? i.kilos.toFixed(2) : " "}</Text>
                 </View>
                 <View style={stylePedido.tableColcod2}>
                     <Text style={stylePedido.tableCell}>{i ? i.cajas : " "}</Text>
@@ -271,12 +271,13 @@ const pageContruct = (e: IUniqRemito, copia: boolean,desgloses: IDesgloseDisplay
                 <View >
                     <Text style={stylePedido.body}>CUIT: 30-70731824-0</Text>
                 </View>
-                <View style={stylePedido.viewdata}>
+            </View>
+                <View style={{...stylePedido.viewdata,flexDirection: "column"}}>
+                    <Text style={{...stylePedido.body,fontWeight: 900}}>PLAN: {e.numrep+" - "+e.periodo}</Text>
                     <Text style={{...stylePedido.body,fontWeight: 900}}>Lugar de Entrega: {e.cabecera}</Text>
                     <Text style={{...stylePedido.body,fontWeight: 900}}>Localidad: {e.localidad}</Text>
                     <Text style={{...stylePedido.body,fontWeight: 900}}>Direccion: {e.direccion}</Text>
                 </View>
-            </View>
             <View style={stylePedido.view}>
                 <View style={stylePedido.table}>
                 <View style={stylePedido.tableRow_header}>
