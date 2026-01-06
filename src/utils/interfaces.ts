@@ -422,7 +422,7 @@ export interface IRemitoT {
     completo:string,
     plan_id:number,
     localidad:string,
-    envios:IEnvioT[],
+    envios:IEnvioT[]
 }
 export interface IEnvioT {
     envio_id:number,
