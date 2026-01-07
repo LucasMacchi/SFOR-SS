@@ -201,7 +201,7 @@ export default function DisplayPlanes ({viajes,deleteFn,insumos,planes,lugares,r
                     {(viajes[selectedViaje]) && (
                         <div style={{display:"flex"}}>
                             <div >
-                                {!viajes[selectedViaje].procesado &&<button style={{...btn_s_style,margin:5}} onClick={() => setExportOpt(!exportOpt)}>EXPORTAR VIAJE A OTRO PLAN</button>}
+                                <button style={{...btn_s_style,margin:5}} onClick={() => setExportOpt(!exportOpt)}>EXPORTAR VIAJE A OTRO PLAN</button>
                             </div>
                             <div >
                                 <button style={{...btn_s_style,margin:5}} onClick={() => setUnirOpt(!unirOpt)}>UNIR VIAJE</button>
