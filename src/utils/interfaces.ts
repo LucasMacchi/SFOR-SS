@@ -238,6 +238,7 @@ export interface IFacturaAgrupado {
     numero: number,
     cerrado: boolean,
     raciones: number,
+    monto: number,
     fecha_factura: Date,
     remitos?: IRemitoInFactura[]
 }
@@ -246,6 +247,7 @@ export interface IRemitoInFactura {
     pv:number,
     numero:number,
     raciones:number,
+    monto: number,
     remito_id: number,
     completo: string,
     factura?:string,
@@ -270,7 +272,8 @@ export interface IAddFactura {
     remito_id:number,
     fecha_factura:string,
     numero:number,
-    pv:number
+    pv:number,
+    monto: number
 }
 
 export interface IExcelFactura {

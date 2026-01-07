@@ -28,7 +28,7 @@ export default function FacturasDisplay ({facturas,valor}:{facturas:IFacturaAgru
                 data.push({
                     REMITO: parseRemitoToString(rt.pv,rt.numero),
                     RACIONES: rt.raciones,
-                    MONTO: rt.raciones * valor,
+                    MONTO: rt.monto,
                     CABECERA: rt.completo,
                     LOCALIDAD: rt.localidad,
                     DEPARTAMENTO: rt.departamento
@@ -52,7 +52,7 @@ export default function FacturasDisplay ({facturas,valor}:{facturas:IFacturaAgru
                     REMITO: parseRemitoToString(rt.pv,rt.numero),
                     RACIONES: rt.raciones,
                     CABECERA: rt.completo,
-                    MONTO: rt.raciones * valor,
+                    MONTO: rt.monto,
                     FACTURA: rt.factura ? rt.factura : "",
                     LOCALIDAD: rt.localidad,
                     DEPARTAMENTO: rt.departamento
@@ -100,7 +100,7 @@ export default function FacturasDisplay ({facturas,valor}:{facturas:IFacturaAgru
             </div>
             {selectedF > -1 && <h2 style={text_2_t_style}>TOTAL DE REMITOS: {facturas[selectedF].remitos?.length}</h2>}
             {selectedF > -1 && <h2 style={text_2_t_style}>SUMA TOTAL DE RACIONES: {facturas[selectedF].raciones}</h2>}
-            {selectedF > -1 && <h2 style={text_2_t_style}>SUMA TOTAL MONETARIA: {convertToMoney(facturas[selectedF].raciones * valor)}</h2>}
+            {selectedF > -1 && <h2 style={text_2_t_style}>SUMA TOTAL MONETARIA: {convertToMoney(facturas[selectedF].monto)}</h2>}
             {selectedF > -1 && <h2 style={text_2_t_style}>FECHA DE FACTURA: {facturas[selectedF].fecha_factura.toISOString().split("T")[0]}</h2>}
             {selectedF > -1 && <h2 style={text_2_t_style}>ESTADO: {facturas[selectedF].cerrado ? "CERRADA" : "ABIERTA"}</h2>}
             <div style={{display: "flex",justifyContent:"start"}}>
