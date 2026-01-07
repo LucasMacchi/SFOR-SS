@@ -88,7 +88,7 @@ export function facturasSQL () {
 }
 
 export function facturaGroupSQL () {
-    return `SELECT pv,numero,cerrado,sum(raciones) as raciones,fecha_factura FROM public.factura group by pv,numero,cerrado,fecha_factura order by numero desc;`
+    return `SELECT pv,numero,cerrado,sum(raciones) as raciones,fecha_factura,SUM(monto) as monto FROM public.factura group by pv,numero,cerrado,fecha_factura order by numero desc;`
 }
 
 export function remitosNoFacturados (plan:number) {
@@ -109,7 +109,7 @@ export function changeTableConfigSQL (id:number,payload:string) {
 }
 
 export function remitoInFacturaSQL (pv:number,nro:number) {
-    return `SELECT r.remito_id,r.pv,r.numero,f.raciones,l.completo,r.fortificado,l.departamento,l.localidad FROM public.factura f JOIN public.remito r ON r.remito_id = f.remito_id JOIN public.lentrega l ON r.lentrega_id = l.lentrega_id WHERE f.pv = ${pv} and f.numero = ${nro};`
+    return `SELECT r.remito_id,r.pv,r.numero,f.raciones,l.completo,r.fortificado,l.departamento,l.localidad,f.monto FROM public.factura f JOIN public.remito r ON r.remito_id = f.remito_id JOIN public.lentrega l ON r.lentrega_id = l.lentrega_id WHERE f.pv = ${pv} and f.numero = ${nro};`
 }
 
 export function pvFacturacionSQL () {
@@ -117,7 +117,7 @@ export function pvFacturacionSQL () {
 }
 
 export function addFacturaSQL (d: IAddFactura) {
-    return `INSERT INTO public.factura(remito_id, raciones, fecha_factura, fecha_creado, numero, pv, cerrado) VALUES (${d.remito_id},${d.raciones}, '${d.fecha_factura}', NOW(), ${d.numero}, ${d.pv}, false);`
+    return `INSERT INTO public.factura(remito_id, raciones, fecha_factura, fecha_creado, numero, pv, cerrado,monto) VALUES (${d.remito_id},${d.raciones}, '${d.fecha_factura}', NOW(), ${d.numero}, ${d.pv}, false,${d.monto});`
 }
 
 export function deleteFacturaSQL (id: number) {

@@ -74,7 +74,8 @@ export default async function () {
                 closeFn={closeFactura}
                 remitoReturner={remitosReturner}
                 repartos={planesActuales}
-                createFactura={createNewFactura}/>
+                createFactura={createNewFactura}
+                facVal={valRac}/>
             </div>
             <div>
                 <h1 style={text_2_t_style}>CREAR NUEVA FACTURA</h1>

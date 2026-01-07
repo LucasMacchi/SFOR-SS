@@ -7,7 +7,7 @@ import { useEffect, useState } from "react"
 
 
 
-export default function EditFactura ({facturas,deleteFn,closeFn,remitoReturner,repartos,createFactura}:{facturas:IFacturaAgrupado[],deleteFn:(remitos: number[])=>Promise<boolean>,closeFn:(pv:number,nro:number)=>Promise<boolean>,remitoReturner: (reparto: number) => Promise<IRemitosNoF[] | null>,repartos: IReparto[],createFactura: (data: IAddFactura[]) => Promise<boolean>}) {
+export default function EditFactura ({facturas,deleteFn,closeFn,remitoReturner,repartos,createFactura,facVal}:{facVal:number,facturas:IFacturaAgrupado[],deleteFn:(remitos: number[])=>Promise<boolean>,closeFn:(pv:number,nro:number)=>Promise<boolean>,remitoReturner: (reparto: number) => Promise<IRemitosNoF[] | null>,repartos: IReparto[],createFactura: (data: IAddFactura[]) => Promise<boolean>}) {
 
     const [selectedF, setSelectedF] = useState(0)
     const [option, setOption] = useState(0)
@@ -37,7 +37,8 @@ export default function EditFactura ({facturas,deleteFn,closeFn,remitoReturner,r
                         remito_id: rts.remito_id,
                         fecha_factura: facturas[selectedF].fecha_factura.toISOString().split("T")[0],
                         numero: facturas[selectedF].numero,
-                        pv: facturas[selectedF].pv
+                        pv: facturas[selectedF].pv,
+                        monto: rts.raciones ? parseInt(rts.raciones) * facVal : 0 
                     }
                 })
                 check = await createFactura(data)

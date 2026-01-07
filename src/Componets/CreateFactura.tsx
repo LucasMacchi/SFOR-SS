@@ -61,7 +61,8 @@ export default function CreateFacturaDisplay ({nextF,remitoReturner,pv,repartos,
                     remito_id: rts.remito_id,
                     fecha_factura: facturaDate,
                     numero: nextF,
-                    pv: pv
+                    pv: pv,
+                    monto: rts.raciones ? parseInt(rts.raciones) * valor : 0 
                 }
             })
             const res = await createFactura(data)
