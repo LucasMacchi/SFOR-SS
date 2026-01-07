@@ -255,7 +255,7 @@ export default function GenerarIndividual ({escuelas,departamentos,planes,insumo
                 </table>
                 </div>
                 <div style={{display:"flex",justifyContent:"center",marginTop: 40}}>
-                    <button style={btn_s_style} onClick={() => generarRemitos()}>CREAR REMITOS</button>
+                    <button style={btn_s_style} onClick={() => generarRemitos()}>GENERAR REMITOS</button>
                     <button style={btn_s_style} onClick={() => prevRemitos()}>?</button>
                 </div>
             </div>
