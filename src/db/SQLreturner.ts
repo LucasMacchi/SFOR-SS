@@ -1,17 +1,18 @@
 import { ESTADOS } from "@/utils/enums"
 import { IAddDesglose, IAddEnvio, IAddFactura, IAddPlan, IAddPlanDetails, IAddRemito, ICreateInsumo, IEnvioDetalles, IRemitoNoExportedRQ, IRqReportAdd, IUsuario, IViajeDetalle, IViajeRemito } from "@/utils/interfaces"
 
-export function listRemitosSQL(usr: number): string {
+export function listRemitosSQL(): string {
     return `SELECT r.remito_id,r.pv,r.numero,r.estado_id,e.des as estado,r.fortificado,r.dias,
-            r.fecha_creado,r.fecha_preparado,r.fecha_despachado, r.viaje_id,
+            r.fecha_creado,r.fecha_preparado,r.fecha_despachado, r.viaje_id, v.des as viaje,
             r.fecha_entregado,r.lentrega_id,l.departamento,l.localidad,f.numero as numF,f.pv as pvF,
             l.completo as cabecera,re.numero as numRep, re.periodo,re.numero as perNumero, (SELECT COUNT(*) FROM public.reporte o WHERE o.remito_id = r.remito_id) as reportes
-            FROM public.remito r 
+            FROM public.remito r
+            LEFT JOIN viaje v ON v.viaje_id = r.viaje_id
             JOIN estado e ON r.estado_id = e.estado_id 
             JOIN lentrega l ON r.lentrega_id = l.lentrega_id 
             LEFT JOIN factura f on r.remito_id = f.remito_id
             JOIN reparto re on r.reparto_id = re.reparto_id
-            WHERE r.reparto_id = (SELECT reparto_id FROM reparto_user WHERE user_id = ${usr}) 
+            WHERE r.reparto_id = (SELECT reparto_id FROM reparto_user WHERE user_id = $1) 
             ORDER BY r.numero DESC;`
 }
 
@@ -32,8 +33,9 @@ export function uniqRemitoSQL (id: string) {
             r.fecha_creado,r.fecha_preparado,r.fecha_despachado,
             r.fecha_entregado,r.lentrega_id,l.departamento,l.localidad,
             f.numero as numF,f.pv as pvF, (SELECT COUNT(*) FROM public.reporte o WHERE o.remito_id = r.remito_id) as reportes,
-            l.completo as cabecera, re.numero as numrep, re.periodo
+            l.completo as cabecera, re.numero as numrep, re.periodo,v.des as viaje
             FROM public.remito r
+            LEFT JOIN viaje v ON v.viaje_id = r.viaje_id
             JOIN estado e ON r.estado_id = e.estado_id 
             JOIN lentrega l ON r.lentrega_id = l.lentrega_id 
             LEFT JOIN factura f on r.remito_id = f.remito_id
