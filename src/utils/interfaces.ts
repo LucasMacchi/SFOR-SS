@@ -157,7 +157,8 @@ export interface IUniqRemito {
     periodo: number,
     numrep: number,
     reportes: number,
-    direccion: string
+    direccion: string,
+    viaje?:string
 }
 
 export interface IReporteRemito {
@@ -202,7 +203,8 @@ export interface IRemitosEnvio {
     reportes: number,
     checked:boolean,
     viaje_id:number,
-    raciones: number
+    raciones: number,
+    viaje?: string
 
 }
 export interface IRemitoFacturacionResponse {
@@ -297,7 +299,8 @@ export interface IExcelRemito {
     CABECERA: string,
     PLAN: string,
     RACIONES: number,
-    MONTO:number
+    MONTO:number,
+    VIAJE: string
 }
 
 export interface IPlan {

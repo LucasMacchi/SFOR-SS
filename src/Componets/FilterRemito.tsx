@@ -89,7 +89,8 @@ export default function FilterRemito ({remitos,estados,planes,stateMultipleFn,vi
                     PLAN:r.pernumero+"-"+r.periodo,
                     FACTURA: r.pvf && r.numf ? parseRemitoToString(r.pvf,r.numf) : "",
                     RACIONES: r.raciones,
-                    MONTO: r.raciones * valRac
+                    MONTO: r.raciones * valRac,
+                    VIAJE: r.viaje ? r.viaje : " "
                 })
             });
             return data
@@ -148,7 +149,7 @@ export default function FilterRemito ({remitos,estados,planes,stateMultipleFn,vi
                         style={select_style}>
                             <option value={-1}>---</option>
                             {viajes.map((v,i) => (
-                                <option key={i} value={i}>{v.des}</option>
+                               v.procesado && <option key={i} value={i}>{v.des}</option>
                             ))}
                         </select>
                     </div>

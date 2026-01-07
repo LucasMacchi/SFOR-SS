@@ -1,20 +1,22 @@
 "use client"
 
-import { ILentrega } from "@/utils/interfaces";
+import { IDesglose, ILentrega } from "@/utils/interfaces";
 import { text_2_t_style } from "@/utils/styles";
 import { useEffect, useState } from "react";
 //@ts-ignore
 import "./css/hoverTableCell.css"
 
 
-export default function EscuelasDisplay ({lugares,departamentos,editFn}:{lugares:ILentrega[],departamentos: string[],
+export default function EscuelasDisplay ({lugares,departamentos,desgloses,editFn}:{desgloses:IDesglose[],lugares:ILentrega[],departamentos: string[],
     editFn: (id: number,newVal: string | boolean,column:string,text:boolean) => Promise<boolean>
 }) {
 
     const [selectedDep, setSelectedDep] = useState("")
     const [selectedLgr, setSelectedLgr] = useState(-1)
     const [searchC, setSearchC] = useState("")
+    const [searchDes, setSearchDes] = useState("")
     const [filteredLgrs, setFilteredLgrs] = useState<ILentrega[]>(lugares)
+    const [filteredDesgloses, setFilteredDeslgloses] = useState(desgloses)
     const [up,setUp] = useState(0)
 
     useEffect(() => {
@@ -28,6 +30,14 @@ export default function EscuelasDisplay ({lugares,departamentos,editFn}:{lugares
         }
         setFilteredLgrs(arr)
     },[searchC,selectedDep])
+
+    useEffect(() => {
+        let arr = desgloses
+        if(selectedDep.length >= 3) {
+            arr = arr.filter(l => l.des.toLowerCase().includes(searchDes.toLowerCase()))
+        }
+        setFilteredDeslgloses(arr)
+    },[searchDes])
 
     const updateArry = (desglose: number, newV: string | number | boolean,column:string) => {
         lugares[selectedLgr].desgloses?.forEach((d) => {
@@ -142,7 +152,37 @@ export default function EscuelasDisplay ({lugares,departamentos,editFn}:{lugares
                 </table>
                 )}
             </div>
-            <div>
+                <div>
+                    <h2 style={{...text_2_t_style, marginTop: 40}}>BUSCAR DESGLOSES</h2>
+                    <input name="plan-inpt" value={searchDes} style={{width: 350,fontSize:16,marginBottom: 20}}
+                    onChange={(e) => setSearchDes(e.target.value)}/>
+                </div>
+            <div style={{maxHeight: 500,height:500, overflow: "scroll"}}>
+                <table style={{width: "90%", fontSize: 16}}>
+                    <tbody>
+                        <tr style={{backgroundColor: "#4A6EE8"}}>
+                            <th style={{border: "1px solid", width: "5%"}}>ID ENTREGA</th>
+                            <th style={{border: "1px solid", width: "5%"}}>CUE</th>
+                            <th style={{border: "1px solid", width: "25%"}}>DEPENDENCIA</th>
+                            <th style={{border: "1px solid", width: "5%"}}>RACIONES</th>
+                            <th style={{border: "1px solid", width: "5%"}}>TIPO</th>
+                            <th style={{border: "1px solid", width: "5%"}}>ENVIADO</th>
+                            <th style={{border: "1px solid", width: "5%"}}>VISIBLE</th>
+                        </tr>
+                        {filteredDesgloses.map((d,i) => (
+                        <tr key={i}>
+                            <th onClick={() => editData(d.desglose_id,d.lentrega_id.toString(),"lentrega_id",true)} id="cnt" style={{border: "1px solid", width: "5%"}}>{d.lentrega_id}</th>
+                            <th onClick={() => editData(d.desglose_id,d.cue.toString(),"cue",true)} id="cnt" style={{border: "1px solid", width: "5%"}}>{d.cue}</th>
+                            <th onClick={() => editData(d.desglose_id,d.des,"des",false)} id="cnt" style={{border: "1px solid", width: "5%",textAlign: "left"}}>{d.des}</th>
+                            <th onClick={() => editData(d.desglose_id,d.raciones.toString(),"raciones",true)} id="cnt" style={{border: "1px solid", width: "5%"}}>{d.raciones}</th>
+                            <th style={{border: "1px solid", width: "5%"}}>{d.fortificado ? "ALMUERZO" : "COPA DE LECHE"}</th>
+                            <th onClick={() => editDataBoolean(d.desglose_id,d.enviado,"enviado")} id="cnt" style={{border: "1px solid", width: "5%"}}>{d.enviado ? "SI" : "NO"}</th>
+                            <th onClick={() => editDataBoolean(d.desglose_id,d.visible,"visible")} id="cnt" style={{border: "1px solid", width: "5%"}}>{d.visible ? "SI" : "NO"}</th>
+                        </tr>
+                        ))
+                    }
+                    </tbody>
+                </table>
             </div>
         </div>
     )
