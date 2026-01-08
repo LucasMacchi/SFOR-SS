@@ -69,9 +69,6 @@ export default async function Layout({children}: Readonly<{children: React.React
             </div>
           </div>
           <div style={{flex: 1,marginTop: 30,marginLeft: 260}}>
-            <div style={{display: "flex",justifyContent: "center"}}>
-                <Image src={"/logo_big.png"} alt="logo soluciones y servicios" width={400} height={130}/>
-            </div>
             {children}
           </div>
         </div>        

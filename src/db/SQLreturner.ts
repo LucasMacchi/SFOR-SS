@@ -3,7 +3,7 @@ import { IAddDesglose, IAddEnvio, IAddFactura, IAddPlan, IAddPlanDetails, IAddRe
 
 export function listRemitosSQL(): string {
     return `SELECT r.remito_id,r.pv,r.numero,r.estado_id,e.des as estado,r.fortificado,r.dias,
-            r.fecha_creado,r.fecha_preparado,r.fecha_despachado, r.viaje_id, v.des as viaje,
+            r.fecha_creado,r.fecha_preparado,r.fecha_despachado, r.viaje_id, v.des as viaje, r.exportado, r.despachado,
             r.fecha_entregado,r.lentrega_id,l.departamento,l.localidad,f.numero as numF,f.pv as pvF,
             l.completo as cabecera,re.numero as numRep, re.periodo,re.numero as perNumero, (SELECT COUNT(*) FROM public.reporte o WHERE o.remito_id = r.remito_id) as reportes
             FROM public.remito r
@@ -475,4 +475,14 @@ export function getRacionesRemito () {
     return`SELECT SUM(raciones) as raciones FROM public.remito r JOIN public.envio e ON r.remito_id = e.remito_id 
             JOIN public.envio_details d ON d.envio_id = e.envio_id JOIN public.insumo i ON i.ins_id = d.ins_id 
             WHERE i.calculable = true and r.remito_id = $1 GROUP BY d.ins_id,i.des`
+}
+
+export function getExportarDataRango () {
+    return `SELECT r.remito_id,r.pv, r.numero, d.ins_id,r.lentrega_id,i.des,i.cod1,i.cod2,i.cod3, SUM(unidades) as unidades FROM public.remito r 
+            JOIN public.envio e ON r.remito_id = e.remito_id 
+            JOIN public.envio_details d ON e.envio_id = d.envio_id
+            JOIN public.insumo i ON i.ins_id = d.ins_id
+            WHERE r.despachado = true AND r.exportado = false AND r.pv = $1 AND r.numero BETWEEN $2 and $3
+            GROUP BY r.remito_id,r.pv,r.numero, d.ins_id, r.lentrega_id,i.des,i.cod1,i.cod2,i.cod3
+            ORDER BY r.remito_id;`
 }
