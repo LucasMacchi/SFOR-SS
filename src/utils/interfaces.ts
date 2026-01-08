@@ -204,6 +204,8 @@ export interface IRemitosEnvio {
     checked:boolean,
     viaje_id:number,
     raciones: number,
+    exportado: boolean,
+    despachado: boolean,
     viaje?: string
 
 }
@@ -539,6 +541,7 @@ export interface IViajeRemitoDetalleExcel {
     CAJAS: number,
     KILOS: number,
     INSUMO: string,
+    PALET:number,
     VIAJE?:string
 }
 

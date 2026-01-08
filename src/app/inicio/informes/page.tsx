@@ -20,6 +20,8 @@ import ExportRemitos from "@/Componets/ExportRemitos";
 import DBExportData from "@/db/DBExportData";
 import DBExportRemito from "@/db/DBExportRemito";
 import FacturasEachExcel from "@/Componets/FacturasEachExcel";
+import ExportRango from "@/Componets/ExportRango";
+import DBExportDataRango from "@/db/DBExportDataRango";
 
 
 
@@ -210,7 +212,8 @@ export default async function Page() {
                         RACIONES: dt.raciones,
                         CAJAS: dt.cajas,
                         INSUMO:dt.des,
-                        KILOS: dt.kilos
+                        KILOS: dt.kilos,
+                        PALET:dt.palet
                     }
                 })
                 viajesExcel.push({
@@ -241,7 +244,9 @@ export default async function Page() {
                         CAJAS: dt.cajas,
                         INSUMO:dt.des,
                         KILOS: dt.kilos,
-                        VIAJE: v.des
+                        VIAJE: v.des,
+                        PALET: dt.palet
+                        
                     })
                 });
             });
@@ -256,6 +261,17 @@ export default async function Page() {
         "use server"
         try {
             const exportar = await DBExportData()
+            return exportar
+        } catch (error) {
+            console.log(error)
+            return []
+        }
+    }
+
+    const getExportDataRango = async (pv:number,start:number,end:number) => {
+        "use server"
+        try {
+            const exportar = await DBExportDataRango(start,end,pv)
             return exportar
         } catch (error) {
             console.log(error)
@@ -285,6 +301,9 @@ export default async function Page() {
                 <hr color="#4A6EE8" style={hr_style}/>
                 <div style={{display:"flex",justifyContent:"center"}}>
                     <ExportRemitos getExportData={getExportData} exportarRemitos={exportRemitos}/>
+                </div>
+                <div style={{display:"flex",justifyContent:"center",marginTop:30}}>
+                    <ExportRango getDataExportFn={getExportDataRango} exportarRemitos={exportRemitos}/>
                 </div>
             </div>
             <div>

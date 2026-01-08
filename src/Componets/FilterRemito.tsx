@@ -189,6 +189,8 @@ export default function FilterRemito ({remitos,estados,planes,stateMultipleFn,vi
                             <th style={{border: "1px solid", width: "8%"}}>REP.</th>
                             <th style={{border: "1px solid", width: "8%"}}>FAC.</th>
                             <th style={{border: "1px solid", width: "8%"}}>TIPO</th>
+                            <th style={{border: "1px solid", width: "8%"}}>DESP.</th>
+                            <th style={{border: "1px solid", width: "8%"}}>EXP.</th>
                         </tr>
                         {filterRemitos.length > 0 && filterRemitos.map((rt,i) => (
                         <tr style={{backgroundColor: colorChange(rt.estado,rt.checked)}} key={rt.remito_id}
@@ -203,6 +205,8 @@ export default function FilterRemito ({remitos,estados,planes,stateMultipleFn,vi
                             <th style={{border: "1px solid", width: "8%"}}>{rt.reportes}</th>
                             <th style={{border: "1px solid", width: "8%"}}>{rt.numf ? "SI" : "NO"}</th>
                             <th style={{border: "1px solid", width: "8%"}}>{rt.fortificado ? "AL" : "CL"}</th>
+                            <th style={{border: "1px solid", width: "8%"}}>{rt.despachado ? "SI" : "NO"}</th>
+                            <th style={{border: "1px solid", width: "8%"}}>{rt.exportado ? "SI" : "NO"}</th>
                         </tr>
                         ))}
                     </tbody>
