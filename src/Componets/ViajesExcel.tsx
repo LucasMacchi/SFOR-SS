@@ -17,7 +17,7 @@ export default function ViajesExcel ({getViajeDataExcelFn}:{getViajeDataExcelFn:
             data.forEach((v,i) => {
                 if(i > 0) {
                     const worksheetI = XLSX.utils.json_to_sheet(v.detalles)
-                    XLSX.utils.book_append_sheet(workbook,worksheetI,v.name)
+                    XLSX.utils.book_append_sheet(workbook,worksheetI,v.name+""+i)
                 }
             });
             XLSX.writeFile(workbook,'VIAJES_ALL.xlsx')
