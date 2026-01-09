@@ -10,7 +10,7 @@ export default async function (repId: number): Promise<void> {
         if(await authJwt(3) && user) {
             await conn.connect()
             const sql = updateRepartoUserSQL()
-            await conn.query(sql,[user.userId,repId])
+            await conn.query(sql,[repId,user.userId])
         }
         await conn.end()
     } catch (error) {

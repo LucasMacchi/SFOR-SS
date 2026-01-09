@@ -10,7 +10,7 @@ export default async function (remito_id: number): Promise<IDesgloseDisplay[] | 
             await conn.connect()
             const res: IDesgloseDisplay[] = (await conn.query(desglosesDisplayRemitoSQL(),[remito_id])).rows
             for(const envios of res) {
-                envios.detalles = (await conn.query(detalleEnvioSQL(),[1])).rows
+                envios.detalles = (await conn.query(detalleEnvioSQL(),[envios.envio_id])).rows
             }
             await conn.end()
             return res
