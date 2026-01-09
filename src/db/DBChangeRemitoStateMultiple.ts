@@ -1,6 +1,6 @@
 import { IRemitoUnids } from "@/utils/interfaces";
 import clientReturner from "./clientReturner";
-import { changeStateMultipleSQL, changeStateRemitoSQL, despacharSQL, returnRemitoUnidadesSQL, stockAddMovSQL } from "./SQLreturner";
+import { changeStateMultipleSQL, despacharSQL, returnRemitoUnidadesSQL, stockAddMovSQL } from "./SQLreturner";
 import authJwt from "@/utils/authJwt";
 import parseRemitoString from "@/utils/parseRemitoString";
 

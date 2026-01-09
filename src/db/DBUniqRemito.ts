@@ -8,7 +8,7 @@ export default async function (remito_id: string): Promise<IUniqRemito | null> {
     try {
         if(await authJwt(3)) {
             await conn.connect()
-            const res: IUniqRemito = (await conn.query(uniqRemitoSQL(remito_id))).rows[0]
+            const res: IUniqRemito = (await conn.query(uniqRemitoSQL(),[remito_id])).rows[0]
             await conn.end()
             return res
         }

@@ -116,6 +116,7 @@ export interface IRemitosDetalles {
     cajas:number,
     kilos:number,
     des: string,
+    cajaxund:number,
     calculable?:boolean
 }
 export interface IEnvioDetallesParsed {
