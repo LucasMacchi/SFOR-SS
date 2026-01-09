@@ -58,7 +58,8 @@ export function parsedRemitosDetalles (desgloses: IDesgloseDisplay[],insumos: II
                 bolsas: total_bols,
                 cajas: total_cajas,
                 kilos: total_kg,
-                des: i.des
+                des: i.des,
+                cajaxund: i.unidades_caja
             })
         }
     });
