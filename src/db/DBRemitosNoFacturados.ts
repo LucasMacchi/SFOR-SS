@@ -11,9 +11,9 @@ export default async function (plan:number): Promise<IRemitosNoF[] | null> {
     try {
         if(await authJwt(2)) {
             await conn.connect()
-            const remitosNoF: IRemitosNoF[] = (await conn.query(remitosNoFacturados(plan))).rows
+            const remitosNoF: IRemitosNoF[] = (await conn.query(remitosNoFacturados(),[plan])).rows
             for(const rt of remitosNoF) {
-                rt.raciones = await (await conn.query(remitoRacionesCobrablesSQL(rt.remito_id))).rows[0]["sum"]
+                rt.raciones = await (await conn.query(remitoRacionesCobrablesSQL(),[rt.remito_id])).rows[0]["sum"]
             }
             await conn.end()
             return remitosNoF

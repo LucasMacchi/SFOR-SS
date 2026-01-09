@@ -1,6 +1,6 @@
 import decodeJWT from "@/utils/decodeJWT";
 import clientReturner from "./clientReturner";
-import { updateRepartoUserSQL, userPlanSQL } from "./SQLreturner";
+import { userPlanSQL } from "./SQLreturner";
 import authJwt from "@/utils/authJwt";
 
 export default async function (): Promise<number> {
@@ -9,8 +9,8 @@ export default async function (): Promise<number> {
         const user = await decodeJWT()
         if(await authJwt(3) && user) {
             await conn.connect()
-            const sql = userPlanSQL(user.userId)
-            const res:number = (await conn.query(sql)).rows[0]['reparto_id']
+            const sql = userPlanSQL()
+            const res:number = (await conn.query(sql,[user.userId])).rows[0]['reparto_id']
             await conn.end()
             return res
         }

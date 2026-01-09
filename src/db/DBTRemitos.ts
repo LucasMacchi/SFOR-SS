@@ -12,15 +12,15 @@ export default async function (viaje:number,start:number,end:number): Promise<IR
             await conn.connect()
             let remitos: IRemitoT[] = []
             if(viaje) {
-                remitos = (await conn.query(traerRemitosViajeSQL(user.userId,viaje))).rows
+                remitos = (await conn.query(traerRemitosViajeSQL(),[user.userId,viaje])).rows
             }
             else if(start && end && !viaje) {
-                remitos = (await conn.query(traerRemitosRangoSQL(user.userId,start,end))).rows
+                remitos = (await conn.query(traerRemitosRangoSQL(),[user.userId,start,end])).rows
             }
             for(const rt of remitos) {
                 rt.envios = (await conn.query(traerEnviosRemitoSQL(rt.remito_id))).rows
                 for(const envio of rt.envios) {
-                    envio.detalles = (await conn.query(traerDetallesEnviosRemitoSQL(envio.envio_id))).rows
+                    envio.detalles = (await conn.query(traerDetallesEnviosRemitoSQL(),[envio.envio_id])).rows
                 }
             }
             await conn.end()

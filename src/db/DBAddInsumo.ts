@@ -1,6 +1,6 @@
 import decodeJWT from "@/utils/decodeJWT";
 import clientReturner from "./clientReturner";
-import { createReporteSQL, insumoAddSQL } from "./SQLreturner";
+import { insumoAddSQL } from "./SQLreturner";
 import authJwt from "@/utils/authJwt";
 import { ICreateInsumo } from "@/utils/interfaces";
 

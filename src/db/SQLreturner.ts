@@ -19,14 +19,14 @@ export function listRemitosSQL(): string {
 export function listEstadosRemitosSQL (): string {
     return `SELECT * FROM public.estado ORDER BY estado_id ASC;`
 }
-export function updateRepartoUserSQL (usr: number,reparto: number):string {
-    return `UPDATE reparto_user SET reparto_id = ${reparto} WHERE user_id = ${usr}`
+export function updateRepartoUserSQL ():string {
+    return `UPDATE reparto_user SET reparto_id = $1 WHERE user_id = $1`
 }
-export function userPlanSQL (usr: number):string {
-    return `SELECT reparto_id FROM reparto_user WHERE user_id = ${usr}`
+export function userPlanSQL ():string {
+    return `SELECT reparto_id FROM reparto_user WHERE user_id = $1`
 }
 
-export function uniqRemitoSQL (id: string) {
+export function uniqRemitoSQL () {
 
     return`SELECT r.remito_id,r.pv,r.numero,r.estado_id,e.des as estado,
             r.fortificado,r.dias, l.direccion,
@@ -40,35 +40,35 @@ export function uniqRemitoSQL (id: string) {
             JOIN lentrega l ON r.lentrega_id = l.lentrega_id 
             LEFT JOIN factura f on r.remito_id = f.remito_id
             JOIN reparto re on r.reparto_id = re.reparto_id
-            WHERE r.remito_id = ${id};`
+            WHERE r.remito_id = $1;`
 }
 
-export function desglosesDisplayRemitoSQL (remito_id: number) {
-    return `SELECT e.envio_id, d.des as dependencia FROM public.envio e JOIN public.desglose d ON e.desglose_id = d.desglose_id WHERE e.remito_id = ${remito_id};`
+export function desglosesDisplayRemitoSQL () {
+    return `SELECT e.envio_id, d.des as dependencia FROM public.envio e JOIN public.desglose d ON e.desglose_id = d.desglose_id WHERE e.remito_id = $1;`
 }
 
-export function changeStateRemitoSQL (id: number,estado: string,remito:number) {
+export function changeStateRemitoSQL (estado: string) {
     let fecha = ""
     if(estado === 'PREPARADO') fecha += `fecha_preparado=NOW(),`
     if(estado === 'DESPACHADO') fecha += `fecha_despachado=NOW(),`
     if(estado === 'ENTREGADO') fecha += `fecha_entregado=NOW(),`
-    return `UPDATE public.remito SET ${fecha} estado_id=${id} WHERE remito_id = ${remito};`
+    return `UPDATE public.remito SET ${fecha} estado_id=$1 WHERE remito_id = $2;`
 }
 
-export function detalleEnvioSQL (envio_id : number) {
-    return `SELECT d.detail_id,d.envio_id,d.ins_id, i.des as insumo,d.unidades,d.raciones FROM public.envio_details d JOIN public.insumo i ON d.ins_id = i.ins_id WHERE d.envio_id = ${envio_id};`
+export function detalleEnvioSQL () {
+    return `SELECT d.detail_id,d.envio_id,d.ins_id, i.des as insumo,d.unidades,d.raciones FROM public.envio_details d JOIN public.insumo i ON d.ins_id = i.ins_id WHERE d.envio_id = $1;`
 }
 
-export function reportesRemitoSQL (remito_id:number) {
-    return `SELECT r.reporte_id,r.categoria_id,r.des as descripcion, c.des as titulo,r.fecha FROM public.reporte r JOIN reporte_categoria c ON r.categoria_id = c.categoria_id WHERE r.remito_id = ${remito_id};`
+export function reportesRemitoSQL () {
+    return `SELECT r.reporte_id,r.categoria_id,r.des as descripcion, c.des as titulo,r.fecha FROM public.reporte r JOIN reporte_categoria c ON r.categoria_id = c.categoria_id WHERE r.remito_id = $1;`
 }
 
 export function reportesCategoriasSQL () {
     return `SELECT * FROM public.reporte_categoria ORDER BY categoria_id ASC ;`
 }
 
-export function createReporteSQL (d: IRqReportAdd,user:number) {
-    return `INSERT INTO public.reporte(categoria_id, des, fecha, remito_id, "userId") VALUES (${d.categoria_id}, '${d.descripcion}', NOW(), ${d.remito_id}, ${user});`
+export function createReporteSQL () {
+    return `INSERT INTO public.reporte(categoria_id, des, fecha, remito_id, "userId") VALUES ($1, '$2', NOW(), $3, $4);`
 }
 
 export function nextRemitoSQL () {
@@ -91,12 +91,12 @@ export function facturaGroupSQL () {
     return `SELECT pv,numero,cerrado,sum(raciones) as raciones,fecha_factura,SUM(monto) as monto FROM public.factura group by pv,numero,cerrado,fecha_factura order by numero desc;`
 }
 
-export function remitosNoFacturados (plan:number) {
-    return `SELECT r.remito_id,r.pv,r.numero,r.fortificado FROM public.remito r LEFT JOIN public.factura f ON r.remito_id = f.remito_id WHERE r.reparto_id = ${plan} and f.numero is null ORDER BY r.numero;`
+export function remitosNoFacturados () {
+    return `SELECT r.remito_id,r.pv,r.numero,r.fortificado FROM public.remito r LEFT JOIN public.factura f ON r.remito_id = f.remito_id WHERE r.reparto_id = $1 and f.numero is null ORDER BY r.numero;`
 }
 
-export function remitoRacionesCobrablesSQL (remito_id : number) {
-    return `SELECT sum(d.raciones) FROM public.envio e JOIN public.envio_details d ON e.envio_id = d.envio_id JOIN public.insumo i ON d.ins_id = i.ins_id WHERE e.remito_id = ${remito_id} and i.calculable`
+export function remitoRacionesCobrablesSQL () {
+    return `SELECT sum(d.raciones) FROM public.envio e JOIN public.envio_details d ON e.envio_id = d.envio_id JOIN public.insumo i ON d.ins_id = i.ins_id WHERE e.remito_id = $1 and i.calculable`
 }
 
 export function changeNextRemitoSQL (value:string) {
@@ -270,7 +270,7 @@ export function changeStateViajeSQL (id:number,state:boolean) {
     return `UPDATE public.viaje SET procesado=${state} WHERE viaje_Id = ${id};`
 }
 
-export function traerRemitosViajeSQL (user:number,viaje:number) {
+export function traerRemitosViajeSQL () {
     return`SELECT 
         r.remito_id,
         r.pv,
@@ -290,11 +290,11 @@ export function traerRemitosViajeSQL (user:number,viaje:number) {
         FROM public.remito r 
         JOIN public.lentrega l ON r.lentrega_id = l.lentrega_id 
         JOIN reparto re ON r.reparto_id = re.reparto_id 
-        WHERE r.reparto_id = (SELECT reparto_id FROM reparto_user WHERE user_id = ${user}) and viaje_id = ${viaje} 
+        WHERE r.reparto_id = (SELECT reparto_id FROM reparto_user WHERE user_id = $1) and viaje_id = $2 
         ORDER BY numero DESC;`
 }
 
-export function traerRemitosRangoSQL (user:number,start:number,end:number) {
+export function traerRemitosRangoSQL () {
     return`SELECT 
             r.remito_id,
             r.pv,
@@ -314,16 +314,16 @@ export function traerRemitosRangoSQL (user:number,start:number,end:number) {
             FROM public.remito r 
             JOIN public.lentrega l ON r.lentrega_id = l.lentrega_id
             JOIN reparto re ON r.reparto_id = re.reparto_id 
-            WHERE r.reparto_id = (SELECT reparto_id FROM reparto_user WHERE user_id = ${user}) 
-            AND r.numero BETWEEN ${start} and ${end} ORDER BY numero DESC;`
+            WHERE r.reparto_id = (SELECT reparto_id FROM reparto_user WHERE user_id = $1) 
+            AND r.numero BETWEEN $2 and $3 ORDER BY numero DESC;`
 }
 
 export function traerEnviosRemitoSQL (id:number) {
     return `SELECT * FROM public.envio e JOIN public.desglose d ON e.desglose_id = d.desglose_id WHERE remito_id = ${id} ORDER BY remito_id DESC;`
 }
 
-export function traerDetallesEnviosRemitoSQL (id:number) {
-    return `SELECT * FROM public.envio_details d JOIN public.insumo i ON d.ins_id = i.ins_id WHERE d.envio_id = ${id} ORDER BY d.ins_id ASC `
+export function traerDetallesEnviosRemitoSQL () {
+    return `SELECT * FROM public.envio_details d JOIN public.insumo i ON d.ins_id = i.ins_id WHERE d.envio_id = $1 ORDER BY d.ins_id ASC `
 }
 
 export function setEnviadoDesgloseSQL (id:number,state:boolean) {
