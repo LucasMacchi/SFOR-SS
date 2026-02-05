@@ -12,8 +12,20 @@ import dateParser from "./dateParser"
         const lines = remito.length
         const fecha = dateParser(new Date())
         const aux = remito[0].remito_id
+        
+
         let itemLin = 0
             remito.forEach((d) => {
+                let cod1P = fillEmptyTxt(d.cod1.toString(),4,false,false,true)
+                let cod2P = ""
+                let cod3P = ""
+                if(d.cod2) {
+                    cod2P = "-"+fillEmptyTxt((d.cod2 ? d.cod2:"").toString(),6,false,false,true)
+                }
+                if(d.cod3) {
+                    cod3P = "-"+fillEmptyTxt((d.cod3 ? d.cod3:"").toString(),6,false,false,true)
+                }
+                const finalCod = cod1P+cod2P+cod3P
                 if(d.remito_id !== aux) itemLin = 0
                 itemLin++
                 let line = ""
@@ -35,7 +47,7 @@ import dateParser from "./dateParser"
                 //tip item
                 line += fillEmptyTxt("A",1,false,false,true)
                 //tip item
-                line += fillEmptyTxt(fillEmptyTxt(d.cod1.toString(),4,false,false,true)+fillEmptyTxt((d.cod2 ? "-"+d.cod2:"").toString(),6,false,false,true)+fillEmptyTxt((d.cod3 ? "-"+d.cod3:"").toString(),6,false,false,true),23,false,true,false)
+                line += fillEmptyTxt(finalCod,23,false,true,false)
                 //cant unidad 1
                 line += fillEmptyTxt(d.unidades.toString(),16,false,false,false)
                 //cant unidad 2
