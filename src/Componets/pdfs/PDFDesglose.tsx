@@ -163,7 +163,7 @@ const pageContruct = (e: IEnvioT, copia: boolean,page: number,completo:string,lo
                     <Text style={stylePedido.body}>Localidad: {localidad}</Text>
                     <Text style={stylePedido.body}>Direccion: {direccion}</Text>
                     <Text style={stylePedido.title}>SOPORTE OPERATIVO:</Text>
-                    <Text style={stylePedido.title}>Telefono: 3794-586633</Text>
+                    <Text style={stylePedido.title}>Telefono: 3795-586633</Text>
                     <Text style={stylePedido.title}>Correo: info@solucionesyservicios.com.ar</Text>
                 </View>
             </View>
