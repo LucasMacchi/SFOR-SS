@@ -1,5 +1,4 @@
 import Login from "@/Componets/Login";
-import axios from "axios";
 
 export default function Page() {
 

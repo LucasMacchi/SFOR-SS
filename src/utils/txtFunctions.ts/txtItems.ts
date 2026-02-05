@@ -35,7 +35,7 @@ import dateParser from "./dateParser"
                 //tip item
                 line += fillEmptyTxt("A",1,false,false,true)
                 //tip item
-                line += fillEmptyTxt(fillEmptyTxt(d.cod1.toString(),4,false,false,true)+"-"+fillEmptyTxt((d.cod2 ? d.cod2:0).toString(),6,false,false,true),23,false,true,false)
+                line += fillEmptyTxt(fillEmptyTxt(d.cod1.toString(),4,false,false,true)+fillEmptyTxt((d.cod2 ? "-"+d.cod2:"").toString(),6,false,false,true)+fillEmptyTxt((d.cod3 ? "-"+d.cod3:"").toString(),6,false,false,true),23,false,true,false)
                 //cant unidad 1
                 line += fillEmptyTxt(d.unidades.toString(),16,false,false,false)
                 //cant unidad 2

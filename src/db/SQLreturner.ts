@@ -20,7 +20,7 @@ export function listEstadosRemitosSQL (): string {
     return `SELECT * FROM public.estado ORDER BY estado_id ASC;`
 }
 export function updateRepartoUserSQL ():string {
-    return `UPDATE reparto_user SET reparto_id = $1 WHERE user_id = $2`
+    return `UPDATE reparto_user SET reparto_id = $1 WHERE user_id = $2w`
 }
 export function userPlanSQL ():string {
     return `SELECT reparto_id FROM reparto_user WHERE user_id = $1`
