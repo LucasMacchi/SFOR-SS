@@ -67,8 +67,8 @@ export function reportesCategoriasSQL () {
     return `SELECT * FROM public.reporte_categoria ORDER BY categoria_id ASC ;`
 }
 
-export function createReporteSQL () {
-    return `INSERT INTO public.reporte(categoria_id, des, fecha, remito_id, "userId") VALUES ($1, '$2', NOW(), $3, $4);`
+export function createReporteSQL (id:number,des:string,rt_id:number,usr:number) {
+    return `INSERT INTO public.reporte(categoria_id, des, fecha, remito_id, "userId") VALUES (${id}, '${des}', NOW(), ${rt_id}, ${usr});`
 }
 
 export function nextRemitoSQL () {

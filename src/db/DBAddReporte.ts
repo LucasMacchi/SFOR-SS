@@ -10,8 +10,10 @@ export default async function (data: IRqReportAdd): Promise<void> {
         const user = await decodeJWT()
         if(await authJwt(3) && user) {
             await conn.connect()
-            const sql = createReporteSQL()
-            await conn.query(sql,[data.categoria_id,data.descripcion,data.remito_id,user.userId])
+            const sql = createReporteSQL(data.categoria_id,data.descripcion,data.remito_id,user.userId)
+            console.log("-----------")
+            console.log(sql)
+            await conn.query(sql)
         }
         await conn.end()
     } catch (error) {
