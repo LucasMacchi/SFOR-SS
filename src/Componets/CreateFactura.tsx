@@ -87,6 +87,7 @@ export default function CreateFacturaDisplay ({nextF,remitoReturner,pv,repartos,
                                     <tr>
                                         <th style={{border: "1px solid", fontSize: 20}}>REMITO</th>
                                         <th style={{border: "1px solid", fontSize: 20}}>RACIONES</th>
+                                        <th style={{border: "1px solid", fontSize: 20}}>TIPO</th>
                                     </tr>
                                     {remitos.map((d,i) => {
                                         if(!checkRemito(d.remito_id)) {
@@ -94,6 +95,7 @@ export default function CreateFacturaDisplay ({nextF,remitoReturner,pv,repartos,
                                                 <tr key={d.remito_id} onClick={() => setAddedRemitos([...addedRemitos,d])}>
                                                     <th style={{border: "1px solid", fontSize: 20}}>{parseRemitoToString(d.pv,d.numero)}</th>
                                                     <th style={{border: "1px solid", fontSize: 20}}>{d.raciones}</th>
+                                                    <th style={{border: "1px solid", fontSize: 20}}>{d.fortificado ? "AL" : "CL"}</th>
                                                 </tr>
                                             )
                                         }
