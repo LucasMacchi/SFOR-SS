@@ -33,7 +33,7 @@ export default function EscuelasDisplay ({lugares,departamentos,desgloses,editFn
 
     useEffect(() => {
         let arr = desgloses
-        if(selectedDep.length >= 3) {
+        if(searchDes.length >= 3) {
             arr = arr.filter(l => l.des.toLowerCase().includes(searchDes.toLowerCase()))
         }
         setFilteredDeslgloses(arr)
@@ -128,7 +128,8 @@ export default function EscuelasDisplay ({lugares,departamentos,desgloses,editFn
                         <tr style={{backgroundColor: "#4A6EE8"}}>
                             <th style={{border: "1px solid", width: "5%"}}>ID ENTREGA</th>
                             <th style={{border: "1px solid", width: "5%"}}>CUE</th>
-                            <th style={{border: "1px solid", width: "25%"}}>DEPENDENCIA</th>
+                            <th style={{border: "1px solid", width: "12%"}}>DEPENDENCIA</th>
+                            <th style={{border: "1px solid", width: "12%"}}>DIRECCION</th>
                             <th style={{border: "1px solid", width: "5%"}}>RACIONES</th>
                             <th style={{border: "1px solid", width: "5%"}}>TIPO</th>
                             <th style={{border: "1px solid", width: "5%"}}>ENVIADO</th>
@@ -138,7 +139,8 @@ export default function EscuelasDisplay ({lugares,departamentos,desgloses,editFn
                         <tr key={i}>
                             <th onClick={() => editData(d.desglose_id,d.lentrega_id.toString(),"lentrega_id",true)} id="cnt" style={{border: "1px solid", width: "5%"}}>{d.lentrega_id}</th>
                             <th onClick={() => editData(d.desglose_id,d.cue.toString(),"cue",true)} id="cnt" style={{border: "1px solid", width: "5%"}}>{d.cue}</th>
-                            <th onClick={() => editData(d.desglose_id,d.des,"des",false)} id="cnt" style={{border: "1px solid", width: "5%",textAlign: "left"}}>{d.des}</th>
+                            <th onClick={() => editData(d.desglose_id,d.des,"des",false)} id="cnt" style={{border: "1px solid", width: "12%",textAlign: "left"}}>{d.des}</th>
+                            <th id="cnt" style={{border: "1px solid", width: "12%",textAlign: "left"}}>{filteredLgrs[selectedLgr].direccion}</th>
                             <th onClick={() => editData(d.desglose_id,d.raciones.toString(),"raciones",true)} id="cnt" style={{border: "1px solid", width: "5%"}}>{d.raciones}</th>
                             <th style={{border: "1px solid", width: "5%"}}>{d.fortificado ? "ALMUERZO" : "COPA DE LECHE"}</th>
                             <th onClick={() => editDataBoolean(d.desglose_id,d.enviado,"enviado")} id="cnt" style={{border: "1px solid", width: "5%"}}>{d.enviado ? "SI" : "NO"}</th>
@@ -163,7 +165,8 @@ export default function EscuelasDisplay ({lugares,departamentos,desgloses,editFn
                         <tr style={{backgroundColor: "#4A6EE8"}}>
                             <th style={{border: "1px solid", width: "5%"}}>ID ENTREGA</th>
                             <th style={{border: "1px solid", width: "5%"}}>CUE</th>
-                            <th style={{border: "1px solid", width: "25%"}}>DEPENDENCIA</th>
+                            <th style={{border: "1px solid", width: "12%"}}>DEPENDENCIA</th>
+                            <th style={{border: "1px solid", width: "12%"}}>DIRECCION</th>
                             <th style={{border: "1px solid", width: "5%"}}>RACIONES</th>
                             <th style={{border: "1px solid", width: "5%"}}>TIPO</th>
                             <th style={{border: "1px solid", width: "5%"}}>ENVIADO</th>
@@ -173,7 +176,8 @@ export default function EscuelasDisplay ({lugares,departamentos,desgloses,editFn
                         <tr key={i}>
                             <th onClick={() => editData(d.desglose_id,d.lentrega_id.toString(),"lentrega_id",true)} id="cnt" style={{border: "1px solid", width: "5%"}}>{d.lentrega_id}</th>
                             <th onClick={() => editData(d.desglose_id,d.cue.toString(),"cue",true)} id="cnt" style={{border: "1px solid", width: "5%"}}>{d.cue}</th>
-                            <th onClick={() => editData(d.desglose_id,d.des,"des",false)} id="cnt" style={{border: "1px solid", width: "5%",textAlign: "left"}}>{d.des}</th>
+                            <th onClick={() => editData(d.desglose_id,d.des,"des",false)} id="cnt" style={{border: "1px solid", width: "12",textAlign: "left"}}>{d.des}</th>
+                            <th id="cnt" style={{border: "1px solid", width: "12%",textAlign: "left"}}>{filteredLgrs[selectedLgr].direccion}</th>
                             <th onClick={() => editData(d.desglose_id,d.raciones.toString(),"raciones",true)} id="cnt" style={{border: "1px solid", width: "5%"}}>{d.raciones}</th>
                             <th style={{border: "1px solid", width: "5%"}}>{d.fortificado ? "ALMUERZO" : "COPA DE LECHE"}</th>
                             <th onClick={() => editDataBoolean(d.desglose_id,d.enviado,"enviado")} id="cnt" style={{border: "1px solid", width: "5%"}}>{d.enviado ? "SI" : "NO"}</th>
