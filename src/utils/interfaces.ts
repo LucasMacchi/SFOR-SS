@@ -359,6 +359,7 @@ export interface IDesglose {
     lentrega_id: number,
     cue: string,
     des: string,
+    direccion?:string
     raciones: number,
     fortificado: boolean,
     visible: boolean,

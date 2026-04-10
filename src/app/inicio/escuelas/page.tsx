@@ -17,6 +17,7 @@ export default async function Page () {
         lugares.forEach(l => {
             if(l.desgloses) {
                 l.desgloses.forEach(d => {
+                    d.direccion = l.direccion
                     desgloses.push(d)
                 });
             }
