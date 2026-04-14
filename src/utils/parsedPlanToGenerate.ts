@@ -40,7 +40,7 @@ export default function (viaje: IViajeRQ,planes: IPlan[],insumos:IInsumo[]) {
                                     ins_id: ins.ins_id,
                                     insumo: ins.des,
                                     unidades: racIns * pd.dias,
-                                    raciones: Math.ceil(racIns / ins.racunidad) * ins.racunidad
+                                    raciones: Math.floor(racIns / ins.racunidad) * ins.racunidad
                                 })
                             }
                             else {
@@ -49,8 +49,8 @@ export default function (viaje: IViajeRQ,planes: IPlan[],insumos:IInsumo[]) {
                                     envio_id: 0,
                                     ins_id: ins.ins_id,
                                     insumo: ins.des,
-                                    unidades: Math.ceil(racIns / ins.racunidad),
-                                    raciones: Math.ceil(racIns / ins.racunidad) * ins.racunidad
+                                    unidades: Math.floor(racIns / ins.racunidad),
+                                    raciones: Math.floor(racIns / ins.racunidad) * ins.racunidad
                                 })
                             }
 

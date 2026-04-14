@@ -14,7 +14,7 @@ export default function (insumos: IInsumo[],planes: IPlan[], viajes: IViajeRQ[])
                         p.detalles.forEach(pd => {
                             insumos.forEach(ins => {
                                 if(ins.ins_id === pd.ins_id) {
-                                    const unidadesN = Math.ceil((rd.raciones * pd.dias) / ins.racunidad) 
+                                    const unidadesN = Math.floor((rd.raciones * pd.dias) / ins.racunidad) 
                                     let cajasN = unidadesN >= ins.unidades_caja ? Math.floor(unidadesN / ins.unidades_caja) : 0
                                     arrDetallesIns.push({
                                         unidades: unidadesN,
