@@ -13,7 +13,8 @@ export enum ESTADOS {
 export enum ROLES {
     ADMIN = 1,
     ADMINSTRATIVO = 2,
-    DEPOSITO = 3
+    DEPOSITO = 3,
+    CALLCENTER = 4
 }
 
 export enum ESPECIALES {

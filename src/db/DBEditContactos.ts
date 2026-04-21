@@ -6,7 +6,7 @@ import { editContactoDesgloseSQL } from "./SQLreturner";
 export default async function (columna:string,data:string,id:number): Promise<boolean> {
     const conn = clientReturner()
     try {
-        if(await authJwt(3)) {
+        if(await authJwt(4)) {
             await conn.connect()
             await conn.query(editContactoDesgloseSQL(columna),[data,id])
             await conn.end()
