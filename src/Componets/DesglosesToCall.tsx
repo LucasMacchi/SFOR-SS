@@ -36,7 +36,7 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
         {llamada_id: 0, pregunta: "¿Cocina en el establecimiento?", respuesta: "",fecha:"NOW()"},
         {llamada_id: 0, pregunta: "¿De cuentos litros es la olla que utliza?", respuesta: "",fecha:"NOW()"},
         {llamada_id: 0, pregunta: "¿Tuvieron algún inconveniente con los productos?", respuesta: "",fecha:"NOW()"},
-        {llamada_id: 0, pregunta: "¿Cómo es el nivel de stock actual? (alto / medio / bajo)", respuesta: "",fecha:"NOW()"},
+        {llamada_id: 0, pregunta: "¿Cómo es el nivel de stock actual? (ALTO / MEDIO / BAJO)", respuesta: "ALTO",fecha:"NOW()"},
         {llamada_id: 0, pregunta: "¿Recibieron indicaciones sobre conservación?", respuesta: "",fecha:"NOW()"},
         {llamada_id: 0, pregunta: "¿Necesita recetas o formas correcta de preparación?", respuesta: "",fecha:"NOW()"},
         {llamada_id: 0, pregunta: "¿Necesitan apoyo o aclarar algo?", respuesta: "",fecha:"NOW()"},
