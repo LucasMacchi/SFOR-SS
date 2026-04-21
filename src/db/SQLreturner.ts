@@ -507,7 +507,7 @@ export function getDesglosesLastCall () {
     return `SELECT d.desglose_id,d.lentrega_id,le.departamento,d.cue,d.des, MAX(l.fecha) as ultima_llamada,MAX(l.prioridad) as prioridad,d.correo,d.telefono1,d.telefono2,d.telefono3,d.cargo FROM public.desglose d 
     LEFT JOIN llamada l ON l.desglose_id = d.desglose_id
     JOIN lentrega le ON le.lentrega_id = d.lentrega_id
-    WHERE d.fortificado = false AND d.visible = true
+    WHERE d.fortificado = false AND d.visible = true AND d.des not like '%CELIAQUIA%' AND d.des not like '%DIABETES%' AND d.des not like '%MIXTO%'
     GROUP BY d.desglose_id,d.lentrega_id,le.departamento,d.cue,d.des,d.correo,d.telefono1,d.telefono2,d.telefono3,d.cargo
     ORDER BY ultima_llamada DESC`
 }
