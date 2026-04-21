@@ -66,7 +66,8 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
 
     useEffect(() => {
         setPreguntas([
-            {llamada_id: 0, pregunta: "¿Recibieron los productos correctamente?", respuesta: "",fecha:"NOW()"},
+            {llamada_id: 0, pregunta: "¿Recibieron los productos del plan?", respuesta: "",fecha:"NOW()"},
+            {llamada_id: 0, pregunta: "¿Tuvieron algún inconveniente con los productos?", respuesta: "",fecha:"NOW()"},
             {llamada_id: 0, pregunta: "¿Están dentro de fecha de vencimiento?", respuesta: "",fecha:"NOW()"},
             {llamada_id: 0, pregunta: "¿Los envases están en buen estado?", respuesta: "",fecha:"NOW()"},
             {llamada_id: 0, pregunta: "¿Los productos están elevados del suelo?", respuesta: "",fecha:"NOW()"},
@@ -79,7 +80,6 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
             {llamada_id: 0, pregunta: "¿Utilizan agua segura?", respuesta: "",fecha:"NOW()"},
             {llamada_id: 0, pregunta: "¿Cocina en el establecimiento?", respuesta: "",fecha:"NOW()"},
             {llamada_id: 0, pregunta: "¿De cuentos litros es la olla que utliza?", respuesta: "",fecha:"NOW()"},
-            {llamada_id: 0, pregunta: "¿Tuvieron algún inconveniente con los productos?", respuesta: "",fecha:"NOW()"},
             {llamada_id: 0, pregunta: "¿Cómo es el nivel de stock actual? (alto / medio / bajo)", respuesta: "",fecha:"NOW()"},
             {llamada_id: 0, pregunta: "¿Recibieron indicaciones sobre conservación?", respuesta: "",fecha:"NOW()"},
             {llamada_id: 0, pregunta: "¿Necesita recetas o formas correcta de preparación?", respuesta: "",fecha:"NOW()"},
@@ -138,6 +138,11 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
                     alert("Llamada creada correctamente.")
                     setSelectedDesglose(null)
                     setPrioridad(0)
+                    setTimer(false)
+                    setSeconds(0)
+                    setLlamadas([])
+                    setSelectedLlamada(0)
+                    window.location.reload()
                 }
                 else alert("Error al crear la llamada.")
             }
