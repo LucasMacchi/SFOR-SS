@@ -163,6 +163,22 @@ export function planAddDetailSQL (d: IAddPlanDetails) {
     return `INSERT INTO public.plan_detail(ins_id, dias, plan_id) VALUES (${d.ins_id}, ${d.dias}, ${d.plan_id});`
 }
 
+export function addLlamadaSQL () {
+    return `INSERT INTO public.llamada(fecha, desglose_id, tiempo, prioridad, o_prioridad) VALUES ($1, $2, $3, $4, $5) RETURNING llamada_id;`
+}
+
+export function addPreguntaSQL () {
+    return `INSERT INTO public.pregunta(fecha, pregunta, respuesta, llamada_id) VALUES ($1, $2, $3, $4);`
+}
+
+export function allLlamadasSQL () {
+    return `SELECT * FROM public.llamada ORDER BY llamada_id ASC;`
+}
+
+export function llamadasByDesgloseSQL () {
+    return `SELECT * FROM public.llamada WHERE desglose_id = $1 ORDER BY llamada_id DESC;`
+}
+
 export function planAddPlanSQL (d: IAddPlan) {
     return `INSERT INTO public.plan(dias, fortificado, des,celiacos,diabetes,mixto) VALUES (${d.days}, ${d.fortificado}, '${d.descripcion}',${d.celiacos},${d.diabetes},${d.mixto}) RETURNING plan_id;`
 }
@@ -485,4 +501,32 @@ export function getExportarDataRango () {
             WHERE r.despachado = true AND r.exportado = false AND r.pv = $1 AND r.numero BETWEEN $2 and $3
             GROUP BY r.remito_id,r.pv,r.numero, d.ins_id, r.lentrega_id,i.des,i.cod1,i.cod2,i.cod3
             ORDER BY r.remito_id;`
+}
+
+export function getDesglosesLastCall () {
+    return `SELECT d.desglose_id,d.lentrega_id,le.departamento,d.cue,d.des, MAX(l.fecha) as ultima_llamada,MAX(l.prioridad) as prioridad,d.correo,d.telefono1,d.telefono2,d.telefono3,d.cargo FROM public.desglose d 
+    LEFT JOIN llamada l ON l.desglose_id = d.desglose_id
+    JOIN lentrega le ON le.lentrega_id = d.lentrega_id
+    WHERE d.fortificado = false AND d.visible = true
+    GROUP BY d.desglose_id,d.lentrega_id,le.departamento,d.cue,d.des,d.correo,d.telefono1,d.telefono2,d.telefono3,d.cargo
+    ORDER BY ultima_llamada DESC`
+}
+
+export function getLlamadasByDesglose () {
+    return `SELECT * FROM public.llamada WHERE desglose_id = $1 ORDER BY fecha DESC;`
+}
+
+export function editContactoDesgloseSQL (column: string) {
+    return `UPDATE public.desglose SET ${column} = $1 WHERE desglose_id = $2;`
+}
+
+export function getRespuestasDesgloseSQL () {
+    return `SELECT p.preg_id,p.llamada_id,p.pregunta,p.respuesta,p.fecha FROM public.llamada l 
+            JOIN public.desglose d ON l.desglose_id = d.desglose_id 
+            JOIN public.pregunta p ON p.llamada_id = l.llamada_id 
+            WHERE l.desglose_id = $1 ORDER BY p.preg_id ASC`
+}
+
+export function resolverLlamadaSQL () {
+    return `UPDATE public.llamada SET prioridad = 0,fecha_solucion='NOW()',solucion=$2 WHERE llamada_id = $1;`
 }
