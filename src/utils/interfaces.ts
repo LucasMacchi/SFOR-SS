@@ -364,7 +364,12 @@ export interface IDesglose {
     fortificado: boolean,
     visible: boolean,
     enviado: boolean,
-    selected: boolean
+    selected: boolean,
+    correo?: string,
+    telefono1?: string,
+    telefono2?: string,
+    telefono3?: string,
+    cargo?:string,
     [key: string]: any
 }
 
@@ -606,4 +611,57 @@ export interface IFacturasExcel {
     detalles: IExcelFactura[]
 }
 
+export interface ILlamada {
+    llamada_id: number,
+    desglose_id: number,
+    fecha: Date,
+    tiempo:number,
+    prioridad: number,
+    fecha_solucion?: Date,
+    solucion?:string
+}
 
+export interface IPregunta {
+    preg_id: number,
+    llamada_id: number,
+    pregunta: string,
+    respuesta: string,
+    fecha: string
+}
+
+export interface IAddLlamada {
+    desglose_id: number,
+    fecha: string,
+    tiempo:number,
+    prioridad: number
+}
+
+export interface IAddPregunta {
+    llamada_id: number,
+    pregunta: string,
+    respuesta: string,
+    fecha: string
+}
+
+export interface IPregunta {
+    llamada_id: number,
+    preg_id: number,
+    pregunta: string,
+    respuesta: string,
+    fecha: string
+}
+
+export interface IDesgloseLlamada {
+    desglose_id: number,
+    lentrega_id: number,
+    cue: number,
+    departamento:string,
+    ultima_llamada?: Date,
+    des: string,
+    correo?: string,
+    telefono1?: string,
+    telefono2?: string,
+    telefono3?: string,
+    cargo?:string,
+    prioridad?: number
+}

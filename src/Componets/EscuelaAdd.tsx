@@ -1,6 +1,6 @@
 "use client"
 import { IAddDesglose, ILentrega } from "@/utils/interfaces";
-import { btn_s_style, select_style, text_2_s_style, text_2_t_style } from "@/utils/styles";
+import { btn_s_style, select_style, text_2_t_style } from "@/utils/styles";
 import { useEffect, useState } from "react";
 
 

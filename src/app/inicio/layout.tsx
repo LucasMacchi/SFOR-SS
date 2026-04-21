@@ -60,6 +60,7 @@ export default async function Layout({children}: Readonly<{children: React.React
                 {userData.rol <= 2 && <LinkMenu where="/inicio/escuelas" titulo="escuelas" />}             
                 <LinkMenu where="/inicio/stock" titulo="stock"/>
                 {userData.rol <= 2 && <LinkMenu where="/inicio/informes" titulo="informes" />}
+                {userData.rol <= 2 && <LinkMenu where="/inicio/callcenter" titulo="call center" />}
                 {userData.rol <= 2 && <LinkMenu where="/inicio/facturacion" titulo="facturacion" />}
                 {userData.rol <= 2 && <LinkMenu where="/inicio/datos" titulo="datos" />}
                 {userData.rol <= 1 && <LinkMenu where="/inicio/usuarios" titulo="usuarios" />}
