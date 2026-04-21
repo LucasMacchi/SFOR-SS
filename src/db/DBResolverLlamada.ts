@@ -6,7 +6,7 @@ import { resolverLlamadaSQL } from "./SQLreturner"
 export default async function (llamada_id: number,solucion:string):Promise<boolean> {
     const conn = clientReturner()
     try {
-        if(await authJwt(2)) {
+        if(await authJwt(4)) {
             await conn.connect()
             const sql = resolverLlamadaSQL()
             await conn.query(sql,[llamada_id,solucion])

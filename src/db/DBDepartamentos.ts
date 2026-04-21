@@ -7,7 +7,7 @@ import { IDepartamento } from "@/utils/interfaces"
 export default async function (): Promise<string[]> {
     const conn = clientReturner()
     try {
-        if(await authJwt(3)) {
+        if(await authJwt(4)) {
             await conn.connect()
             const departamentos: IDepartamento[] = (await conn.query(departamentosSQl())).rows
             let arr = departamentos.map(d => d.departamento)

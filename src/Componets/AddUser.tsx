@@ -9,7 +9,7 @@ export default function AddUser ({addUserFn}:{addUserFn: (u:IUsuario) => Promise
 
     const [add, setAdd] = useState<IUsuario>({
         userId: 1,
-        rol: 3,
+        rol: 4,
         username: "",
         email: "",
         password: ""
@@ -47,7 +47,7 @@ export default function AddUser ({addUserFn}:{addUserFn: (u:IUsuario) => Promise
                     onChange={(e) => setAdd({...add,password:e.target.value})}/>
                 </div>
                 <div>
-                    <h2 style={{...text_2_t_style, marginTop: 20}}>ROL (1 ADMIN - 2 ADMINISTRATIVO - 3 OPERARIO)</h2>
+                    <h2 style={{...text_2_t_style, marginTop: 20}}>ROL (1 ADMIN - 2 ADMINISTRATIVO - 3 OPERARIO - 4 CALLCENTER)</h2>
                     <input name="plan-inpt" type="number" value={add.rol} style={{width: 50,fontSize:20,marginBottom: 20}} max={3} min={1}
                     onChange={(e) => setAdd({...add,rol:parseInt(e.target.value)})}/>
                 </div>

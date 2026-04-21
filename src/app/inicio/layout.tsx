@@ -45,7 +45,7 @@ export default async function Layout({children}: Readonly<{children: React.React
   return (
         <div style={{display: "flex", justifyContent: "start",margin: 0}}>
           <div style={{paddingLeft:10 ,marginRight: 25, width: 250, height: "100vh",backgroundColor: "#4A6EE8", position: "fixed"}}>
-            <div style={{marginBottom: 150}}>
+            <div style={{marginBottom: 80}}>
                 <h4 style={text_2_s_style}>USER: {userData ? userData.username : "NaN"}</h4>
                 <PlanSelector planes={planActual} userPlan={userplan} rol={userData.rol} createRepartoFn={createRepartoFn}/>
             </div>
@@ -54,13 +54,13 @@ export default async function Layout({children}: Readonly<{children: React.React
                 {userData.rol <= 2 && <LinkMenu where="/inicio/planificacion" titulo="planificacion" />}
                 {userData.rol <= 2 && <LinkMenu where="/inicio/generar" titulo="generar" />}
                 {userData.rol <= 2 && <LinkMenu where="/inicio/generarViaje" titulo="generar viaje" />}
-                <LinkMenu where="/inicio/traer" titulo="consultar" />
+                {(userData.rol === 3 || userData.rol === 2 || userData.rol === 1 ) && <LinkMenu where="/inicio/traer" titulo="consultar" />}
                 {userData.rol <= 2 && <LinkMenu where="/inicio/planes" titulo="planes" />}
                 {userData.rol <= 2 && <LinkMenu where="/inicio/insumos" titulo="insumos"/>}
                 {userData.rol <= 2 && <LinkMenu where="/inicio/escuelas" titulo="escuelas" />}             
-                <LinkMenu where="/inicio/stock" titulo="stock"/>
+                {(userData.rol === 3 || userData.rol === 2 || userData.rol === 1 ) && <LinkMenu where="/inicio/stock" titulo="stock"/>}
                 {userData.rol <= 2 && <LinkMenu where="/inicio/informes" titulo="informes" />}
-                {userData.rol <= 2 && <LinkMenu where="/inicio/callcenter" titulo="call center" />}
+                {(userData.rol === 4 || userData.rol === 2 || userData.rol === 1 )&& <LinkMenu where="/inicio/callcenter" titulo="call center" />}
                 {userData.rol <= 2 && <LinkMenu where="/inicio/facturacion" titulo="facturacion" />}
                 {userData.rol <= 2 && <LinkMenu where="/inicio/datos" titulo="datos" />}
                 {userData.rol <= 1 && <LinkMenu where="/inicio/usuarios" titulo="usuarios" />}

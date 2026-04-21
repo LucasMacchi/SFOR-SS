@@ -6,7 +6,7 @@ import { getDesglosesLastCall } from "./SQLreturner";
 export default async function (): Promise<IDesgloseLlamada[]> {
     const conn = clientReturner()
     try {
-        if(await authJwt(3)) {
+        if(await authJwt(4)) {
             await conn.connect()
             const res = (await conn.query(getDesglosesLastCall())).rows
             await conn.end()

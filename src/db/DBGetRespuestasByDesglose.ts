@@ -6,7 +6,7 @@ import { ILlamada, IPregunta} from "@/utils/interfaces";
 export default async function (desglose_id: number): Promise<IPregunta[]> {
     const conn = clientReturner()
     try {
-        if(await authJwt(2)) {
+        if(await authJwt(4)) {
             await conn.connect()
             const sql = getRespuestasDesgloseSQL()
             const result:IPregunta[] = (await conn.query(sql,[desglose_id])).rows

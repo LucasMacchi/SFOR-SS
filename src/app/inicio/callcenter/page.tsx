@@ -13,7 +13,7 @@ import { hr_style, text_2_t_style } from "@/utils/styles"
 
 
 export default async function Page () {
-    await sessionCheck(2)
+    await sessionCheck(4)
     const escuelas = await DBDesglosesLlamadas()
     const departamentos = await DBDepartamentos()
     //console.log(escuelas)

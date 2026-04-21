@@ -6,7 +6,7 @@ import { IAddLlamada, IAddPregunta } from "@/utils/interfaces";
 export default async function (l: IAddLlamada,preguntas:IAddPregunta[]): Promise<boolean> {
     const conn = clientReturner()
     try {
-        if(await authJwt(2)) {
+        if(await authJwt(4)) {
             await conn.connect()
             const sql = addLlamadaSQL()
             const sql2 = addPreguntaSQL()
