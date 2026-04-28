@@ -63,7 +63,7 @@ export default function PlanesDisplay ({planes,insumos,editDaysFn,addPlanFn,addD
         if(index > -1) {
             const daysIns = prompt("Dias a asignar al insumo en el plan: ")
             if(daysIns && parseInt(daysIns)) {
-                const dayParsed = parseInt(daysIns)
+                const dayParsed = parseFloat(daysIns)
                 const insumo = insumos[index]
                 const detail: IAddPlanDetails = {
                     ins_id: insumo.ins_id,
