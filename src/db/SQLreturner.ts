@@ -168,9 +168,11 @@ export function addLlamadaSQL () {
 }
 
 export function addPreguntaSQL () {
-    return `INSERT INTO public.pregunta(fecha, pregunta, respuesta, llamada_id) VALUES ($1, $2, $3, $4);`
+    return `INSERT INTO public.pregunta(fecha, pregunta, respuesta, llamada_id,reporte) VALUES ($1, $2, $3, $4, $5);`
 }
-
+export function addPreguntaSQL2 () {
+    return `INSERT INTO public.pregunta(fecha, pregunta, respuesta, llamada_id,reporte,respuesta_2) VALUES ($1, $2, $3, $4, $5, $6);`
+}
 export function allLlamadasSQL () {
     return `SELECT * FROM public.llamada ORDER BY llamada_id ASC;`
 }
@@ -521,7 +523,7 @@ export function editContactoDesgloseSQL (column: string) {
 }
 
 export function getRespuestasDesgloseSQL () {
-    return `SELECT p.preg_id,p.llamada_id,p.pregunta,p.respuesta,p.fecha FROM public.llamada l 
+    return `SELECT p.preg_id,p.llamada_id,p.pregunta,p.respuesta,p.fecha,p.respuesta_2 FROM public.llamada l 
             JOIN public.desglose d ON l.desglose_id = d.desglose_id 
             JOIN public.pregunta p ON p.llamada_id = l.llamada_id 
             WHERE l.desglose_id = $1 ORDER BY p.preg_id ASC`
@@ -529,4 +531,32 @@ export function getRespuestasDesgloseSQL () {
 
 export function resolverLlamadaSQL () {
     return `UPDATE public.llamada SET prioridad = 0,fecha_solucion='NOW()',solucion=$2 WHERE llamada_id = $1;`
+}
+
+export function getAllReportesCallSQL () {
+    return `
+        SELECT le.lentrega_id,le.completo,le.departamento,le.localidad,d.des,le.direccion,l.fecha,p.preg_id,p.pregunta,p.respuesta,p.respuesta_2 FROM public.pregunta p 
+        JOIN public.llamada l ON p.llamada_id = l.llamada_id 
+        JOIN public.desglose d ON d.desglose_id = l.desglose_id 
+        JOIN public.lentrega le ON le.lentrega_id = d.lentrega_id
+        WHERE p.reporte = true ORDER BY fecha DESC;`
+}
+
+export function getAllLlamadasSQL() {
+    return `
+        SELECT l.llamada_id,p.preg_id,le.lentrega_id,le.completo,le.departamento,le.localidad,d.des,le.direccion,l.fecha,p.pregunta,
+        p.respuesta,p.respuesta_2,l.prioridad,l.o_prioridad,l.fecha_solucion,l.solucion,l.tiempo
+        FROM public.pregunta p 
+        JOIN public.llamada l ON p.llamada_id = l.llamada_id 
+        JOIN public.desglose d ON d.desglose_id = l.desglose_id 
+        JOIN public.lentrega le ON le.lentrega_id = d.lentrega_id
+        ORDER BY fecha DESC;`
+}
+
+export function resolverReporteSQL () {
+    return `UPDATE public.pregunta SET reporte = false,respuesta = $2, respuesta_2 = $3 WHERE preg_id = $1;`
+}
+
+export function getDependenciasInformeSQL () {
+    return `SELECT * FROM public.desglose d JOIN public.lentrega le ON d.lentrega_id = le.lentrega_id ORDER BY le.lentrega_id;`
 }
