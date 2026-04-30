@@ -178,9 +178,9 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
         if(p.pregunta === "¿Cómo es el nivel de stock actual? (ALTO / MEDIO / BAJO)") {
             return (
                 <tr key={i}>
-                    <th style={{border: "1px solid", fontSize: 18,textAlign:"left",width:500}}>{p.pregunta}</th>
-                    <th style={{border: "1px solid", fontSize: 18,textAlign:"left"}}></th>
-                    <th style={{border: "1px solid", fontSize: 18}}>
+                    <th style={{border: "1px solid", fontSize: 12,textAlign:"left",width:500}}>{p.pregunta}</th>
+                    <th style={{border: "1px solid", fontSize: 12,textAlign:"left"}}></th>
+                    <th style={{border: "1px solid", fontSize: 12}}>
                         <select name="estados_sel" id="state_sl"
                             onChange={(e) => setPreguntas(prev => {
                                 const newPreguntas = [...prev]
@@ -192,7 +192,7 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
                             <option value={"BAJO"}>BAJO</option>
                         </select>
                     </th>
-                    <th style={{border: "1px solid", fontSize: 18,textAlign:"left"}}>
+                    <th style={{border: "1px solid", fontSize: 12,textAlign:"left"}}>
                         <input type="text" style={{width: "95%"}} value={p.respuesta} onChange={(e) => setPreguntas(prev => {
                             const newPreguntas = [...prev]
                             newPreguntas[i].respuesta = e.target.value
@@ -205,8 +205,8 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
         else if(p.reporte) {
             return(
                 <tr key={i}>
-                    <th style={{border: "1px solid", fontSize: 18,textAlign:"left",width:500}}>{p.pregunta}</th>
-                    <th style={{border: "1px solid", fontSize: 18,textAlign:"left"}}>
+                    <th style={{border: "1px solid", fontSize: 12,textAlign:"left",width:500}}>{p.pregunta}</th>
+                    <th style={{border: "1px solid", fontSize: 12,textAlign:"left"}}>
                         Cantidad
                         <input type="number" style={{width: 50,textAlign:"center",marginLeft:5}} onChange={(e) => setPreguntas(prev => {
                             const newPreguntas = [...prev]
@@ -214,7 +214,7 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
                             return newPreguntas
                         })}/>
                     </th>
-                    <th style={{border: "1px solid", fontSize: 18}}>
+                    <th style={{border: "1px solid", fontSize: 12}}>
                         <select name="estados_sel" id="state_sl"
                             onChange={(e) => setPreguntas(prev => {
                                 const newPreguntas = [...prev]
@@ -227,7 +227,7 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
                             <option value={"LECHE"}>LECHE</option>
                         </select>
                     </th>
-                    <th style={{border: "1px solid", fontSize: 18,textAlign:"left"}}>
+                    <th style={{border: "1px solid", fontSize: 12,textAlign:"left"}}>
                         <input type="text" style={{width: "95%"}} value={p.respuesta +" - "+p.respuesta_2} onChange={(e) => setPreguntas(prev => {
                             const newPreguntas = [...prev]
                             newPreguntas[i].respuesta = e.target.value
@@ -240,10 +240,10 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
         else if(p.pregunta === "Comentarios") {
             return (
                 <tr key={i}>
-                    <th style={{border: "1px solid", fontSize: 18,textAlign:"left",width:500}}>{p.pregunta}</th>
-                    <th style={{border: "1px solid", fontSize: 18,textAlign:"left"}}></th>
-                    <th style={{border: "1px solid", fontSize: 18,textAlign:"left"}}></th>
-                    <th style={{border: "1px solid", fontSize: 18,textAlign:"left"}}>
+                    <th style={{border: "1px solid", fontSize: 12,textAlign:"left",width:500}}>{p.pregunta}</th>
+                    <th style={{border: "1px solid", fontSize: 12,textAlign:"left"}}></th>
+                    <th style={{border: "1px solid", fontSize: 12,textAlign:"left"}}></th>
+                    <th style={{border: "1px solid", fontSize: 12,textAlign:"left"}}>
                         <input type="text" style={{width: "95%"}} value={p.respuesta} onChange={(e) => setPreguntas(prev => {
                             const newPreguntas = [...prev]
                             newPreguntas[i].respuesta = e.target.value
@@ -256,22 +256,22 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
         else {
             return (
                 <tr key={i}>
-                    <th style={{border: "1px solid", fontSize: 18,textAlign:"left",width:500}}>{p.pregunta}</th>
-                    <th style={{border: "1px solid", fontSize: 18}}>
+                    <th style={{border: "1px solid", fontSize: 12,textAlign:"left",width:500}}>{p.pregunta}</th>
+                    <th style={{border: "1px solid", fontSize: 12}}>
                         <input type="checkbox" checked={p.respuesta === "SI"} onChange={(e) => setPreguntas(prev => {
                             const newPreguntas = [...prev]
                             newPreguntas[i].respuesta = e.target.checked ? "SI" : ""
                             return newPreguntas
                         })}/>
                     </th>
-                    <th style={{border: "1px solid", fontSize: 18}}>
+                    <th style={{border: "1px solid", fontSize: 12}}>
                         <input type="checkbox" checked={p.respuesta === "NO"} onChange={(e) => setPreguntas(prev => {
                             const newPreguntas = [...prev]
                             newPreguntas[i].respuesta = e.target.checked ? "NO" : ""
                             return newPreguntas
                         })}/>
                     </th>
-                    <th style={{border: "1px solid", fontSize: 18,textAlign:"left"}}>
+                    <th style={{border: "1px solid", fontSize: 12,textAlign:"left"}}>
                         <input type="text" style={{width: "95%"}} value={p.respuesta} onChange={(e) => setPreguntas(prev => {
                             const newPreguntas = [...prev]
                             newPreguntas[i].respuesta = e.target.value
@@ -444,39 +444,93 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
                 )}
                 <div style={{marginTop:20}}>
                     {selectedDesglose && (
-                        <div>
-                            <table style={{width: "85%"}}>
-                                <tbody>
-                                    <tr>
-                                        <th style={{border: "1px solid", fontSize: 20}}>PREGUNTA</th>
-                                        <th style={{border: "1px solid", fontSize: 20}}>SI</th>
-                                        <th style={{border: "1px solid", fontSize: 20}}>NO</th>
-                                        <th style={{border: "1px solid", fontSize: 20}}>COMENTARIO</th>
-                                    </tr>
-                                    {preguntas.map((p,i) => (
-                                        respuestaReturner(p,i)
-                                    ))}
-                                </tbody>
-                            </table>
+                        <div style={{display:"flex"}}>
                             <div>
-                                <button style={{...btn_s_style,marginLeft:5,marginTop: 10}} onClick={() => addReporteRetiro()}>AGREGAR RETIRO</button>
-                            </div>
-                            {selectedDesglose && (
-                            <div style={{marginTop:20}}>
-                                <div style={{marginLeft: 10}}>
-                                    <h2 style={{...text_2_t_style, marginTop: 40}}>PRIORIDAD</h2>
-                                    <select name="estados_sel" id="state_sl"
-                                    onChange={(e) => setPrioridad(parseInt(e.target.value))}
-                                    style={{width: 300,fontSize:16,marginBottom: 20}}>
-                                        <option value={0}>SIN PRIORIDAD</option>
-                                        <option value={1}>MEDIA PRIORIDAD</option>
-                                        <option value={2}>ALTA PRIORIDAD</option>
-                                    </select>
+                                <table style={{width: "85%"}}>
+                                    <tbody>
+                                        <tr>
+                                            <th style={{border: "1px solid", fontSize: 20}}>PREGUNTA</th>
+                                            <th style={{border: "1px solid", fontSize: 20}}>SI</th>
+                                            <th style={{border: "1px solid", fontSize: 20}}>NO</th>
+                                            <th style={{border: "1px solid", fontSize: 20}}>COMENTARIO</th>
+                                        </tr>
+                                        {preguntas.map((p,i) => (
+                                            respuestaReturner(p,i)
+                                        ))}
+                                    </tbody>
+                                </table>
+                                <div>
+                                    <button style={{...btn_s_style,marginLeft:5,marginTop: 10}} onClick={() => addReporteRetiro()}>AGREGAR RETIRO</button>
                                 </div>
+                                {selectedDesglose && (
+                                <div style={{marginTop:20}}>
+                                    <div style={{marginLeft: 10}}>
+                                        <h2 style={{...text_2_t_style, marginTop: 40}}>PRIORIDAD</h2>
+                                        <select name="estados_sel" id="state_sl"
+                                        onChange={(e) => setPrioridad(parseInt(e.target.value))}
+                                        style={{width: 300,fontSize:16,marginBottom: 20}}>
+                                            <option value={0}>SIN PRIORIDAD</option>
+                                            <option value={1}>MEDIA PRIORIDAD</option>
+                                            <option value={2}>ALTA PRIORIDAD</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                )}
+                                <button style={{...btn_s_style,marginLeft:5,marginTop: 10}} onClick={() => createLlamada()}>CONFIRMAR LLAMADA</button>
                             </div>
-                            )}
-                            <button style={{...btn_s_style,marginLeft:5,marginTop: 10}} onClick={() => createLlamada()}>CONFIRMAR LLAMADA</button>
+                            <div style={{width: "40%"}}>
+                                <table style={{width: "100%"}}>
+                                    <tbody>
+                                        <tr>
+                                            <th style={{border: "1px solid", fontSize: 20}}>PREGUNTAS QUE PUEDEN SURGIR</th>
+                                        </tr>
+                                        <tr>
+                                            <th style={{border: "1px solid", fontSize: 14}}>¿Cuando es el proximo PLAN o entrega?</th>
+                                        </tr>
+                                        <tr>
+                                            <th style={{border: "1px solid", fontSize: 14}}>Eso debe preguntar al ministerio, ellos podran brindarle una respuesta mas certera. El señor Roberto Gerometta encargado de comedores escolares.</th>
+                                        </tr>
+                                        <tr>
+                                            <th style={{border: "1px solid", fontSize: 14}}>Tengo comida en mal estado ¿Que hago?</th>
+                                        </tr>
+                                        <tr>
+                                            <th style={{border: "1px solid", fontSize: 14}}>Cuantas cajas tiene y de que alimento (pedir ubicacion, escuela)</th>
+                                        </tr>
+                                        <tr>
+                                            <th style={{border: "1px solid", fontSize: 14}}>No se como preparar los alimentos correctamento o cuando preparo a los chicos no les gusta.</th>
+                                        </tr>
+                                        <tr>
+                                            <th style={{border: "1px solid", fontSize: 14}}>Enviar material digital, formas correctas de preparacion y dilucion.</th>
+                                        </tr>
+                                        <tr>
+                                            <th style={{border: "1px solid", fontSize: 14}}>A los chicos no le gusta XXX alimento</th>
+                                        </tr>
+                                        <tr>
+                                            <th style={{border: "1px solid", fontSize: 14}}>Tomar nota de que alimento, preguntar porque no gusta (color, cabor, aroma, textura)</th>
+                                        </tr>
+                                        <tr>
+                                            <th style={{border: "1px solid", fontSize: 14}}>Me llego menos mercaderia, ¿que hago?</th>
+                                        </tr>
+                                        <tr>
+                                            <th style={{border: "1px solid", fontSize: 14}}>Preguntar si dejo escrito en el acta de disconformidad.</th>
+                                        </tr>
+                                        <tr>
+                                            <th style={{border: "1px solid", fontSize: 14}}>Cambiar cabecera</th>
+                                        </tr>
+                                        <tr>
+                                            <th style={{border: "1px solid", fontSize: 14}}>Solicitar datos de la dependencia (nombre de escuela, preguntar cual es su cabecera actual y a cual quiere cambiar) se evaluara si es posible</th>
+                                        </tr>
+                                        <tr>
+                                            <th style={{border: "1px solid", fontSize: 14}}>Altas y bajas de raciones / Alta de dietas especiales</th>
+                                        </tr>
+                                        <tr>
+                                            <th style={{border: "1px solid", fontSize: 14}}>Se encarga el ministerio.</th>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
+
                     )}
                 </div>
                 {selectedDesglose && (
@@ -514,9 +568,9 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
                                         if(r.llamada_id === selectedLlamada) {
                                             return (
                                                 <tr key={i}>
-                                                    <th style={{border: "1px solid", fontSize: 18,textAlign:"left"}}>{r.pregunta}</th>
-                                                    <th style={{border: "1px solid", fontSize: 18,textAlign:"left"}}>{r.respuesta}</th>
-                                                    <th style={{border: "1px solid", fontSize: 18,textAlign:"left"}}>{r.respuesta_2 ? r.respuesta_2 : "N/A"}</th>
+                                                    <th style={{border: "1px solid", fontSize: 12,textAlign:"left"}}>{r.pregunta}</th>
+                                                    <th style={{border: "1px solid", fontSize: 12,textAlign:"left"}}>{r.respuesta}</th>
+                                                    <th style={{border: "1px solid", fontSize: 12,textAlign:"left"}}>{r.respuesta_2 ? r.respuesta_2 : "N/A"}</th>
                                                 </tr>
                                             )
                                         }
