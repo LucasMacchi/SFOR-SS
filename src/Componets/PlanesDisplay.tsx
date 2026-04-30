@@ -30,7 +30,7 @@ export default function PlanesDisplay ({planes,insumos,editDaysFn,addPlanFn,addD
                 alert("Dias cambiados.")
                 plan?.detalles.forEach(d => {
                     if(d.detail_id === detail_id) {
-                        d.dias = parseInt(days)
+                        d.dias = parseFloat(days)
                     }
                 });
                 setPlan(plan)

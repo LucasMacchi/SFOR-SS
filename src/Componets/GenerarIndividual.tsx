@@ -42,7 +42,14 @@ export default function GenerarIndividual ({escuelas,departamentos,planes,insumo
     useEffect(() => {
         setDesgloses([])
         setDetallesViaje([])
-        if(selectedLgr > -1 && filteredLgrs[selectedLgr].desgloses) setDesgloses(filteredLgrs[selectedLgr].desgloses)
+        if(selectedLgr === 9999) {
+            let arr: IDesglose[] = []
+            filteredLgrs.forEach(l => {
+                if(l.desgloses) arr = [...arr,...l.desgloses]
+            });
+            setDesgloses(arr)
+        }
+        else if(selectedLgr > -1 && filteredLgrs[selectedLgr].desgloses) setDesgloses(filteredLgrs[selectedLgr].desgloses)
     },[selectedLgr])
 
     const addDesglose = (desglo:IDesglose) => {
@@ -76,7 +83,27 @@ export default function GenerarIndividual ({escuelas,departamentos,planes,insumo
     
     const createRemito = () => {
         if(detallesViaje.length > 0) {
-            if(checkNoRepeat()) {
+            if(selectedLgr === 9999) {
+                const detalle:IViajeDetalle[] = []
+                detallesViaje.forEach(d => {
+                    detalle.push({
+                        desglose_id: d.desglose_id,
+                        raciones: d.raciones
+                    })
+                });
+                const remito: IViajeRemito = {
+                    plan_id: planes[selectedP].plan_id,
+                    lenterga_id: 9999,
+                    detalles: detalle
+                }
+                setRemitos([...remitos, remito])
+                setDetallesViaje([])
+                setDesgloses([])
+                setSelectedLgr(-1)
+                setSelectedDep("")
+                setUpdater(updater + 1)
+            }
+            else if(checkNoRepeat()) {
                 const detalle:IViajeDetalle[] = []
                 detallesViaje.forEach(d => {
                     detalle.push({
@@ -132,6 +159,15 @@ export default function GenerarIndividual ({escuelas,departamentos,planes,insumo
         }
     }
 
+    const addAllDesgloses = () => {
+        desgloses.forEach(d => {
+            if(selectedP > -1 && d.fortificado === planes[selectedP].fortificado && !checkDesglose(d.desglose_id) && !checkDesgloseRemitos(d.desglose_id) && !d.selected) {
+                setDetallesViaje(prev => [...prev,d])
+            }
+        });
+
+    }
+
     return (
         <div style={{marginLeft: 25, marginBottom: 100}}>
             <div style={{display: "flex",marginLeft: 10}}>
@@ -170,6 +206,7 @@ export default function GenerarIndividual ({escuelas,departamentos,planes,insumo
                                 return <option key={i} value={i}>{d.lentrega_id+" - "+d.completo}</option>
                             }
                         })}
+                        <option value={9999}>TODOS LAS DEPENEDENCIAS</option>
                     </select>
                 </div>
             </div>
@@ -202,7 +239,7 @@ export default function GenerarIndividual ({escuelas,departamentos,planes,insumo
                     )}
                     </div>
                     <div style={{display:"flex",justifyContent:"center",marginTop: 40}}>
-                        <button style={btn_s_style} onClick={() => createRemito()}>AGREGAR TODOS</button>
+                        <button style={btn_s_style} onClick={() => addAllDesgloses()}>AGREGAR TODOS</button>
                     </div>
 
                 </div>
@@ -255,7 +292,7 @@ export default function GenerarIndividual ({escuelas,departamentos,planes,insumo
                 </table>
                 </div>
                 <div style={{display:"flex",justifyContent:"center",marginTop: 40}}>
-                    <button style={btn_s_style} onClick={() => generarRemitos()}>GENERAR REMITOS</button>
+                    <button style={btn_s_style} disabled={selectedLgr !== 9999} onClick={() => generarRemitos()}>GENERAR REMITOS</button>
                     <button style={btn_s_style} onClick={() => prevRemitos()}>?</button>
                 </div>
             </div>
