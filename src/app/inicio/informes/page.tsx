@@ -6,7 +6,7 @@ import DBFacturacion from "@/db/DBFacturacion";
 import DBValorRacion from "@/db/DBValorRacion";
 import DBViajes from "@/db/DBViajes";
 import DBViajesExcel from "@/db/DBViajesExcel";
-import { IEnviosExcel, IExcelFactura, IFacturasExcel, IRemitoInFactura, IRemitoNoExportedRQ, IViajeExcel, IViajeExcelComplete, IViajeExcelCompleteInsumos, IViajeRemitoDetalleExcel } from "@/utils/interfaces";
+import { IEnviosExcel, IEXCELDependencia, IExcelFactura, IEXCELLlamada, IFacturasExcel, IRemitoInFactura, IRemitoNoExportedRQ, IViajeExcel, IViajeExcelComplete, IViajeExcelCompleteInsumos, IViajeRemitoDetalleExcel } from "@/utils/interfaces";
 import sessionCheck from "@/utils/sessionCheck";
 import { hr_style, text_2_t_style } from "@/utils/styles";
 import parseRemitoString from "@/utils/parseRemitoString";
@@ -22,12 +22,78 @@ import DBExportRemito from "@/db/DBExportRemito";
 import FacturasEachExcel from "@/Componets/FacturasEachExcel";
 import ExportRango from "@/Componets/ExportRango";
 import DBExportDataRango from "@/db/DBExportDataRango";
+import DBGetAllLlamdadas from "@/db/DBGetAllLlamdadas";
+import LlamadasExcelData from "@/Componets/LlamadasExcelData";
+import DBDependenciasInforme from "@/db/DBDependenciasInforme";
+import DependenciasExcelData from "@/Componets/DependenciasExcelData";
 
 
 
 export default async function Page() {
     await sessionCheck(3)
     const viajes = await DBViajes()
+
+    const getAllLlamadas = async () => {
+        "use server"
+        try {            
+            const res = await DBGetAllLlamdadas()
+            const parsedDataExcel:IEXCELLlamada[] = res.map((r) => {
+                return {
+                    LENTREGA_ID: r.lentrega_id,
+                    COMPLETO: r.completo,
+                    LOCALIDAD: r.localidad,
+                    DIRECCION: r.direccion,
+                    DEPENDENCIA: r.des,
+                    DEPARTAMENTO: r.departamento,
+                    FECHA: r.fecha.toISOString().split("T")[0],
+                    PREGUNTA: r.pregunta,
+                    RESPUESTA: r.respuesta,
+                    RESPUESTA_2: r.respuesta_2,
+                    PRIORIDAD: r.prioridad,
+                    O_PRIORIDAD: r.o_prioridad,
+                    FECHA_SOLUCION: r.fecha_solucion ? r.fecha_solucion.toISOString().split("T")[0] : "NaN",
+                    SOLUCION: r.solucion,
+                    TIEMPO: r.tiempo
+                }
+            })
+            return parsedDataExcel
+        } catch (error) {
+            console.log(error)
+            return []
+        }
+    }
+
+    const getAllDesgloses = async () => {
+        "use server"
+        try {            
+            const res = await DBDependenciasInforme()
+            const parsedDataExcel:IEXCELDependencia[] = res.map((r) => {
+                return {
+                    ID_ENTREGA: r.lentrega_id,
+                    CABECERA: r.completo,
+                    CUE: r.cue,
+                    DEPENDENCIA: r.des,
+                    TIPO: r.fortificado ? "ALMUERZO" : "COPA DE LECHE",
+                    RACIONES: r.raciones,
+                    VISIBLE: r.visible,
+                    ENVIADO: r.enviado,
+                    CORREO: r.correo || "NaN",
+                    TELEONO_1: r.telefono1 || "NaN",
+                    TELEONO_2: r.telefono2 || "NaN",
+                    TELEONO_3: r.telefono3 || "NaN",
+                    CARGO: r.cargo || "NaN",
+                    DEPARTAMENTO: r.departamento,
+                    LOCALIDAD: r.localidad,
+                    DIRECCION: r.direccion,
+                }
+            })
+            return parsedDataExcel
+        } catch (error) {
+            console.log(error)
+            return []
+        }
+    }
+
 
     const getEnviosData = async () => {
         "use server"
@@ -291,7 +357,7 @@ export default async function Page() {
     }
 
     return (
-        <div>
+        <div style={{marginBottom: 350}}>
             <div>
                 <h2 style={text_2_t_style}>INFORMES</h2>
                 <hr color="#4A6EE8" style={hr_style}/>
@@ -337,6 +403,20 @@ export default async function Page() {
                 </div>
                 <div style={{display:"flex",justifyContent:"center",marginTop: 20}}>
                     <FacturasEachExcel getEachFacturasFn={getEachFacturasFn}/>
+                </div>
+            </div>
+            <div>
+                <h2 style={text_2_t_style}>CALL CENTER</h2>
+                <hr color="#4A6EE8" style={hr_style}/>
+                <div style={{display:"flex",justifyContent:"center"}}>
+                    <LlamadasExcelData getLlamadasData={getAllLlamadas}/>
+                </div>
+            </div>
+            <div>
+                <h2 style={text_2_t_style}>ESCUELAS</h2>
+                <hr color="#4A6EE8" style={hr_style}/>
+                <div style={{display:"flex",justifyContent:"center"}}>
+                    <DependenciasExcelData getDependenciasData={getAllDesgloses}/>
                 </div>
             </div>
         </div>

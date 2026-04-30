@@ -621,13 +621,6 @@ export interface ILlamada {
     solucion?:string
 }
 
-export interface IPregunta {
-    preg_id: number,
-    llamada_id: number,
-    pregunta: string,
-    respuesta: string,
-    fecha: string
-}
 
 export interface IAddLlamada {
     desglose_id: number,
@@ -640,7 +633,10 @@ export interface IAddPregunta {
     llamada_id: number,
     pregunta: string,
     respuesta: string,
-    fecha: string
+    respuesta_2?: string,
+    fecha: string,
+    reporte:boolean
+
 }
 
 export interface IPregunta {
@@ -648,7 +644,8 @@ export interface IPregunta {
     preg_id: number,
     pregunta: string,
     respuesta: string,
-    fecha: string
+    fecha: string,
+    respuesta_2?: string
 }
 
 export interface IDesgloseLlamada {
@@ -664,4 +661,93 @@ export interface IDesgloseLlamada {
     telefono3?: string,
     cargo?:string,
     prioridad?: number
+}
+
+export interface IReporteRetiro {
+    lentrega_id: number,
+    completo: string,
+    departamento: string,
+    localidad: string,
+    direccion: string,
+    des: string,
+    fecha: Date,
+    preg_id: number,
+    pregunta: string,
+    respuesta: string,
+    respuesta_2: string
+}
+
+export interface IInformeLlamada {
+    lentrega_id: number,
+    completo: string,
+    departamento: string,
+    localidad: string,
+    direccion: string,
+    des: string,
+    fecha: Date,
+    preg_id: number,
+    pregunta: string,
+    respuesta: string,
+    respuesta_2: string,
+    prioridad: number,
+    o_prioridad: number,
+    fecha_solucion: Date,
+    solucion: string,
+    tiempo: number
+}
+
+export interface IEXCELLlamada {
+    LENTREGA_ID: number,
+    COMPLETO: string,
+    DEPARTAMENTO: string,
+    LOCALIDAD: string,
+    DIRECCION: string,
+    DEPENDENCIA: string,
+    FECHA: string,
+    PREGUNTA: string,
+    RESPUESTA: string,
+    RESPUESTA_2: string,
+    PRIORIDAD: number,
+    O_PRIORIDAD:number,
+    FECHA_SOLUCION: string,
+    SOLUCION: string,
+    TIEMPO: number
+}
+
+export interface IDependenciasInforme {
+    lentrega_id: number,
+    completo: string,
+    cue: number,
+    des: string,
+    fortificado:boolean,
+    raciones: number,
+    visible: boolean,
+    enviado: boolean,
+    correo?: string,
+    telefono1?: string,
+    telefono2?: string,
+    telefono3?: string,
+    cargo?:string,
+    departamento: string,
+    localidad: string,
+    direccion: string,
+}
+
+export interface IEXCELDependencia {
+    ID_ENTREGA: number,
+    CABECERA: string,
+    CUE: number,
+    DEPENDENCIA: string,
+    TIPO: string,
+    RACIONES: number,
+    VISIBLE: boolean,
+    ENVIADO: boolean,
+    CORREO?: string,
+    TELEONO_1?: string,
+    TELEONO_2?: string,
+    TELEONO_3?: string,
+    CARGO?:string,
+    DEPARTAMENTO: string,
+    LOCALIDAD: string,
+    DIRECCION: string,
 }

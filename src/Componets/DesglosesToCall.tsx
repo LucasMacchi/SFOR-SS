@@ -4,6 +4,28 @@ import { btn_s_style, text_2_t_style } from "@/utils/styles";
 import { useEffect, useState } from "react";
 
 
+const preguntasT:IAddPregunta[] = [
+        {llamada_id: 0, pregunta: "¿Recibieron productos alimenticios de la empresa de lo que va del año?", respuesta: "",fecha:"NOW()",reporte:false},
+        {llamada_id: 0, pregunta: "¿Tuvieron algún inconveniente con los productos?", respuesta: "",fecha:"NOW()",reporte:false},
+        {llamada_id: 0, pregunta: "¿Están dentro de fecha de vencimiento?", respuesta: "",fecha:"NOW()",reporte:false},
+        {llamada_id: 0, pregunta: "¿Los envases están en buen estado?", respuesta: "",fecha:"NOW()",reporte:false},
+        {llamada_id: 0, pregunta: "¿Los productos están elevados del suelo?", respuesta: "",fecha:"NOW()",reporte:false},
+        {llamada_id: 0, pregunta: "¿El lugar está limpio y ordenado?", respuesta: "",fecha:"NOW()",reporte:false},
+        {llamada_id: 0, pregunta: "¿Detectaron presencia de plagas?", respuesta: "",fecha:"NOW()",reporte:false},
+        {llamada_id: 0, pregunta: "¿Están protegidos de calor o humedad?", respuesta: "",fecha:"NOW()",reporte:false},
+        {llamada_id: 0, pregunta: "¿Utiliza metodo PEPS para ordenar su deposito?", respuesta: "",fecha:"NOW()",reporte:false},
+        {llamada_id: 0, pregunta: "¿Sabe diferenciar LOTE y fecha de VTO?", respuesta: "",fecha:"NOW()",reporte:false},
+        {llamada_id: 0, pregunta: "¿Están siguiendo las indicaciones de preparación?", respuesta: "",fecha:"NOW()",reporte:false},
+        {llamada_id: 0, pregunta: "¿Cocina en el establecimiento?", respuesta: "",fecha:"NOW()",reporte:false},
+        {llamada_id: 0, pregunta: "¿De cuentos litros es la olla que utliza?", respuesta: "",fecha:"NOW()",reporte:false},
+        {llamada_id: 0, pregunta: "¿Cómo es el nivel de stock actual? (ALTO / MEDIO / BAJO)", respuesta: "ALTO",fecha:"NOW()",reporte:false},
+        {llamada_id: 0, pregunta: "¿Recibieron indicaciones sobre conservación?", respuesta: "",fecha:"NOW()",reporte:false},
+        {llamada_id: 0, pregunta: "¿Necesitan pallets para su deposito?", respuesta: "",fecha:"NOW()",reporte:false},
+        {llamada_id: 0, pregunta: "¿Necesita recetas o formas correcta de preparación?", respuesta: "",fecha:"NOW()",reporte:false},
+        {llamada_id: 0, pregunta: "¿Necesitan apoyo o aclarar algo?", respuesta: "",fecha:"NOW()",reporte:false},
+        {llamada_id: 0, pregunta: "Comentarios", respuesta: "",fecha:"NOW()",reporte:false}
+]
+
 export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,departamentos,getLlamadasEscuelaFn,getRespuestasFn,resolverLlamadaFn}:
     {desgloses: IDesgloseLlamada[], editContFn: (columna: string, data: string, id: number) => Promise<boolean>,
         addLlamadaFn: (data: IAddLlamada,preguntas: IAddPregunta[]) => Promise<boolean>,departamentos:string[],
@@ -21,27 +43,7 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
     const [seconds,setSeconds] = useState(0)
     const [respuestas, setRespuestas] = useState<IPregunta[]>([])
     const [selectedLlamada, setSelectedLlamada] = useState(0)
-    const [preguntas, setPreguntas] = useState<IAddPregunta[]>([
-        {llamada_id: 0, pregunta: "¿Recibieron los productos correctamente?", respuesta: "",fecha:"NOW()"},
-        {llamada_id: 0, pregunta: "¿Están dentro de fecha de vencimiento?", respuesta: "",fecha:"NOW()"},
-        {llamada_id: 0, pregunta: "¿Los envases están en buen estado?", respuesta: "",fecha:"NOW()"},
-        {llamada_id: 0, pregunta: "¿Los productos están elevados del suelo?", respuesta: "",fecha:"NOW()"},
-        {llamada_id: 0, pregunta: "¿El lugar está limpio y ordenado?", respuesta: "",fecha:"NOW()"},
-        {llamada_id: 0, pregunta: "¿Detectaron presencia de plagas?", respuesta: "",fecha:"NOW()"},
-        {llamada_id: 0, pregunta: "¿Están protegidos de calor o humedad?", respuesta: "",fecha:"NOW()"},
-        {llamada_id: 0, pregunta: "¿Utiliza metodo PEPS para ordenar su deposito?", respuesta: "",fecha:"NOW()"},
-        {llamada_id: 0, pregunta: "¿Sabe diferenciar LOTE y fecha de VTO?", respuesta: "",fecha:"NOW()"},
-        {llamada_id: 0, pregunta: "¿Están siguiendo las indicaciones de preparación?", respuesta: "",fecha:"NOW()"},
-        {llamada_id: 0, pregunta: "¿Utilizan agua segura?", respuesta: "",fecha:"NOW()"},
-        {llamada_id: 0, pregunta: "¿Cocina en el establecimiento?", respuesta: "",fecha:"NOW()"},
-        {llamada_id: 0, pregunta: "¿De cuentos litros es la olla que utliza?", respuesta: "",fecha:"NOW()"},
-        {llamada_id: 0, pregunta: "¿Tuvieron algún inconveniente con los productos?", respuesta: "",fecha:"NOW()"},
-        {llamada_id: 0, pregunta: "¿Cómo es el nivel de stock actual? (ALTO / MEDIO / BAJO)", respuesta: "ALTO",fecha:"NOW()"},
-        {llamada_id: 0, pregunta: "¿Recibieron indicaciones sobre conservación?", respuesta: "",fecha:"NOW()"},
-        {llamada_id: 0, pregunta: "¿Necesita recetas o formas correcta de preparación?", respuesta: "",fecha:"NOW()"},
-        {llamada_id: 0, pregunta: "¿Necesitan apoyo o aclarar algo?", respuesta: "",fecha:"NOW()"},
-        {llamada_id: 0, pregunta: "Comentarios", respuesta: "",fecha:"NOW()"}
-    ])
+    const [preguntas, setPreguntas] = useState<IAddPregunta[]>(preguntasT)
 
     useEffect(() => {
         let arr = desgloses
@@ -65,27 +67,7 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
     },[timer])
 
     useEffect(() => {
-        setPreguntas([
-            {llamada_id: 0, pregunta: "¿Recibieron los productos del plan?", respuesta: "",fecha:"NOW()"},
-            {llamada_id: 0, pregunta: "¿Tuvieron algún inconveniente con los productos?", respuesta: "",fecha:"NOW()"},
-            {llamada_id: 0, pregunta: "¿Están dentro de fecha de vencimiento?", respuesta: "",fecha:"NOW()"},
-            {llamada_id: 0, pregunta: "¿Los envases están en buen estado?", respuesta: "",fecha:"NOW()"},
-            {llamada_id: 0, pregunta: "¿Los productos están elevados del suelo?", respuesta: "",fecha:"NOW()"},
-            {llamada_id: 0, pregunta: "¿El lugar está limpio y ordenado?", respuesta: "",fecha:"NOW()"},
-            {llamada_id: 0, pregunta: "¿Detectaron presencia de plagas?", respuesta: "",fecha:"NOW()"},
-            {llamada_id: 0, pregunta: "¿Están protegidos de calor o humedad?", respuesta: "",fecha:"NOW()"},
-            {llamada_id: 0, pregunta: "¿Utiliza metodo PEPS para ordenar su deposito?", respuesta: "",fecha:"NOW()"},
-            {llamada_id: 0, pregunta: "¿Sabe diferenciar LOTE y fecha de VTO?", respuesta: "",fecha:"NOW()"},
-            {llamada_id: 0, pregunta: "¿Están siguiendo las indicaciones de preparación?", respuesta: "",fecha:"NOW()"},
-            {llamada_id: 0, pregunta: "¿Utilizan agua segura?", respuesta: "",fecha:"NOW()"},
-            {llamada_id: 0, pregunta: "¿Cocina en el establecimiento?", respuesta: "",fecha:"NOW()"},
-            {llamada_id: 0, pregunta: "¿De cuentos litros es la olla que utliza?", respuesta: "",fecha:"NOW()"},
-            {llamada_id: 0, pregunta: "¿Cómo es el nivel de stock actual? (alto / medio / bajo)", respuesta: "",fecha:"NOW()"},
-            {llamada_id: 0, pregunta: "¿Recibieron indicaciones sobre conservación?", respuesta: "",fecha:"NOW()"},
-            {llamada_id: 0, pregunta: "¿Necesita recetas o formas correcta de preparación?", respuesta: "",fecha:"NOW()"},
-            {llamada_id: 0, pregunta: "¿Necesitan apoyo o aclarar algo?", respuesta: "",fecha:"NOW()"},
-            {llamada_id: 0, pregunta: "Comentarios", respuesta: "",fecha:"NOW()"}
-        ])
+        setPreguntas(preguntasT)
         setTimer(false)
         setSeconds(0)
         setLlamadas([])
@@ -167,9 +149,8 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
 
 
     const displaySeverity = (p:number | null) => {
-        if(p === null || p < 0) return "white"
-        if(p < 2) return "green"
-        if(p < 4) return "yellow"
+        if(p === null || p === 0) return "white"
+        if(p === 1) return "yellow"
         return "red"
     }
 
@@ -188,8 +169,13 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
         else return ll
     }
 
-    const respuestaReturner = (p:IAddPregunta,i:number,) => {
-        if(p.pregunta === "¿Cómo es el nivel de stock actual? (alto / medio / bajo)") {
+    const addReporteRetiro = () => {
+        const p:IAddPregunta = {llamada_id: 0, pregunta: "Retiro:", respuesta: "",fecha:"NOW()",reporte:true,respuesta_2:""}
+        setPreguntas(preg => [...preg,p])
+    }
+
+    const respuestaReturner = (p:IAddPregunta,i:number) => {
+        if(p.pregunta === "¿Cómo es el nivel de stock actual? (ALTO / MEDIO / BAJO)") {
             return (
                 <tr key={i}>
                     <th style={{border: "1px solid", fontSize: 18,textAlign:"left",width:500}}>{p.pregunta}</th>
@@ -214,6 +200,41 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
                         })}/>
                     </th>
                 </tr>
+            )
+        }
+        else if(p.reporte) {
+            return(
+                <tr key={i}>
+                    <th style={{border: "1px solid", fontSize: 18,textAlign:"left",width:500}}>{p.pregunta}</th>
+                    <th style={{border: "1px solid", fontSize: 18,textAlign:"left"}}>
+                        Cantidad
+                        <input type="number" style={{width: 50,textAlign:"center",marginLeft:5}} onChange={(e) => setPreguntas(prev => {
+                            const newPreguntas = [...prev]
+                            newPreguntas[i].respuesta_2 = e.target.value
+                            return newPreguntas
+                        })}/>
+                    </th>
+                    <th style={{border: "1px solid", fontSize: 18}}>
+                        <select name="estados_sel" id="state_sl"
+                            onChange={(e) => setPreguntas(prev => {
+                                const newPreguntas = [...prev]
+                                newPreguntas[i].respuesta = e.target.value
+                                return newPreguntas
+                            })}>
+                            <option value={""}>---</option>
+                            <option value={"GALLETITAS"}>GALLETITAS</option>
+                            <option value={"BUDINES"}>BUDINES</option>
+                            <option value={"LECHE"}>LECHE</option>
+                        </select>
+                    </th>
+                    <th style={{border: "1px solid", fontSize: 18,textAlign:"left"}}>
+                        <input type="text" style={{width: "95%"}} value={p.respuesta +" - "+p.respuesta_2} onChange={(e) => setPreguntas(prev => {
+                            const newPreguntas = [...prev]
+                            newPreguntas[i].respuesta = e.target.value
+                            return newPreguntas
+                        })}/>
+                    </th>
+                </tr>  
             )
         }
         else if(p.pregunta === "Comentarios") {
@@ -328,7 +349,7 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
                                         <th style={{border: "1px solid", fontSize: 20}}>ULTIMA LLAMADA</th>
                                     </tr>
                                     {filteredColegios.map((d,i) => {
-                                        if(d.prioridad && d.prioridad === 5) {
+                                        if(d.prioridad && d.prioridad === 2) {
                                             return (
                                                 <tr key={i} style={{backgroundColor: displaySeverity(d.prioridad ? d.prioridad : null)}}
                                                 onClick={() => setSelectedDesglose(d)}>
@@ -358,37 +379,7 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
                                         <th style={{border: "1px solid", fontSize: 20}}>ULTIMA LLAMADA</th>
                                     </tr>
                                     {filteredColegios.map((d,i) => {
-                                        if(d.prioridad && (d.prioridad > 2 && d.prioridad < 5)) {
-                                            return (
-                                                <tr key={i} style={{backgroundColor: displaySeverity(d.prioridad ? d.prioridad : null)}}
-                                                onClick={() => setSelectedDesglose(d)}>
-                                                    <th style={{border: "1px solid", fontSize: 20}}>{d.cue}</th>
-                                                    <th style={{border: "1px solid", fontSize: 20}}>{d.des}</th>
-                                                    <th style={{border: "1px solid", fontSize: 20}}>{d.ultima_llamada?.toISOString().split('T')[0] || "N/A"}</th>
-                                                </tr>
-                                            )
-                                        }
-                                    })}
-                                </tbody>
-                            </table>
-                            :
-                            <h2 style={text_2_t_style}>ESCUELAS NO CARGADAS</h2>
-                            }
-                        </div>
-                    </div>
-                    <div>
-                        <h2 style={text_2_t_style}>DESGLOSES PARA LLAMAR CON BAJA PRIORIDAD</h2>
-                        <div style={{maxHeight: 250,height:250,width: "100%", overflow: "scroll"}}>
-                            {filteredColegios.length > 0 ? 
-                            <table style={{width: "100%"}}>
-                                <tbody>
-                                    <tr>
-                                        <th style={{border: "1px solid", fontSize: 20}}>CUE</th>
-                                        <th style={{border: "1px solid", fontSize: 20}}>ESCUELA</th>
-                                        <th style={{border: "1px solid", fontSize: 20}}>ULTIMA LLAMADA</th>
-                                    </tr>
-                                    {filteredColegios.map((d,i) => {
-                                        if(d.prioridad && (d.prioridad > 0 && d.prioridad < 3)) {
+                                        if(d.prioridad && (d.prioridad === 1)) {
                                             return (
                                                 <tr key={i} style={{backgroundColor: displaySeverity(d.prioridad ? d.prioridad : null)}}
                                                 onClick={() => setSelectedDesglose(d)}>
@@ -467,7 +458,9 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
                                     ))}
                                 </tbody>
                             </table>
-
+                            <div>
+                                <button style={{...btn_s_style,marginLeft:5,marginTop: 10}} onClick={() => addReporteRetiro()}>AGREGAR RETIRO</button>
+                            </div>
                             {selectedDesglose && (
                             <div style={{marginTop:20}}>
                                 <div style={{marginLeft: 10}}>
@@ -476,11 +469,8 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
                                     onChange={(e) => setPrioridad(parseInt(e.target.value))}
                                     style={{width: 300,fontSize:16,marginBottom: 20}}>
                                         <option value={0}>SIN PRIORIDAD</option>
-                                        <option value={1}>MUY BAJA PRIORIDAD</option>
-                                        <option value={2}>BAJA PRIORIDAD</option>
-                                        <option value={3}>PRIORIDAD MEDIA</option>
-                                        <option value={4}>ALTA PRIORIDAD</option>
-                                        <option value={5}>URGENTE</option>
+                                        <option value={1}>MEDIA PRIORIDAD</option>
+                                        <option value={2}>ALTA PRIORIDAD</option>
                                     </select>
                                 </div>
                             </div>
@@ -526,6 +516,7 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
                                                 <tr key={i}>
                                                     <th style={{border: "1px solid", fontSize: 18,textAlign:"left"}}>{r.pregunta}</th>
                                                     <th style={{border: "1px solid", fontSize: 18,textAlign:"left"}}>{r.respuesta}</th>
+                                                    <th style={{border: "1px solid", fontSize: 18,textAlign:"left"}}>{r.respuesta_2 ? r.respuesta_2 : "N/A"}</th>
                                                 </tr>
                                             )
                                         }
