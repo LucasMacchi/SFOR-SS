@@ -3,7 +3,7 @@ import { addLlamadaSQL, addPreguntaSQL, addPreguntaSQL2 } from "./SQLreturner";
 import authJwt from "@/utils/authJwt";
 import { IAddLlamada, IAddPregunta } from "@/utils/interfaces";
 
-export default async function (l: IAddLlamada,preguntas:IAddPregunta[]): Promise<boolean> {
+export default async function (l: IAddLlamada,preguntas:IAddPregunta[],user_id:number): Promise<boolean> {
     const conn = clientReturner()
     try {
         if(await authJwt(4)) {
@@ -11,7 +11,7 @@ export default async function (l: IAddLlamada,preguntas:IAddPregunta[]): Promise
             const sql = addLlamadaSQL()
             const sql2 = addPreguntaSQL()
             const sql2Res2 = addPreguntaSQL2()
-            const result = (await conn.query(sql, [l.fecha, l.desglose_id, l.tiempo, l.prioridad, l.prioridad])).rows[0]['llamada_id']
+            const result = (await conn.query(sql, [l.fecha, l.desglose_id, l.tiempo, l.prioridad, l.prioridad, user_id])).rows[0]['llamada_id']
             if(result && preguntas.length > 0) {
                 for await (const p of preguntas) {
                     p.llamada_id = result

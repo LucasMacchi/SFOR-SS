@@ -45,7 +45,7 @@ export default async function Layout({children}: Readonly<{children: React.React
   return (
         <div style={{display: "flex", justifyContent: "start",margin: 0}}>
           <div style={{paddingLeft:10 ,marginRight: 25, width: 250, height: "100vh",backgroundColor: "#4A6EE8", position: "fixed"}}>
-            <div style={{marginBottom: 80}}>
+            <div style={{marginBottom: 10}}>
                 <h4 style={text_2_s_style}>USER: {userData ? userData.username : "NaN"}</h4>
                 <PlanSelector planes={planActual} userPlan={userplan} rol={userData.rol} createRepartoFn={createRepartoFn}/>
             </div>
