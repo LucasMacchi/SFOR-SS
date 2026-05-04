@@ -107,7 +107,11 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
     const createLlamada = async () => {
         setTimer(false)
         console.log(seconds)
-        if(confirm("¿Confirma que desea crear la llamada?") && seconds > 0) {
+        let check = true
+        preguntas.forEach(p => {
+            if(p.respuesta.length === 0) check = false
+        });
+        if(confirm("¿Confirma que desea crear la llamada?") && seconds > 0 && check) {
             if(selectedDesglose) {
                 const data: IAddLlamada = {
                     fecha: 'NOW()',
@@ -129,7 +133,7 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
                 else alert("Error al crear la llamada.")
             }
         }
-        else alert("Error al crear llamada, debe tener segundos de llamada.")
+        else alert("Error al crear llamada, debe tener segundos de llamada y responder todas las preguntas.")
     }
 
     const resolverLlamada = async (llamada_id: number) => {
@@ -442,6 +446,7 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
                 {timer && (
                     <h2 style={{...text_2_t_style, marginTop: 40}}>SEGUNDOS TRANSCURRIDOS: {seconds} s</h2>
                 )}
+                <h3 style={{...text_2_t_style,marginTop:20}}>ES OBLIGATORIO RESPONDER TODAS LAS PREGUNTAS, INCLUIDO EL COMENTARIO</h3>
                 <div style={{marginTop:20}}>
                     {selectedDesglose && (
                         <div style={{display:"flex"}}>
@@ -482,48 +487,63 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
                                 <table style={{width: "100%"}}>
                                     <tbody>
                                         <tr>
+                                            <th style={{border: "1px solid", fontSize: 20}}>PREGUNTA/RESPUESTA</th>
                                             <th style={{border: "1px solid", fontSize: 20}}>PREGUNTAS QUE PUEDEN SURGIR</th>
                                         </tr>
                                         <tr>
+                                            <th style={{border: "1px solid", fontSize: 14}}>P</th>
                                             <th style={{border: "1px solid", fontSize: 14}}>¿Cuando es el proximo PLAN o entrega?</th>
                                         </tr>
                                         <tr>
+                                            <th style={{border: "1px solid", fontSize: 14}}>R</th>
                                             <th style={{border: "1px solid", fontSize: 14}}>Eso debe preguntar al ministerio, ellos podran brindarle una respuesta mas certera. El señor Roberto Gerometta encargado de comedores escolares.</th>
                                         </tr>
                                         <tr>
+                                            <th style={{border: "1px solid", fontSize: 14}}>P</th>
                                             <th style={{border: "1px solid", fontSize: 14}}>Tengo comida en mal estado ¿Que hago?</th>
                                         </tr>
                                         <tr>
+                                            <th style={{border: "1px solid", fontSize: 14}}>R</th>
                                             <th style={{border: "1px solid", fontSize: 14}}>Cuantas cajas tiene y de que alimento (pedir ubicacion, escuela)</th>
                                         </tr>
                                         <tr>
+                                            <th style={{border: "1px solid", fontSize: 14}}>P</th>
                                             <th style={{border: "1px solid", fontSize: 14}}>No se como preparar los alimentos correctamento o cuando preparo a los chicos no les gusta.</th>
                                         </tr>
-                                        <tr>
+                                       <tr>
+                                            <th style={{border: "1px solid", fontSize: 14}}>R</th>
                                             <th style={{border: "1px solid", fontSize: 14}}>Enviar material digital, formas correctas de preparacion y dilucion.</th>
                                         </tr>
                                         <tr>
+                                            <th style={{border: "1px solid", fontSize: 14}}>P</th>
                                             <th style={{border: "1px solid", fontSize: 14}}>A los chicos no le gusta XXX alimento</th>
                                         </tr>
                                         <tr>
+                                            <th style={{border: "1px solid", fontSize: 14}}>R</th>
                                             <th style={{border: "1px solid", fontSize: 14}}>Tomar nota de que alimento, preguntar porque no gusta (color, cabor, aroma, textura)</th>
                                         </tr>
                                         <tr>
+                                            <th style={{border: "1px solid", fontSize: 14}}>P</th>
                                             <th style={{border: "1px solid", fontSize: 14}}>Me llego menos mercaderia, ¿que hago?</th>
                                         </tr>
                                         <tr>
+                                            <th style={{border: "1px solid", fontSize: 14}}>R</th>
                                             <th style={{border: "1px solid", fontSize: 14}}>Preguntar si dejo escrito en el acta de disconformidad.</th>
                                         </tr>
                                         <tr>
+                                            <th style={{border: "1px solid", fontSize: 14}}>P</th>
                                             <th style={{border: "1px solid", fontSize: 14}}>Cambiar cabecera</th>
                                         </tr>
                                         <tr>
+                                            <th style={{border: "1px solid", fontSize: 14}}>P</th>
                                             <th style={{border: "1px solid", fontSize: 14}}>Solicitar datos de la dependencia (nombre de escuela, preguntar cual es su cabecera actual y a cual quiere cambiar) se evaluara si es posible</th>
                                         </tr>
                                         <tr>
+                                            <th style={{border: "1px solid", fontSize: 14}}>P</th>
                                             <th style={{border: "1px solid", fontSize: 14}}>Altas y bajas de raciones / Alta de dietas especiales</th>
                                         </tr>
                                         <tr>
+                                            <th style={{border: "1px solid", fontSize: 14}}>R</th>
                                             <th style={{border: "1px solid", fontSize: 14}}>Se encarga el ministerio.</th>
                                         </tr>
                                     </tbody>
