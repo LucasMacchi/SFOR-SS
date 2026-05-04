@@ -1,5 +1,5 @@
 "use client"
-import {IViajeExcelComplete, IViajeExcelRQ } from "@/utils/interfaces";
+import {IViajeExcelComplete } from "@/utils/interfaces";
 import Image from "next/image"
 import * as XLSX from 'xlsx';
 

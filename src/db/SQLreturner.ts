@@ -164,7 +164,7 @@ export function planAddDetailSQL (d: IAddPlanDetails) {
 }
 
 export function addLlamadaSQL () {
-    return `INSERT INTO public.llamada(fecha, desglose_id, tiempo, prioridad, o_prioridad) VALUES ($1, $2, $3, $4, $5) RETURNING llamada_id;`
+    return `INSERT INTO public.llamada(fecha, desglose_id, tiempo, prioridad, o_prioridad,user_id) VALUES ($1, $2, $3, $4, $5,$6) RETURNING llamada_id;`
 }
 
 export function addPreguntaSQL () {

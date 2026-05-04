@@ -6,6 +6,7 @@ import DBEditContactos from "@/db/DBEditContactos"
 import DBGetRespuestasByDesglose from "@/db/DBGetRespuestasByDesglose"
 import DBLlamadasByDesglose from "@/db/DBLlamadasByDesglose"
 import DBResolverLlamada from "@/db/DBResolverLlamada"
+import decodeJWT from "@/utils/decodeJWT"
 import { IAddLlamada, IAddPregunta } from "@/utils/interfaces"
 import sessionCheck from "@/utils/sessionCheck"
 import { hr_style, text_2_t_style } from "@/utils/styles"
@@ -32,7 +33,9 @@ export default async function Page () {
     const addLlamada = async (data: IAddLlamada,preguntas: IAddPregunta[]): Promise<boolean> => {
         "use server"
         try {
-            const res = await DBAddLlamada(data, preguntas)
+            const user = await decodeJWT()
+            if(!user) return false
+            const res = await DBAddLlamada(data, preguntas,user.userId)
             return res
         } catch (error) {
             console.log(error)
