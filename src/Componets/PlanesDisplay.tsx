@@ -24,8 +24,8 @@ export default function PlanesDisplay ({planes,insumos,editDaysFn,addPlanFn,addD
 
     const changeDays = async (detail_id:number) => {
         const days = prompt("Ingrese la cantidad de dias:")
-        if(days && parseInt(days) && detail_id && confirm("¿Quieres modificar la cantidad de dias?")) {
-            const res = await editDaysFn(detail_id,parseInt(days))
+        if(days && parseFloat(days) && detail_id && confirm("¿Quieres modificar la cantidad de dias?")) {
+            const res = await editDaysFn(detail_id,parseFloat(days))
             if(res) {
                 alert("Dias cambiados.")
                 plan?.detalles.forEach(d => {
@@ -42,8 +42,8 @@ export default function PlanesDisplay ({planes,insumos,editDaysFn,addPlanFn,addD
 
     const changeDaysDetail = async (index:number) => {
         const days = prompt("Ingrese la cantidad de dias:")
-        if(days && parseInt(days) && arrayInsumos[index] && confirm("¿Quieres modificar la cantidad de dias?")) {
-            arrayInsumos[index].dias = parseInt(days)
+        if(days && parseFloat(days) && arrayInsumos[index] && confirm("¿Quieres modificar la cantidad de dias?")) {
+            arrayInsumos[index].dias = parseFloat(days)
             setUpd(up+1)
         }
     }
@@ -62,7 +62,7 @@ export default function PlanesDisplay ({planes,insumos,editDaysFn,addPlanFn,addD
     const addInsumoToPlan = (index: number) => {
         if(index > -1) {
             const daysIns = prompt("Dias a asignar al insumo en el plan: ")
-            if(daysIns && parseInt(daysIns)) {
+            if(daysIns && parseFloat(daysIns)) {
                 const dayParsed = parseFloat(daysIns)
                 const insumo = insumos[index]
                 const detail: IAddPlanDetails = {
@@ -78,8 +78,8 @@ export default function PlanesDisplay ({planes,insumos,editDaysFn,addPlanFn,addD
     const addInsumoToSelPlan = async (index:number) => {
         if(index > -1) {
             const daysIns = prompt("Dias a asignar al insumo en el plan: ")
-            if(daysIns && parseInt(daysIns) && plan && confirm("¿Quieres agregar el insumo al plan "+plan.des+"?")) {
-                const dayParsed = parseInt(daysIns)
+            if(daysIns && parseFloat(daysIns) && plan && confirm("¿Quieres agregar el insumo al plan "+plan.des+"?")) {
+                const dayParsed = parseFloat(daysIns)
                 const insumo = insumos[index]
                 const detail: IAddPlanDetails = {
                     ins_id: insumo.ins_id,
