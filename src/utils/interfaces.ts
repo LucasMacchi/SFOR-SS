@@ -626,7 +626,8 @@ export interface IAddLlamada {
     desglose_id: number,
     fecha: string,
     tiempo:number,
-    prioridad: number
+    prioridad: number,
+    no_atendio: boolean,
 }
 
 export interface IAddPregunta {
@@ -660,7 +661,8 @@ export interface IDesgloseLlamada {
     telefono2?: string,
     telefono3?: string,
     cargo?:string,
-    prioridad?: number
+    prioridad?: number,
+    no_atendio: boolean
 }
 
 export interface IReporteRetiro {
