@@ -510,12 +510,43 @@ export function getExportarDataRango () {
 }
 
 export function getDesglosesLastCall () {
-    return `SELECT d.cargo_2,l.no_atendio,d.desglose_id,d.lentrega_id,le.departamento,d.cue,d.des, MAX(l.fecha) as ultima_llamada,MAX(l.prioridad) as prioridad,d.correo,d.telefono1,d.telefono2,d.telefono3,d.cargo FROM public.desglose d 
-    LEFT JOIN llamada l ON l.desglose_id = d.desglose_id
-    JOIN lentrega le ON le.lentrega_id = d.lentrega_id
-    WHERE d.fortificado = false AND d.visible = true AND d.des not like '%CELIAQUIA%' AND d.des not like '%DIABETES%' AND d.des not like '%MIXTO%'
-    GROUP BY d.desglose_id,d.lentrega_id,le.departamento,d.cue,d.des,d.correo,d.telefono1,d.telefono2,d.telefono3,d.cargo,l.no_atendio
-    ORDER BY ultima_llamada DESC`
+    return `SELECT 
+    d.cargo_2,
+    d.desglose_id,
+    d.lentrega_id,
+    le.departamento,
+    d.cue,
+    d.des,
+    l.fecha as ultima_llamada,
+    l.no_atendio,
+    l.prioridad,
+    d.correo,
+    d.telefono1,
+    d.telefono2,
+    d.telefono3,
+    d.cargo
+FROM public.desglose d
+
+LEFT JOIN (
+    SELECT DISTINCT ON (desglose_id)
+        desglose_id,
+        fecha,
+        no_atendio,
+        prioridad
+    FROM llamada
+    ORDER BY desglose_id, fecha DESC
+) l ON l.desglose_id = d.desglose_id
+
+JOIN lentrega le 
+    ON le.lentrega_id = d.lentrega_id
+
+WHERE d.fortificado = false 
+    AND d.visible = true 
+    AND d.des not like '%CELIAQUIA%' 
+    AND d.des not like '%DIABETES%' 
+    AND d.des not like '%MIXTO%'
+
+ORDER BY l.fecha DESC;`
 }
 
 export function getLlamadasByDesglose () {
