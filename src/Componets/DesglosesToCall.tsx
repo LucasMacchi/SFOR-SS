@@ -502,6 +502,10 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
                                     <button style={{...btn_s_style,marginLeft:5}} onClick={() => editContacto("cargo")}>EDITAR</button>
                                 </div>
                                 <div style={{marginTop: 20,display:"flex"}}>
+                                    <h3 style={text_2_t_style}>SEGUNDO CARGO: {selectedDesglose.cargo_2 || "N/A"}</h3>
+                                    <button style={{...btn_s_style,marginLeft:5}} onClick={() => editContacto("cargo_2")}>EDITAR</button>
+                                </div>
+                                <div style={{marginTop: 20,display:"flex"}}>
                                     <h3 style={text_2_t_style}>CORREO: {selectedDesglose.correo || "N/A"}</h3>
                                     <button style={{...btn_s_style,marginLeft:5}} onClick={() => editContacto("correo")}>EDITAR</button>
                                 </div>

@@ -661,6 +661,7 @@ export interface IDesgloseLlamada {
     telefono2?: string,
     telefono3?: string,
     cargo?:string,
+    cargo_2?:string,
     prioridad?: number,
     no_atendio: boolean
 }
