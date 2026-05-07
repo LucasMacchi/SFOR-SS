@@ -1,6 +1,6 @@
 "use client"
 import { IAddLlamada, IAddPregunta, IDesgloseLlamada, ILlamada, IPregunta } from "@/utils/interfaces";
-import { btn_s_style, text_2_t_style } from "@/utils/styles";
+import { btn_d_style, btn_s_style, text_2_t_style } from "@/utils/styles";
 import { useEffect, useState } from "react";
 
 
@@ -26,10 +26,11 @@ const preguntasT:IAddPregunta[] = [
         {llamada_id: 0, pregunta: "Comentarios", respuesta: "",fecha:"NOW()",reporte:false}
 ]
 
-export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,departamentos,getLlamadasEscuelaFn,getRespuestasFn,resolverLlamadaFn}:
+export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,departamentos,getLlamadasEscuelaFn,getRespuestasFn,resolverLlamadaFn,addLlamadaNoAtendidaFn}:
     {desgloses: IDesgloseLlamada[], editContFn: (columna: string, data: string, id: number) => Promise<boolean>,
         addLlamadaFn: (data: IAddLlamada,preguntas: IAddPregunta[]) => Promise<boolean>,departamentos:string[],
         getLlamadasEscuelaFn: (id: number) => Promise<ILlamada[]>,getRespuestasFn: (id: number) => Promise<IPregunta[]>,resolverLlamadaFn: (llamada_id: number,solucion:string) => Promise<boolean>
+        addLlamadaNoAtendidaFn: (data: IAddLlamada) => Promise<boolean>
     }) {
     
     const [selectedDesglose, setSelectedDesglose] = useState<IDesgloseLlamada | null>(null)
@@ -41,6 +42,8 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
     const [timer,setTimer] = useState(false)
     const [soluciondes,setSolucionDes] = useState("")
     const [seconds,setSeconds] = useState(0)
+    const [llamados,setLlamados] = useState(0)
+    const [atendidos,setAtendidos] = useState(0)
     const [respuestas, setRespuestas] = useState<IPregunta[]>([])
     const [selectedLlamada, setSelectedLlamada] = useState(0)
     const [preguntas, setPreguntas] = useState<IAddPregunta[]>(preguntasT)
@@ -53,9 +56,21 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
         if(searchC.length > 2) {
             arr = arr.filter(l => l.des.toLowerCase().includes(searchC.toLowerCase()))
         }
+        if(llamados === 1) {
+            arr = arr.filter(l => l.ultima_llamada === null)
+        }
+        else if(llamados === 2) {
+            arr = arr.filter(l => l.ultima_llamada !== null)
+        }
+        if(atendidos === 1) {
+            arr = arr.filter(l => l.no_atendio === true)
+        }
+        else if(atendidos === 2) {
+            arr = arr.filter(l => l.no_atendio === false)
+        }
         setFilteredColegios(arr)
 
-    },[selectedDep,searchC])
+    },[selectedDep,searchC,llamados,atendidos])
 
     useEffect(() => {
         if(timer){
@@ -66,12 +81,21 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
         }
     },[timer])
 
-    useEffect(() => {
+    useEffect(  () => {
         setPreguntas(preguntasT)
         setTimer(false)
         setSeconds(0)
         setLlamadas([])
         setSelectedLlamada(0)
+        if(selectedDesglose) {
+            getLlamadasEscuelaFn(selectedDesglose.desglose_id).then(res => {
+                setLlamadas(res)
+            })
+            getRespuestasFn(selectedDesglose.desglose_id).then(res => {
+                setRespuestas(res)
+            })
+
+        }
     },[selectedDesglose])
 
     
@@ -117,7 +141,8 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
                     fecha: 'NOW()',
                     desglose_id: selectedDesglose.desglose_id,
                     tiempo: seconds,
-                    prioridad: prioridad
+                    prioridad: prioridad,
+                    no_atendio: false
                 }
                 const res = await addLlamadaFn(data, preguntas)
                 if(res) {                
@@ -134,6 +159,34 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
             }
         }
         else alert("Error al crear llamada, debe tener segundos de llamada y responder todas las preguntas.")
+    }
+
+    const createLlamadaNoAtendida = async () => {
+        setTimer(false)
+        if(confirm("¿Confirma que no se atendió la llamada?")) {
+            if(selectedDesglose) {
+                const data: IAddLlamada = {
+                    fecha: 'NOW()',
+                    desglose_id: selectedDesglose.desglose_id,
+                    tiempo: 0,
+                    prioridad: 0,
+                    no_atendio: true
+                }
+                const res = await addLlamadaNoAtendidaFn(data)
+                if(res) {                
+                    alert("Llamada no atendida creada correctamente.")
+                    setSelectedDesglose(null)
+                    setPrioridad(0)
+                    setTimer(false)
+                    setSeconds(0)
+                    setLlamadas([])
+                    setSelectedLlamada(0)
+                    window.location.reload()
+                }
+                else alert("Error al crear la llamada no atendida.")
+            }
+        }
+        else alert("Error al crear llamada no atendida.")
     }
 
     const resolverLlamada = async (llamada_id: number) => {
@@ -288,9 +341,16 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
     }
     
 
+    const returnerAtendion = (atendio: boolean,fecha?: Date) => {
+        if(fecha) {
+            return atendio ? "NO" : "SI"
+        }
+        else return "N/A"
+    }
+
     return(
         <div style={{marginBottom: 200}}>
-            <div style={{display:"flex",margin:20}}>
+            <div style={{margin:20}}>
                 <div >
                     <h2 style={text_2_t_style}>DESGLOSES PARA LLAMAR</h2>
                     <div style={{display:"flex",margin:20}}>
@@ -312,9 +372,29 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
                                 ))}
                             </select>
                         </div>
+                        <div style={{marginLeft: 10}}>
+                            <h2 style={{...text_2_t_style, marginTop: 40}}>LLAMADOS</h2>
+                            <select name="estados_sel" id="state_sl"
+                            onChange={(e) => setLlamados(parseInt(e.target.value))}
+                            style={{width: 150,fontSize:16,marginBottom: 20}}>
+                                <option value={0}>----</option>
+                                <option value={1}>NO</option>
+                                <option value={2}>SI</option>
+                            </select>
+                        </div>
+                        <div style={{marginLeft: 10}}>
+                            <h2 style={{...text_2_t_style, marginTop: 40}}>ATENDIDOS</h2>
+                            <select name="estados_sel" id="state_sl"
+                            onChange={(e) => setAtendidos(parseInt(e.target.value))}
+                            style={{width: 150,fontSize:16,marginBottom: 20}}>
+                                <option value={0}>----</option>
+                                <option value={1}>NO</option>
+                                <option value={2}>SI</option>
+                            </select>
+                        </div>
                     </div>
 
-                    <div style={{maxHeight: 650,height:650,width: "85%", overflow: "scroll"}}>
+                    <div style={{maxHeight: 650,height:650,width: "95%", overflow: "scroll"}}>
                         {filteredColegios.length > 0 ? 
                         <table style={{width: "100%"}}>
                             <tbody>
@@ -323,14 +403,16 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
                                     <th style={{border: "1px solid", fontSize: 20}}>ESCUELA</th>
                                     <th style={{border: "1px solid", fontSize: 20}}>ULTIMA LLAMADA</th>
                                     <th style={{border: "1px solid", fontSize: 20}}>DEPARTAMENTO</th>
+                                    <th style={{border: "1px solid", fontSize: 20}}>ATENDIO</th>
                                 </tr>
                                 {filteredColegios.map((d,i) => (
-                                <tr key={i} style={{backgroundColor: selectedDesglose?.desglose_id === d.desglose_id ? "Highlight" : displaySeverity(d.prioridad ? d.prioridad : null)}}
+                                <tr key={i} style={{cursor:"pointer" ,backgroundColor: selectedDesglose?.desglose_id === d.desglose_id ? "Highlight" : displaySeverity(d.prioridad ? d.prioridad : null)}}
                                 onClick={() => setSelectedDesglose(d)}>
                                     <th style={{border: "1px solid", fontSize: 20}}>{d.cue}</th>
                                     <th style={{border: "1px solid", fontSize: 20}}>{d.des}</th>
                                     <th style={{border: "1px solid", fontSize: 20}}>{d.ultima_llamada?.toISOString().split('T')[0] || "N/A"}</th>
                                     <th style={{border: "1px solid", fontSize: 20}}>{d.departamento}</th>
+                                    <th style={{border: "1px solid", fontSize: 20}}>{returnerAtendion(d.no_atendio, d.ultima_llamada)}</th>
                                 </tr>
                                 ))}
                             </tbody>
@@ -341,9 +423,10 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
                     </div>
                 </div>
                 <div>
+                    <hr color="#4A6EE8" style={{marginBottom: 20}}/>
                     <div>
                         <h2 style={text_2_t_style}>DESGLOSES PARA LLAMAR URGENTE</h2>
-                        <div style={{maxHeight: 250,height:250,width: "100%", overflow: "scroll"}}>
+                        <div style={{maxHeight: 180,height:180,width: "100%", overflow: "scroll"}}>
                             {filteredColegios.length > 0 ? 
                             <table style={{width: "100%"}}>
                                 <tbody>
@@ -355,7 +438,7 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
                                     {filteredColegios.map((d,i) => {
                                         if(d.prioridad && d.prioridad === 2) {
                                             return (
-                                                <tr key={i} style={{backgroundColor: displaySeverity(d.prioridad ? d.prioridad : null)}}
+                                                <tr key={i} style={{cursor:"pointer",backgroundColor: displaySeverity(d.prioridad ? d.prioridad : null)}}
                                                 onClick={() => setSelectedDesglose(d)}>
                                                     <th style={{border: "1px solid", fontSize: 20}}>{d.cue}</th>
                                                     <th style={{border: "1px solid", fontSize: 20}}>{d.des}</th>
@@ -371,9 +454,10 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
                             }
                         </div>
                     </div>
+                    <hr color="#4A6EE8" style={{marginBottom: 20}}/>
                     <div>
                         <h2 style={text_2_t_style}>DESGLOSES PARA LLAMAR CON PRIORIDAD</h2>
-                        <div style={{maxHeight: 250,height:250,width: "100%", overflow: "scroll"}}>
+                        <div style={{maxHeight: 180,height:180,width: "100%", overflow: "scroll"}}>
                             {filteredColegios.length > 0 ? 
                             <table style={{width: "100%"}}>
                                 <tbody>
@@ -385,7 +469,7 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
                                     {filteredColegios.map((d,i) => {
                                         if(d.prioridad && (d.prioridad === 1)) {
                                             return (
-                                                <tr key={i} style={{backgroundColor: displaySeverity(d.prioridad ? d.prioridad : null)}}
+                                                <tr key={i} style={{cursor:"pointer",backgroundColor: displaySeverity(d.prioridad ? d.prioridad : null)}}
                                                 onClick={() => setSelectedDesglose(d)}>
                                                     <th style={{border: "1px solid", fontSize: 20}}>{d.cue}</th>
                                                     <th style={{border: "1px solid", fontSize: 20}}>{d.des}</th>
@@ -407,7 +491,7 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
             <hr color="#4A6EE8" style={{marginBottom: 20}}/>
             <div style={{margin: 20}}>
                 <div>
-                    <div style={{display:"flex"}}>
+                    <div style={{display:"flex", justifyContent:"space-evenly"}}>
                         {selectedDesglose ? (
                             <div>
                                 <h3 style={{...text_2_t_style,marginTop:20}}>ESCUELA: {selectedDesglose.des}</h3>
@@ -437,16 +521,74 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
                         ) : (
                             <h3 style={text_2_t_style}>Seleccione un desglose para ver los detalles de la escuela.</h3>
                         )}
-                    </div>
+                        <div style={{marginLeft: 150, width: "65%"}}>
+                        {llamadas.length > 0 ? (
+                            <div style={{marginTop: 20}}>
+                                <h3 style={text_2_t_style}>HISTORIAL DE LLAMADAS</h3>
+                                <select name="estados_sel" id="state_sl"
+                                onChange={(e) => setSelectedLlamada(parseInt(e.target.value))}
+                                style={{width: 300,fontSize:16,marginBottom: 20}}>
+                                    <option value={""}>---</option>
+                                    {llamadas.map((d,i) => {
+                                        if(d.solucion && d.fecha_solucion){
+                                            return(<option key={i} value={d.llamada_id}>{d.fecha.toISOString().split('T')[0]+" - S "+d.fecha_solucion.toISOString().split('T')[0]+" - "+d.tiempo+" seg."}</option>)
+                                        }
+                                        else {
+                                            return(<option key={i} value={d.llamada_id}>{d.fecha.toISOString().split('T')[0]+" - "+d.tiempo+" seg."}</option>)
+                                        }
+                                    })}
+                                </select>
+                            </div>
+                        ) : null}
+                        {(respuestas.length > 0 && selectedLlamada) ? (
+                            <div style={{marginTop: 20}}>
+                                <h3 style={text_2_t_style}>RESPUESTAS DE LA ULTIMA LLAMADA</h3>
+                                <div style={{maxHeight: 350,height:350,width: "90%", overflow: "scroll"}}>
+                                    <table style={{width: "100%"}}>
+                                        <tbody>
+                                            {respuestas.map((r,i) => {
+                                                if(r.llamada_id === selectedLlamada) {
+                                                    return (
+                                                        <tr key={i}>
+                                                            <th style={{border: "1px solid", fontSize: 18,textAlign:"left"}}>{r.pregunta}</th>
+                                                            <th style={{border: "1px solid", fontSize: 18,textAlign:"left"}}>{r.respuesta}</th>
+                                                            <th style={{border: "1px solid", fontSize: 18,textAlign:"left"}}>{r.respuesta_2 ? r.respuesta_2 : "N/A"}</th>
+                                                        </tr>
+                                                    )
+                                                }
+                                            })}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                    <div style={{marginTop:15}}>
+                                        <h3 style={text_2_t_style}>SOLUCION</h3>
+                                        <textarea style={{height: 80,width: "80%",resize: "none"}} value={returnLlamada().solucion ? returnLlamada().solucion : soluciondes}
+                                        disabled={returnLlamada().solucion ? true : false}
+                                        onChange={(e) => setSolucionDes(e.target.value)}/>
+                                        {returnLlamada().solucion ?
+                                            <div>
+                                                <h3 style={text_2_t_style}>LLAMADA SOLUCIONADA</h3>
+                                            </div>
+                                        :
+                                            <div>
+                                                <button style={{...btn_s_style,marginLeft:5,marginTop:10}} onClick={() => resolverLlamada(selectedLlamada)}>SOLUCIONADO</button>
+                                            </div>
+                                        }
 
+                                    </div>
+                                </div>
+                        ) : null}
+                        </div>
+
+                    </div>
                 </div>
+                <h3 style={{...text_2_t_style,marginTop:20}}>ES OBLIGATORIO RESPONDER TODAS LAS PREGUNTAS, INCLUIDO EL COMENTARIO</h3>
                 {(selectedDesglose && !timer) && (
                     <button style={{...btn_s_style,marginLeft:5,marginTop: 10}} onClick={() => setTimer(true)}>INICIAR CRONÓMETRO</button>
                 )}
                 {timer && (
                     <h2 style={{...text_2_t_style, marginTop: 40}}>SEGUNDOS TRANSCURRIDOS: {seconds} s</h2>
                 )}
-                <h3 style={{...text_2_t_style,marginTop:20}}>ES OBLIGATORIO RESPONDER TODAS LAS PREGUNTAS, INCLUIDO EL COMENTARIO</h3>
                 <div style={{marginTop:20}}>
                     {selectedDesglose && (
                         <div style={{display:"flex"}}>
@@ -481,6 +623,7 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
                                     </div>
                                 </div>
                                 )}
+                                <button style={{...btn_d_style,marginLeft:5,marginTop: 10}} onClick={() => createLlamadaNoAtendida()}>NO ATENDIO</button>
                                 <button style={{...btn_s_style,marginLeft:5,marginTop: 10}} onClick={() => createLlamada()}>CONFIRMAR LLAMADA</button>
                             </div>
                             <div style={{width: "40%"}}>
@@ -553,69 +696,6 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
 
                     )}
                 </div>
-                {selectedDesglose && (
-                    <div style={{marginTop:50}}>
-                        <h2 style={text_2_t_style}>HISTORIAL</h2>
-                        <hr color="#4A6EE8" style={{marginBottom: 20}}/>
-                        <button style={{...btn_s_style,marginLeft:5,marginTop: 10}} onClick={() => historialLlamadas()}>HISTORIAL</button>
-                    </div>
-                )}
-                {llamadas.length > 0 ? (
-                    <div style={{marginTop: 20}}>
-                        <h3 style={text_2_t_style}>HISTORIAL DE LLAMADAS</h3>
-                        <select name="estados_sel" id="state_sl"
-                        onChange={(e) => setSelectedLlamada(parseInt(e.target.value))}
-                        style={{width: 300,fontSize:16,marginBottom: 20}}>
-                            <option value={""}>---</option>
-                            {llamadas.map((d,i) => {
-                                if(d.solucion && d.fecha_solucion){
-                                    return(<option key={i} value={d.llamada_id}>{d.fecha.toISOString().split('T')[0]+" - S "+d.fecha_solucion.toISOString().split('T')[0]+" - "+d.tiempo+" seg."}</option>)
-                                }
-                                else {
-                                    return(<option key={i} value={d.llamada_id}>{d.fecha.toISOString().split('T')[0]+" - "+d.tiempo+" seg."}</option>)
-                                }
-                            })}
-                        </select>
-                    </div>
-                ) : null}
-                {(respuestas.length > 0 && selectedLlamada) ? (
-                    <div style={{marginTop: 20, marginLeft: 120}}>
-                        <h3 style={text_2_t_style}>RESPUESTAS DE LA ULTIMA LLAMADA</h3>
-                        <div style={{maxHeight: 450,height:450,width: "85%", overflow: "scroll"}}>
-                            <table style={{width: "100%"}}>
-                                <tbody>
-                                    {respuestas.map((r,i) => {
-                                        if(r.llamada_id === selectedLlamada) {
-                                            return (
-                                                <tr key={i}>
-                                                    <th style={{border: "1px solid", fontSize: 12,textAlign:"left"}}>{r.pregunta}</th>
-                                                    <th style={{border: "1px solid", fontSize: 12,textAlign:"left"}}>{r.respuesta}</th>
-                                                    <th style={{border: "1px solid", fontSize: 12,textAlign:"left"}}>{r.respuesta_2 ? r.respuesta_2 : "N/A"}</th>
-                                                </tr>
-                                            )
-                                        }
-                                    })}
-                                </tbody>
-                            </table>
-                        </div>
-                            <div style={{marginTop:35}}>
-                                <h3 style={text_2_t_style}>SOLUCION</h3>
-                                <textarea style={{height: 100,width: "40%",resize: "none"}} value={returnLlamada().solucion ? returnLlamada().solucion : soluciondes}
-                                disabled={returnLlamada().solucion ? true : false}
-                                onChange={(e) => setSolucionDes(e.target.value)}/>
-                                {returnLlamada().solucion ?
-                                    <div>
-                                        <h3 style={text_2_t_style}>LLAMADA SOLUCIONADA</h3>
-                                    </div>
-                                :
-                                    <div>
-                                        <button style={{...btn_s_style,marginLeft:5,marginTop:10}} onClick={() => resolverLlamada(selectedLlamada)}>SOLUCIONADO</button>
-                                    </div>
-                                }
-
-                            </div>
-                        </div>
-                ) : null}
             </div>
         </div>
 

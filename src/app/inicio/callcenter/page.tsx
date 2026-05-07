@@ -1,5 +1,6 @@
 import DesglosesToCall from "@/Componets/DesglosesToCall"
 import DBAddLlamada from "@/db/DBAddLlamada"
+import DBAddLlamadaNoAtentida from "@/db/DBAddLlamadaNoAtentida"
 import DBDepartamentos from "@/db/DBDepartamentos"
 import DBDesglosesLlamadas from "@/db/DBDesglosesLlamadas"
 import DBEditContactos from "@/db/DBEditContactos"
@@ -36,6 +37,19 @@ export default async function Page () {
             const user = await decodeJWT()
             if(!user) return false
             const res = await DBAddLlamada(data, preguntas,user.userId)
+            return res
+        } catch (error) {
+            console.log(error)
+            return false
+        }
+    }
+
+    const addLlamadaNoAtendida = async (data: IAddLlamada): Promise<boolean> => {
+        "use server"
+        try {
+            const user = await decodeJWT()
+            if(!user) return false
+            const res = await DBAddLlamadaNoAtentida(data)
             return res
         } catch (error) {
             console.log(error)
@@ -87,7 +101,9 @@ export default async function Page () {
                 <DesglosesToCall desgloses={escuelas } editContFn={editDesgloseContacto} 
                 addLlamadaFn={addLlamada} 
                 departamentos={departamentos} getLlamadasEscuelaFn={getLlamadasEscuela} 
-                getRespuestasFn={getRespuestas} resolverLlamadaFn={resolverLlamada}/>
+                getRespuestasFn={getRespuestas} resolverLlamadaFn={resolverLlamada}
+                addLlamadaNoAtendidaFn={addLlamadaNoAtendida}
+                />
             </div>
         </div>
     )
