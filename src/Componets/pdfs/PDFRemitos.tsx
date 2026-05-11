@@ -425,25 +425,25 @@ const especialPageContruct = (e:IRemitoT) => {
                 <Text style={stylePedido.subtitleActa}>- 1 Yerba de 1/2 kg.</Text>  
                 <Text style={stylePedido.subtitleActa}>- 1 Leche descremada.</Text>  
                 <Text style={stylePedido.subtitleActa}>- 1 Caja de edulcorante.</Text>
-                <Text style={stylePedido.subtitleActa}>- 3 Paquetes de galletitas de avena INTEGRALIA.</Text>
-                <Text style={stylePedido.subtitleActa}>- 2 Cereales sin azucar LASFOR.</Text>  
+                <Text style={stylePedido.subtitleActa}>- 2 Paquetes de galletitas de avena.</Text>
+                <Text style={stylePedido.subtitleActa}>- 2 Paquetes de galletitas de avena integral.</Text>
+                <Text style={stylePedido.subtitleActa}>- 1 Cereales sin azucar.</Text>  
             </View>
             <View style={stylePedido.view}>
                 <Text style={{...stylePedido.subtitleActa,fontWeight:900}}>CELIAQUIA</Text>  
                 <Text style={stylePedido.subtitleActa}>- 1 Yerba de 1/2 kg.</Text>  
                 <Text style={stylePedido.subtitleActa}>- 1 Leche.</Text>  
-                <Text style={stylePedido.subtitleActa}>- 1 Chocolatada sin tacc LA VIRGINIA.</Text>  
                 <Text style={stylePedido.subtitleActa}>- 1 Azucar.</Text>
-                <Text style={stylePedido.subtitleActa}>- 3 Paquetes de galletitas sin tacc NATUZEN.</Text>
-                <Text style={stylePedido.subtitleActa}>- 3 Cereales sin tacc SMAMS.</Text>  
+                <Text style={stylePedido.subtitleActa}>- 4 Paquetes de galletitas sin tacc.</Text>
+                <Text style={stylePedido.subtitleActa}>- 1 Cereales sin tacc.</Text>  
             </View>
             <View style={stylePedido.view}>
                 <Text style={{...stylePedido.subtitleActa,fontWeight:900}}>MIXTO</Text>  
                 <Text style={stylePedido.subtitleActa}>- 1 Yerba de 1/2 kg.</Text>  
                 <Text style={stylePedido.subtitleActa}>- 1 Leche descremada.</Text>  
                 <Text style={stylePedido.subtitleActa}>- 1 Caja de edulcorante.</Text>
-                <Text style={stylePedido.subtitleActa}>- 3 Paquetes de galletitas sin tacc NATUZEN.</Text>
-                <Text style={stylePedido.subtitleActa}>- 3 Cereales sin tacc SMAMS.</Text>  
+                <Text style={stylePedido.subtitleActa}>- 4 Paquetes de galletitas sin tacc.</Text>
+                <Text style={stylePedido.subtitleActa}>- 2 Cereales sin tacc.</Text>  
             </View>
             <View style={stylePedido.viewData}>
                 <Text style={stylePedido.subtitleActa}>Observaciones:</Text> 
