@@ -45,12 +45,12 @@ export default function (insumos: IInsumo[],planes: IPlan[], remitos: IViajeRemi
                         p.detalles.forEach(pd => {
                             insumos.forEach(ins => {
                                 if(ins.ins_id === pd.ins_id) {
-                                    const unidadesN = Math.floor((rd.raciones * pd.dias) / ins.racunidad)
+                                    const unidadesN = Math.floor((rd.raciones * pd.dias) / ins.racunidad) !== 0 ? Math.floor((rd.raciones * pd.dias) / ins.racunidad) : 1
                                     let cajasN = (unidadesN >= ins.unidades_caja && ins.unidades_caja) ? Math.floor(unidadesN / ins.unidades_caja) : 0
                                     arrDetallesIns.push({
                                         unidades: unidadesN,
                                         bolsas: cajasN ? unidadesN - (cajasN* ins.unidades_caja) : unidadesN,
-                                        raciones: unidadesN * ins.racunidad,
+                                        raciones: unidadesN * ins.racunidad !== 0  ? unidadesN * ins.racunidad : 1,
                                         cajas: cajasN,
                                         kilos: unidadesN * ins.gr_unidad / 1000,
                                         palet: 0,

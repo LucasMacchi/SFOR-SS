@@ -49,8 +49,8 @@ export default function (remitosP:IViajeRemito[],planes: IPlan[],insumos:IInsumo
                                     envio_id: 0,
                                     ins_id: ins.ins_id,
                                     insumo: ins.des,
-                                    unidades: Math.floor(racIns / ins.racunidad),
-                                    raciones: Math.floor(racIns / ins.racunidad) * ins.racunidad
+                                    unidades: Math.floor(racIns / ins.racunidad) !== 0 ? Math.floor(racIns / ins.racunidad) : 1,
+                                    raciones: Math.floor(racIns / ins.racunidad) * ins.racunidad !== 0  ? Math.floor(racIns / ins.racunidad) * ins.racunidad : 1
                                 })
                             }
                         }

@@ -49,7 +49,7 @@ export default function (insumos: IInsumo[],planes: IPlan[], r: IViajeRemitoRQ) 
                                 arrDetallesIns.push({
                                     unidades: unidadesN,
                                     bolsas: unidadesN - (cajasN* ins.unidades_caja),
-                                    raciones: unidadesN * ins.racunidad,
+                                    raciones: unidadesN * ins.racunidad !== 0  ? unidadesN * ins.racunidad : 1,
                                     cajas: cajasN,
                                     kilos: unidadesN * ins.gr_unidad / 1000,
                                     palet: 0,
