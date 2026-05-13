@@ -1,15 +1,16 @@
 "use client"
 import { IAddPlan, IAddPlanDetails, IInsumo, IPlan, IPlanDetails } from "@/utils/interfaces";
-import { btn_s_style, hr_style, text_2_t_style } from "@/utils/styles";
+import { btn_d_style, btn_s_style, hr_style, text_2_t_style } from "@/utils/styles";
 import { useEffect, useState } from "react";
 //@ts-ignore
 import "./css/hoverTableCell.css"
 
-export default function PlanesDisplay ({planes,insumos,editDaysFn,addPlanFn,addDetailFn,deleteDetailFn}:{planes: IPlan[],insumos:IInsumo[],
+export default function PlanesDisplay ({planes,insumos,editDaysFn,addPlanFn,addDetailFn,deleteDetailFn,ocultarPlanFn}:{planes: IPlan[],insumos:IInsumo[],
     editDaysFn: (detail_id:number,days:number) => Promise<boolean>,
     addPlanFn: (plan: IAddPlan,details:IAddPlanDetails[]) => Promise<boolean>,
     addDetailFn: (detail:IAddPlanDetails) => Promise<boolean>,
-    deleteDetailFn: (detail_id: number) => Promise<boolean>}) {
+    deleteDetailFn: (detail_id: number) => Promise<boolean>,
+    ocultarPlanFn: (plan_id: number) => Promise<boolean>}) {
 
     const [selectedP, setSelectedP] = useState(-1)
     const [plan, setPlan] = useState<IPlan>()
@@ -118,6 +119,17 @@ export default function PlanesDisplay ({planes,insumos,editDaysFn,addPlanFn,addD
         else alert("Faltan datos.")
     }
 
+    const ocultarPlan = async () => {
+        if(plan && confirm("¿Quieres ocultar el plan permanentemente"+plan.des+"?")) {
+            const res = await ocultarPlanFn(plan.plan_id)
+            if(res) {
+                alert("Plan ocultado "+plan.des)
+                window.location.reload()
+            }
+            else alert("Error al ocultar el plan.")
+        }
+    }
+
     const addEspecial = (opt:number) => {
         if(opt === 1){
             setAddPlan({...addPlan,celiacos: false,mixto: false,diabetes: true})
@@ -139,9 +151,9 @@ export default function PlanesDisplay ({planes,insumos,editDaysFn,addPlanFn,addD
                     onChange={(e) => setSelectedP(parseInt(e.target.value))}
                     style={{width: 500,fontSize:24,marginBottom: 20}}>
                         <option value={-1}>---</option>
-                        {planes.map((p,i) => (
-                            <option key={i} value={i}>{p.des+" - "+p.dias+" DIAS"}</option>
-                        ))}
+                        {planes.map((p,i) => {
+                            if(p.visible) return <option key={i} value={i}>{p.des+" - "+p.dias+" DIAS"}</option>
+                        })}
                     </select>
                 </div>
                 <div style={{marginLeft: 10}}>
@@ -172,6 +184,11 @@ export default function PlanesDisplay ({planes,insumos,editDaysFn,addPlanFn,addD
                     </tbody>
                 </table>
             </div>
+            {plan ? 
+            <div style={{alignContent: "baseline"}}>
+                <button style={btn_d_style} onClick={() => ocultarPlan()}>OCULTAR PLAN</button>
+            </div> : null
+            }
             <div style={{marginBottom: 180}}>
                 <div>
                     <h2 style={{...text_2_t_style, marginTop: 40}}>CREAR NUEVO PLAN</h2>

@@ -317,6 +317,7 @@ export interface IPlan {
     diabetes: boolean,
     celiacos: boolean,
     mixto: boolean,
+    visible:boolean,
     detalles: IPlanDetails[]
 }
 
