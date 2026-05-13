@@ -297,7 +297,7 @@ const pageContruct = (e: IUniqRemito, copia: boolean,desgloses: IDesgloseDisplay
                 </View>
             </View>
                 <View style={{...stylePedido.viewdata,flexDirection: "column"}}>
-                    <Text style={{...stylePedido.body,fontWeight: 900}}>PLAN: {e.numrep+" - "+e.periodo}</Text>
+                    <Text style={{...stylePedido.body,fontWeight: 900}}>PLAN: {e.periodo}</Text>
                     <Text style={{...stylePedido.body,fontWeight: 900}}>Lugar de Entrega: {e.cabecera}</Text>
                     <Text style={{...stylePedido.body,fontWeight: 900}}>Localidad: {e.localidad}</Text>
                     <Text style={{...stylePedido.body,fontWeight: 900}}>Direccion: {e.direccion}</Text>

@@ -30,6 +30,7 @@ export default async function Page () {
     const planes = await DBPlanReparto()
     const viajes = await DBViajes()
     const desglosesViajes: IViajeDetalleRQ[] = []
+    const planesParded = planes ? planes.filter(plan => plan.visible) : []
     viajes.forEach(v => {
         v.remitos.forEach((r) => {
             r.detalles.forEach((d) => {
@@ -177,7 +178,7 @@ export default async function Page () {
             </div>
             <div>
                 <ViajeAdd escuelas={lugares} departamentos={departamentos} 
-                planes={planes ? planes : []} 
+                planes={planesParded} 
                 insumos={insumos} addViajeFn={createViajeFn}
                 updateDesglose={updateDesgloses}/>
             </div>
