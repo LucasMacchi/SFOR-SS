@@ -156,6 +156,14 @@ export default function ViajeAdd ({escuelas,departamentos,planes,insumos,addViaj
     const prevRemitos = () => {
         setPrev(viajeInsumosParse(insumos,planes,remitos))    
     }
+
+    const desgloseCount = () => {
+        let desglose = 0
+        remitos.forEach(r => {
+            desglose = desglose + r.detalles.length
+        });
+        return desglose
+    }
     return (
         <div style={{marginLeft: 25, marginBottom: 100}}>
             <div style={{marginLeft: 10}}>
@@ -207,7 +215,7 @@ export default function ViajeAdd ({escuelas,departamentos,planes,insumos,addViaj
             </div>
             <div style={{display: "flex",width: "100%",justifyContent:"start"}}>
                 <div >
-                    <h2 style={{...text_2_t_style, marginTop: 40}}>ELIGE EL DESGLOSE</h2>
+                    <h4 style={{...text_2_t_style, marginTop: 40}}>ELIGE EL DESGLOSE</h4>
                     <div style={{maxHeight: maxheight,height:maxheight, overflow: "scroll", width: 400}}>
                     {desgloses.length > -1 && (
                     <table style={{width: "100%", fontSize: 16}}>
@@ -240,7 +248,7 @@ export default function ViajeAdd ({escuelas,departamentos,planes,insumos,addViaj
                 </div>
             <div>
                 <div>
-                    <h2 style={{...text_2_t_style, marginTop: 40}}>DESGLOSES AGREGADOS - {detallesViaje.length}</h2>
+                    <h4 style={{...text_2_t_style, marginTop: 40}}>DESGLOSES AGREGADOS - {detallesViaje.length}</h4>
                 </div>
                 <div style={{maxHeight: maxheight,height:maxheight, overflow: "scroll",marginLeft: 30, width: 500}}>
                 <table style={{width: "100%", fontSize: 16}}>
@@ -268,7 +276,7 @@ export default function ViajeAdd ({escuelas,departamentos,planes,insumos,addViaj
             </div>
             <div >
                 <div>
-                    <h2 style={{...text_2_t_style, marginTop: 40}}>REMITOS CREADOS - {remitos.length}</h2>
+                    <h4 style={{...text_2_t_style, marginTop: 40}}>REMITOS CREADOS - {remitos.length} - DESGLOSES - {desgloseCount()}</h4>
                 </div>
                 <div style={{maxHeight: maxheight,height:maxheight, overflow: "scroll",marginLeft: 30, width: 400}}>
                 <table style={{width: "100%", fontSize: 16}}>
