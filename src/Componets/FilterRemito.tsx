@@ -193,7 +193,7 @@ export default function FilterRemito ({remitos,estados,planes,stateMultipleFn,vi
                             <th style={{border: "1px solid", width: "8%"}}>EXP.</th>
                         </tr>
                         {filterRemitos.length > 0 && filterRemitos.map((rt,i) => (
-                        <tr style={{backgroundColor: colorChange(rt.estado,rt.checked)}} key={rt.remito_id}
+                        <tr style={{backgroundColor: colorChange(rt.estado,rt.checked),cursor: "pointer"}} key={rt.remito_id}
                         onClick={() => router.push("/inicio/"+rt.remito_id)}>
                             <th style={{border: "1px solid", width: "2%"}} onClick={(e) => e.stopPropagation()}>
                                 <input type="checkbox" onChange={(e) => checkRt(e.target.checked,i)} checked={rt.checked}/>

@@ -59,6 +59,10 @@ export function detalleEnvioSQL () {
     return `SELECT d.detail_id,d.envio_id,d.ins_id, i.des as insumo,d.unidades,d.raciones FROM public.envio_details d JOIN public.insumo i ON d.ins_id = i.ins_id WHERE d.envio_id = $1;`
 }
 
+export function planOcultarSQL () {
+    return `UPDATE public.plan SET visible = false WHERE plan_id = $1;`
+}
+
 export function reportesRemitoSQL () {
     return `SELECT r.reporte_id,r.categoria_id,r.des as descripcion, c.des as titulo,r.fecha FROM public.reporte r JOIN reporte_categoria c ON r.categoria_id = c.categoria_id WHERE r.remito_id = $1;`
 }

@@ -4,6 +4,7 @@ import DBAddPlan from "@/db/DBAddPlan"
 import DBDeleteDetailPlan from "@/db/DBDeleteDetailPlan"
 import DBEditPlanDays from "@/db/DBEditPlanDays"
 import DBInsumos from "@/db/DBInsumos"
+import DBOcultarPlan from "@/db/DBOcultarPlan"
 import DBPlanReparto from "@/db/DBPlanReparto"
 import { IAddPlan, IAddPlanDetails } from "@/utils/interfaces"
 import sessionCheck from "@/utils/sessionCheck"
@@ -33,6 +34,17 @@ export default async function Page () {
         "use server"
         try {
             const res = await DBAddPlan(plan,details)
+            return res
+        } catch (error) {
+            console.log(error)
+            return false
+        }
+    }
+
+    const ocultarPlan = async (plan: number):Promise<boolean> => {
+        "use server"
+        try {
+            const res = await DBOcultarPlan(plan)
             return res
         } catch (error) {
             console.log(error)
@@ -72,7 +84,7 @@ export default async function Page () {
                 <PlanesDisplay planes={planes ? planes : []} 
                 editDaysFn={editDaysFn} insumos={insumos} 
                 addPlanFn={createPlan} addDetailFn={addDetailPlan}
-                deleteDetailFn={deleteDetailPlan}/>
+                ocultarPlanFn={ocultarPlan} deleteDetailFn={deleteDetailPlan}/>
             </div>
         </div>
     )
