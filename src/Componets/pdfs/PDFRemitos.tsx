@@ -345,7 +345,7 @@ const pageContruct = (e: IRemitoT, copia: boolean,venc:string,cai:string,insumos
                     <View >
                         <Text style={stylePedido.body}>MINISTERIO DE EDUCACION DE CORRIENTES</Text>
                         <Text style={stylePedido.body}>LA RIOJA 663</Text>
-                        <Text style={stylePedido.body}>3400 - CORRIENTES</Text>
+                        <Text style={stylePedido.body}>3400 - CORRIENTES </Text>
                         <Text style={stylePedido.body}>IVA: Exento</Text>
                     </View>
                     <View >
