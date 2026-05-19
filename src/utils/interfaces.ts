@@ -81,6 +81,7 @@ export interface IInsumo {
     raccaja:number,
     calculable:boolean,
     stock:number,
+    visible:boolean,
     [key: string]: any
 
 }
@@ -326,7 +327,8 @@ export interface IPlanDetails {
     ins_id: number,
     dias: number,
     plan_id: number,
-    des: string
+    des: string,
+    visible: boolean
 }
 
 export interface IAddPlanDetails {
@@ -754,4 +756,40 @@ export interface IEXCELDependencia {
     DEPARTAMENTO: string,
     LOCALIDAD: string,
     DIRECCION: string,
+}
+
+export interface IDesgloseVisitar {
+    desglose_id: number,
+    cue: number,
+    des: string,
+    departamento: string,
+}
+
+export interface IVisita {
+    visita_id: number,
+    desglose_id: number,
+    user_id: number,
+    fecha_creado: Date,
+    fecha_visitado: Date,
+    departamento: string,
+    des: string,
+    preguntas: IVisitaPregunta[]
+}
+
+export interface IVisitaPregunta {
+    vdetail_id: number,
+    pregunta: string,
+    respuesta: string,
+    visita_id: number
+}
+
+export interface IVisitaPreguntaAdd {
+    pregunta: string,
+    respuesta: string,
+    custom:boolean
+}
+
+export interface IAddVisita {
+    desglose_id: number,
+    fecha_visita: string,
 }

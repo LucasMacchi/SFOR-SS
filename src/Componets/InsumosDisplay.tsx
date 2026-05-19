@@ -3,16 +3,17 @@ import { IInsumo } from "@/utils/interfaces";
 // @ts-ignore
 import "./css/hoverTableCell.css";
 import { useState } from "react";
+import { stat } from "fs";
 
 
-export default function InsumosDisplay ({insumos,modInsumo}:{insumos:IInsumo[],modInsumo:(id:number,column:string,newV:string) => Promise<boolean>}) {
+export default function InsumosDisplay ({insumos,modInsumo,modInsumoBool}:{insumos:IInsumo[],modInsumo:(id:number,column:string,newV:string) => Promise<boolean>,modInsumoBool:(id:number,column:string,newV:boolean) => Promise<boolean>}) {
 
     const [insumoArr, setInsumoArr] = useState<IInsumo[]>(insumos)
     const [up,setUpd] = useState(0)
     const changeValue = async (id:number,column:string) => {
         const newV = prompt("Ingrese el nuevo valor numerico")
         if(newV && parseFloat(newV)) {
-            if(confirm("¿Quieres cambiar el valor'")){
+            if(confirm("¿Quieres cambiar el valor?")){
                 const res = await modInsumo(id,column,newV)
                 if(res) alert("Insumo modificado")
                 else alert("Error al modificar el insumo")
@@ -27,6 +28,23 @@ export default function InsumosDisplay ({insumos,modInsumo}:{insumos:IInsumo[],m
             
         }
         else if(newV && !parseFloat(newV)) alert("Ingrese un valor numerico valido.")
+    }
+    const changeBool = async (id:number,column:string,state:boolean) => {
+        if(confirm(state ? "¿Quieres ocultar el insumo?":"¿Quieres monstrar el insumo?")){
+            if(confirm("¿Quieres cambiar el valor?")){
+                const res = await modInsumoBool(id,column,!state)
+                if(res) alert("Insumo modificado")
+                else alert("Error al modificar el insumo")
+                insumos.forEach(i => {
+                    if(i.ins_id === id) {
+                        i[column] = !state
+                    }
+                });
+                setInsumoArr(insumos)
+                setUpd(up+1)
+            }
+            
+        }
     }
 
     return (
@@ -46,9 +64,10 @@ export default function InsumosDisplay ({insumos,modInsumo}:{insumos:IInsumo[],m
                             <th style={{border: "1px solid", width: "8%"}}>GR. X UNIDAD</th>
                             <th style={{border: "1px solid", width: "8%"}}>GR. X RACION</th>
                             <th style={{border: "1px solid", width: "8%"}}>CALCULABLE</th>
+                            <th style={{border: "1px solid", width: "8%"}}>VISIBLE</th>
                         </tr>
                         {insumoArr.map((i) => (
-                        <tr key={i.ins_id}>
+                        <tr key={i.ins_id} style={{backgroundColor: i.visible ? "lightgray" : "tomato"}}>
                             <th style={{border: "1px solid", width: "8%"}}>{i.cod1}</th>
                             <th style={{border: "1px solid", width: "8%"}}>{i.cod2}</th>
                             <th style={{border: "1px solid", width: "8%"}}>{i.cod3}</th>
@@ -56,10 +75,11 @@ export default function InsumosDisplay ({insumos,modInsumo}:{insumos:IInsumo[],m
                             <th onClick={() => changeValue(i.ins_id,"caja_palet")} id="cnt" style={{border: "1px solid", width: "8%"}}>{i.caja_palet}</th>
                             <th onClick={() => changeValue(i.ins_id,"unidades_caja")} id="cnt" style={{border: "1px solid", width: "8%"}}>{i.unidades_caja}</th>
                             <th onClick={() => changeValue(i.ins_id,"racunidad")} id="cnt" style={{border: "1px solid", width: "8%"}}>{i.racunidad}</th>
-                            <th onClick={() => changeValue(i.ins_id,"raccajas")} id="cnt" style={{border: "1px solid", width: "8%"}}>{i.raccaja}</th>
+                            <th onClick={() => changeValue(i.ins_id,"raccaja")} id="cnt" style={{border: "1px solid", width: "8%"}}>{i.raccaja}</th>
                             <th onClick={() => changeValue(i.ins_id,"gr_unidad")} id="cnt" style={{border: "1px solid", width: "8%"}}>{i.gr_unidad}</th>
                             <th onClick={() => changeValue(i.ins_id,"gr_racion")} id="cnt" style={{border: "1px solid", width: "8%"}}>{i.gr_racion}</th>
                             <th style={{border: "1px solid", width: "8%"}}>{i.calculable ? "SI":"NO"}</th>
+                            <th id="cnt" onClick={() => changeBool(i.ins_id,"visible",i.visible)} style={{border: "1px solid", width: "8%"}}>{i.visible ? "SI":"NO"}</th>
                         </tr>
                         ))}
                     </tbody>

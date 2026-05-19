@@ -73,6 +73,7 @@ export default function MenuLateral({rol,username,planActual,userplan,createRepa
                     {(rol === 3 || rol === 2 || rol === 1 ) && <LinkMenu where="/inicio/stock" titulo="stock"/>}
                     {rol <= 2 && <LinkMenu where="/inicio/informes" titulo="informes" />}
                     {(rol === 4 || rol === 2 || rol === 1 )&& <LinkMenu where="/inicio/callcenter" titulo="call center" />}
+                    {(rol === 4 || rol === 2 || rol === 1 )&& <LinkMenu where="/inicio/visita" titulo="visita" />}
                     {rol <= 2 && <LinkMenu where="/inicio/facturacion" titulo="facturacion" />}
                     {rol <= 2 && <LinkMenu where="/inicio/datos" titulo="datos" />}
                     {rol <= 1 && <LinkMenu where="/inicio/usuarios" titulo="usuarios" />}

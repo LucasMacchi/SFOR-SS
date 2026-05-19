@@ -22,7 +22,7 @@ export default function DisplayStock ({insumos,viajesStock}:{insumos:IInsumoStoc
                             <th style={{border: "1px solid", width: "20%"}}>STOCK PLANIFICADO FINAL</th>
                         </tr>
                         {insumos.map((i) => (
-                        <tr key={i.ins_id}>
+                        <tr key={i.ins_id} style={{backgroundColor: i.visible ? "lightgray" : "tomato"}}>
                             <th style={{border: "1px solid", width: "8%"}}>{i.cod1}</th>
                             <th style={{border: "1px solid", width: "8%"}}>{i.cod2}</th>
                             <th style={{border: "1px solid", width: "8%"}}>{i.cod3}</th>

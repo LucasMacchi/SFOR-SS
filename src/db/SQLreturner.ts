@@ -140,7 +140,7 @@ export function insumosSQL () {
     return `SELECT * FROM public.insumo ORDER BY ins_id ASC;`
 }
 
-export function insumoEditSQL (column: string,ins: number,value:string) {
+export function insumoEditSQL (column: string,ins: number,value:string | boolean) {
     return `UPDATE public.insumo SET ${column}=${value} WHERE ins_id = ${ins};`
 }
 
@@ -513,6 +513,30 @@ export function getExportarDataRango () {
             ORDER BY r.remito_id;`
 }
 
+export function getDesglosesAvisitarSQL () {
+    return `SELECT DISTINCT ON (d.cue)
+                d.desglose_id,
+                d.cue,
+                d.des,
+                l.departamento
+            FROM public.desglose d
+            JOIN public.lentrega l ON d.lentrega_id = l.lentrega_id
+            WHERE d.des NOT LIKE '% - CELIAQUIA%'
+            AND d.des NOT LIKE '% - DIABETES%'
+            AND d.des NOT LIKE '% - MIXTO%'
+            AND d.visible = true AND d.visitado = false
+            ORDER BY d.cue, d.desglose_id DESC;`
+}
+
+export function getVisitasSQL () {
+    return `SELECT * FROM public.visita v JOIN public.desglose d ON d.desglose_id = v.desglose_id 
+            JOIN public.lentrega l ON l.lentrega_id = d.lentrega_id ORDER BY v.visita_id DESC`
+}
+
+export function getVisitaPreguntasSQL() {
+    return `SELECT * FROM public.visita_detail WHERE visita_id = $1 ORDER BY vdetail_id ASC;`
+}
+
 export function getDesglosesLastCall () {
     return `SELECT 
     d.cargo_2,
@@ -598,4 +622,16 @@ export function resolverReporteSQL () {
 
 export function getDependenciasInformeSQL () {
     return `SELECT * FROM public.desglose d JOIN public.lentrega le ON d.lentrega_id = le.lentrega_id ORDER BY le.lentrega_id;`
+}
+
+export function addVisitaSQL () {
+    return `INSERT INTO public.visita(user_id, desglose_id, fecha_visitado) VALUES ($1, $2, $3) RETURNING visita_id;`
+}
+
+export function addVisitaDetailSQL () {
+    return `INSERT INTO public.visita_detail(pregunta, respuesta, visita_id) VALUES ($1, $2, $3);`
+}
+
+export function setVisitadoSQL () {
+    return `UPDATE public.desglose SET visitado = true WHERE desglose_id = $1;`
 }
