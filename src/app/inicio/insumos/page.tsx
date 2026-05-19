@@ -16,6 +16,10 @@ export default async function Page () {
         "use server"
         return await DBEditInsumo(id,newV,column)
     }
+    const changeInsumoBool = async (id:number,column:string,newV:boolean) => {
+        "use server"
+        return await DBEditInsumo(id,newV,column)
+    }
     const addInsumo = async (data: ICreateInsumo): Promise<boolean> => {
         "use server"
         try {
@@ -31,7 +35,7 @@ export default async function Page () {
                 <hr color="#4A6EE8" style={hr_style}/>
             </div>
             <div>
-                <InsumosDisplay insumos={insumos} modInsumo={changeInsumo}/>
+                <InsumosDisplay insumos={insumos} modInsumo={changeInsumo} modInsumoBool={changeInsumoBool}/>
             </div>
             <div>
                 <h2 style={text_2_t_style}>CREAR INSUMO</h2>

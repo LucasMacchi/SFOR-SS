@@ -13,9 +13,9 @@ import { hr_style, text_2_t_style } from "@/utils/styles"
 
 export default async function Page () {
     await sessionCheck(2)
-    const insumos = await DBInsumos()
+    let insumos = await DBInsumos()
     const planes = await DBPlanReparto()
-
+    insumos = insumos.filter(i => i.visible)
     const editDaysFn = async (detail_id:number,days:number): Promise<boolean> => {
         "use server"
         try {

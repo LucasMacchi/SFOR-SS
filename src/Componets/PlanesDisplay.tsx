@@ -176,7 +176,7 @@ export default function PlanesDisplay ({planes,insumos,editDaysFn,addPlanFn,addD
                             <th style={{border: "1px solid", width: "5%"}}>DIAS</th>
                         </tr>
                         {plan?.detalles.map((d) => (
-                        <tr key={d.detail_id}>
+                        <tr key={d.detail_id} style={{backgroundColor: d.visible ? "lightgray" : "tomato"}}>
                             <th onClick={() => deleteDetail(d.detail_id,d.des)} id="del" style={{border: "1px solid", width: "5%"}}>{d.des}</th>
                             <th onClick={() => changeDays(d.detail_id)} id="cnt" style={{border: "1px solid", width: "5%"}}>{d.dias}</th>
                         </tr>   

@@ -3,7 +3,7 @@ import clientReturner from "./clientReturner"
 import { insumoEditSQL } from "./SQLreturner"
 
 
-export default async function (ins_id: number,newVal: string,column:string):Promise<boolean> {
+export default async function (ins_id: number,newVal: string | boolean,column:string):Promise<boolean> {
         const conn = clientReturner()
         try {
             if(await authJwt(2)) {
