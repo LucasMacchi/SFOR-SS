@@ -200,7 +200,7 @@ export default function AddVisita({ desgloses, departamentos, addVisita }: { des
                     </tbody>
                 </table>
                 <div>
-                    <CldUploadButton style={{...btn_s_style}} uploadPreset="visita_preset" onSuccess={(r) => handleImages(r)} options={{maxFiles: 8,maxFileSize: 2*1024*1024}}
+                    <CldUploadButton  uploadPreset="visita_preset" onSuccess={(r) => handleImages(r)} options={{maxFiles: 8,maxFileSize: 2*1024*1024}}
                         onOpen={() => alert("Solo se permiten subir hasta 8 imágenes por visita, con un tamaño máximo de 2MB cada una, ademas, seleccionando la imagen ya la sube, asegurarse de seleccionarlas bien.")}>
                         SUBIR IMAGENES
                     </CldUploadButton>
