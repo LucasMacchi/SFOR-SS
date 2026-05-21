@@ -1,6 +1,7 @@
 "use client"
 import { IAddVisita, IDesgloseVisitar, IVisitaPreguntaAdd } from "@/utils/interfaces";
 import { btn_s_style, text_2_t_style } from "@/utils/styles";
+import { CldUploadButton, CloudinaryUploadWidgetResults } from "next-cloudinary";
 import { useEffect, useState } from "react";
 
 
@@ -61,6 +62,9 @@ export default function AddVisita({ desgloses, departamentos, addVisita }: { des
 
     const [selectedEscuela, setSelectedEscuela] = useState<number>(-1)
 
+    const [imagenes, setImagenes] = useState<string[]>([])
+
+
     useEffect(() => {
         setSelectedEscuela(-1)
     },[selectedDep,searchC])
@@ -88,7 +92,10 @@ export default function AddVisita({ desgloses, departamentos, addVisita }: { des
                     check = false
                 }
             });
-            if(check && confirm("¿Confirma que desea registrar esta visita?")) {
+            if(check && imagenes.length > 0 && confirm("¿Confirma que desea registrar esta visita?")) {
+                imagenes.forEach((img,i) => {
+                    preguntas.push({pregunta: "IMAGEN "+(i+1), respuesta: img, custom: false})
+                });
                 const res = await addVisita({desglose_id: filteredColegios[selectedEscuela].desglose_id, fecha_visita: fechaVisita}, preguntas)
                 if(res) {
                     alert("Visita registrada correctamente.")
@@ -96,9 +103,18 @@ export default function AddVisita({ desgloses, departamentos, addVisita }: { des
                 }
                 else alert("Error al registrar la visita, intente nuevamente.")
             }
-            else alert("Debe responder todas las preguntas para registrar la visita.")
+            else alert("Debe responder todas las preguntas y subir imágenes para registrar la visita.")
         }
         else alert("Debe seleccionar una escuela e ingresar la fecha de visita para registrar la visita.")
+    }
+
+    const handleImages = (r: CloudinaryUploadWidgetResults) => {
+        //console.log(r)
+        const url = r && r.info && typeof r.info !== "string" && r.info.secure_url.length > 0 ? r.info.secure_url : "";
+        if(url) {
+            setImagenes(prev => [...prev, url])
+
+        }
     }
 
     return(
@@ -183,7 +199,15 @@ export default function AddVisita({ desgloses, departamentos, addVisita }: { des
                         </tr>
                     </tbody>
                 </table>
-                <button style={{...btn_s_style,marginTop: 15}} onClick={() => handleRegistrarVisita()}>REGISTRAR RECORRIDO</button>
+                <div>
+                    <CldUploadButton style={{...btn_s_style}} uploadPreset="visita_preset" onSuccess={(r) => handleImages(r)} options={{maxFiles: 8,maxFileSize: 2*1024*1024}}
+                        onOpen={() => alert("Solo se permiten subir hasta 8 imágenes por visita, con un tamaño máximo de 2MB cada una, ademas, seleccionando la imagen ya la sube, asegurarse de seleccionarlas bien.")}>
+                        SUBIR IMAGENES
+                    </CldUploadButton>
+                </div>
+                <div>
+                    <button style={{...btn_s_style,marginTop: 15}} onClick={() => handleRegistrarVisita()}>REGISTRAR RECORRIDO</button>
+                </div>
             </div>
         </div>
     )

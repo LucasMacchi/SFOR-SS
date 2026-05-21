@@ -75,7 +75,7 @@ export default function DisplayVisitas({ visitas, departamentos }: { visitas: IV
             {selectedVisita && (
             <div>
                 <h4 style={{...text_2_t_style}}>FORMULARIO DEL RECORRIDO</h4>
-                <div style={{height: 350,maxHeight:350,overflow:"scroll"}}>
+                <div style={{height: 550,maxHeight:550,overflow:"scroll"}}>
                     <table style={{width: "65%"}}>
                         <tbody>
                             <tr>
@@ -85,7 +85,7 @@ export default function DisplayVisitas({ visitas, departamentos }: { visitas: IV
                             {selectedVisita.preguntas.map((v, i) => (
                                 <tr key={i} >
                                     <td style={{border: "1px solid", fontSize: 18}}>{v.pregunta}</td>
-                                    <td style={{border: "1px solid", fontSize: 18}}>{v.respuesta}</td>
+                                    <td style={{border: "1px solid", fontSize: 18}}>{v.pregunta.includes("IMAGEN") ? <img src={v.respuesta} alt="Imagen" style={{width: 350, height: 350}} /> : v.respuesta}</td>
                                 </tr>
                             ))}
                         </tbody>
