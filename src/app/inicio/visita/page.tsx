@@ -11,6 +11,8 @@ import { hr_style, text_2_t_style } from "@/utils/styles"
 
 
 
+
+
 export default async function Visita() {
     await sessionCheck(4)
     const desgloses = await DBDesglosesVisitar()
