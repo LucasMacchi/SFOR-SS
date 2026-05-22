@@ -45,6 +45,8 @@ export default function AddVisita({ desgloses, departamentos, addVisita }: { des
         {pregunta: "7.Agua potable*", respuesta:"",custom: false},
         {pregunta: "7.Poseen todos los utensilios", respuesta:"",custom: false},
         {pregunta: "8.Preparación correcta", respuesta:"",custom: false},
+        {pregunta: "8.1.Diluyen (Completar en caso de preparacion incorrecta)", respuesta:"N/A",custom: true},
+        {pregunta: "8.1.Concentran (Completar en caso de preparacion incorrecta)", respuesta:"N/A",custom: true},
         {pregunta: "8.Cocción completa", respuesta:"",custom: false},
         {pregunta: "8.Cocinan en el establecimiento", respuesta:"",custom: false},
         {pregunta: "8.Uso de recetas", respuesta:"",custom: false},
@@ -65,6 +67,8 @@ export default function AddVisita({ desgloses, departamentos, addVisita }: { des
     const [fechaVisita, setFechaVisita] = useState<string>("")
 
     const [searchC, setSearchC] = useState<string>("")
+
+    const [observaciones, setObservaciones] = useState<string>("")
 
     const [filteredColegios, setFilteredColegios] = useState<IDesgloseVisitar[]>(desgloses)
 
@@ -101,6 +105,9 @@ export default function AddVisita({ desgloses, departamentos, addVisita }: { des
                 }
             });
             if(check && imagenes.length > 0 && confirm("¿Confirma que desea registrar esta visita?")) {
+                if(observaciones.length > 0) {
+                    preguntas.push({pregunta: "Observaciones", respuesta: observaciones, custom: true})
+                }
                 imagenes.forEach((img,i) => {
                     preguntas.push({pregunta: "IMAGEN "+(i+1), respuesta: img, custom: false})
                 });
@@ -204,6 +211,17 @@ export default function AddVisita({ desgloses, departamentos, addVisita }: { des
                             <td style={{border: "1px solid", fontSize: 12}}>
                                 <input type="date" style={{textAlign:"center",width: "95%"}} value={fechaVisita} onChange={(e) => setFechaVisita(e.target.value)}/>
                             </td>
+                        </tr>
+                        <tr>
+                            <td style={{border: "1px solid", fontSize: 12}}>Observaciones</td>
+                            <td style={{border: "1px solid", fontSize: 12}}>
+                            <textarea
+                                placeholder="Ingrese las observaciones..."
+                                value={observaciones}
+                                onChange={(e) => setObservaciones(e.target.value)}
+                                style={{height: 100,width: "95%",resize: "none"}}
+                            />                            
+                        </td>
                         </tr>
                     </tbody>
                 </table>
