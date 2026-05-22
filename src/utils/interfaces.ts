@@ -793,3 +793,13 @@ export interface IAddVisita {
     desglose_id: number,
     fecha_visita: string,
 }
+
+export interface IHistorialDesglose {
+    remito_id: number,
+    pv: number,
+    numero: number,
+    fecha_entregado: Date,
+    viaje?:string,
+    plan:number,
+    periodo:number
+}

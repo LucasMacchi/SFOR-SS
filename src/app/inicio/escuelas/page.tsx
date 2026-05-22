@@ -1,10 +1,12 @@
 import EscuelaAdd from "@/Componets/EscuelaAdd"
 import EscuelasDisplay from "@/Componets/EscuelasDisplay"
+import HistorialDesglose from "@/Componets/HistorialDesglose"
 import DBAddDesglose from "@/db/DBAddDesglose"
 import DBDepartamentos from "@/db/DBDepartamentos"
 import DBDesgloseEdit from "@/db/DBDesgloseEdit"
 import DBEscuelas from "@/db/DBEscuelas"
-import { IAddDesglose, IDesglose } from "@/utils/interfaces"
+import DBHistorialDesglose from "@/db/DBHistorialDesglose"
+import { IAddDesglose, IDesglose, IHistorialDesglose } from "@/utils/interfaces"
 import sessionCheck from "@/utils/sessionCheck"
 import { hr_style, text_2_t_style } from "@/utils/styles"
 
@@ -46,6 +48,17 @@ export default async function Page () {
         }
     }
 
+    const historialDesglose = async (desglose_id: number): Promise<IHistorialDesglose[]> => {
+        "use server"
+        try {
+            const res = await DBHistorialDesglose(desglose_id)
+            return res
+        } catch (error) {
+            console.log(error)
+            return []
+        }
+    }
+
     return(
         <div>
             <div>
@@ -61,6 +74,13 @@ export default async function Page () {
             </div>
             <div>
                 <EscuelaAdd lugares={lugares} departamentos={departamentos} addDesgloseFn={addDesgloseFn}/>
+            </div>
+            <div style={{marginTop: 30}}>
+                <h2 style={text_2_t_style}>HISTORIAL DE DESGLOSES</h2>
+                <hr color="#4A6EE8" style={hr_style}/>
+            </div>
+            <div>
+                <HistorialDesglose desgloses={desgloses} historialFn={historialDesglose}/>
             </div>
         </div>
     )
