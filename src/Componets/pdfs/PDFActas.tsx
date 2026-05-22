@@ -143,9 +143,9 @@ const PDFActas = ({remitos}:{remitos:IRemitoT[]}) => (
                 <Text style={stylePedido.subtitleActa}>Observaciones:</Text> 
             </View>
             <View style={stylePedido.viewData}>
-                <Text style={stylePedido.subtitleActa}>Se remplazan cereales LASFOR por cereales OVNI</Text>
-                <Text style={stylePedido.subtitleActa}>1 caja de cereales Lasfor por 5 unidades es igual a 2 cajas de cereales OVNI </Text> 
-                <Text style={stylePedido.subtitleActa}>1 bolsa de cereales LASFOR de 2 kg es igual a 12 unidades de cereales OVNI</Text> 
+                <Text style={stylePedido.subtitleActa}>.............................................................................................................</Text> 
+                <Text style={stylePedido.subtitleActa}>.............................................................................................................</Text> 
+                <Text style={stylePedido.subtitleActa}>.............................................................................................................</Text> 
                 <Text style={stylePedido.subtitleActa}>.............................................................................................................</Text> 
                 <Text style={stylePedido.subtitleActa}>.............................................................................................................</Text> 
                 <Text style={stylePedido.subtitleActa}>.............................................................................................................</Text> 
