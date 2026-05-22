@@ -596,6 +596,15 @@ export function resolverLlamadaSQL () {
     return `UPDATE public.llamada SET prioridad = 0,fecha_solucion='NOW()',solucion=$2 WHERE llamada_id = $1;`
 }
 
+export function historialDesgloseSQL () {
+    return `SELECT r.remito_id,r.pv,r.numero,r.fecha_entregado,v.des as viaje,rep.numero as plan,rep.periodo FROM public.desglose d 
+        JOIN public.envio e ON e.desglose_id = d.desglose_id 
+        JOIN public.remito r ON r.remito_id = e.remito_id
+        LEFT JOIN public.viaje v ON v.viaje_id = r.viaje_id
+        JOIN public.reparto rep ON rep.reparto_id = r.reparto_id
+        WHERE d.desglose_id = $1 ORDER BY r.remito_id DESC LIMIT 10;`
+}
+
 export function getAllReportesCallSQL () {
     return `
         SELECT le.lentrega_id,le.completo,le.departamento,le.localidad,d.des,le.direccion,l.fecha,p.preg_id,p.pregunta,p.respuesta,p.respuesta_2 FROM public.pregunta p 

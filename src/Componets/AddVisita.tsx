@@ -157,17 +157,17 @@ export default function AddVisita({ desgloses, departamentos, addVisita }: { des
                 </div>
             </div>
             <div>
-                    <h4 style={{...text_2_t_style}}>ESCUELA*</h4>
-                    <select name="estados_sel" id="state_sl"
-                    style={{width: 450,marginBottom: 25}} value={selectedEscuela}
-                        onChange={(e) => setSelectedEscuela(parseInt(e.target.value))}>
-                        <option value={-1}>---</option>
-                        {filteredColegios.map((esc, index) => (
-                            <option key={index} value={index}>
-                                {esc.des}
-                            </option>
-                        ))}
-                    </select>
+                <h4 style={{...text_2_t_style}}>ESCUELA*</h4>
+                <select name="estados_sel" id="state_sl"
+                style={{width: 450,marginBottom: 25}} value={selectedEscuela}
+                    onChange={(e) => setSelectedEscuela(parseInt(e.target.value))}>
+                    <option value={-1}>---</option>
+                    {filteredColegios.map((esc, index) => (
+                        <option key={index} value={index}>
+                            {esc.des}
+                        </option>
+                    ))}
+                </select>
             </div>
             <div>
                 <table style={{width: "55%"}}>

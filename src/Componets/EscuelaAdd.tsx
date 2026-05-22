@@ -55,7 +55,7 @@ export default function EscuelaAdd ({lugares,departamentos,addDesgloseFn}:{lugar
     }
 
     return(
-        <div style={{marginLeft: 20,marginBottom: 400}}>
+        <div style={{marginLeft: 20,marginBottom: 100}}>
             <h2 style={{...text_2_t_style, marginTop: 40}}>SELECCIONA EL LUGAR DE ENTREGA</h2>
             <div style={{ display:"flex"}}>
                 <div>
