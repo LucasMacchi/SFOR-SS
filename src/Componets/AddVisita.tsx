@@ -8,6 +8,14 @@ import { useEffect, useState } from "react";
 export default function AddVisita({ desgloses, departamentos, addVisita }: { desgloses: IDesgloseVisitar[]; departamentos: string[]; addVisita: (v: IAddVisita, preguntas: IVisitaPreguntaAdd[]) => Promise<boolean> }) {
 
     const [preguntas, setPreguntas] = useState<IVisitaPreguntaAdd[]>([
+        {pregunta: "1.Nombre del establecimiento", respuesta:"",custom: true},
+        {pregunta: "1.CUE", respuesta:"",custom: true},
+        {pregunta: "1.Direccion", respuesta:"",custom: true},
+        {pregunta: "1.Localidad", respuesta:"",custom: true},
+        {pregunta: "1.Departamento", respuesta:"",custom: true},
+        {pregunta: "1.Correo electrónico", respuesta:"",custom: true},
+        {pregunta: "1.Telefono", respuesta:"",custom: true},
+        {pregunta: "1.Directivo", respuesta:"",custom: true},
         {pregunta: "2.Cocina en el establecimiento", respuesta:"",custom: false},
         {pregunta: "2.Reparte los alimentos", respuesta:"",custom: false},
         {pregunta: "3.Raciones diarias - Almuerzo", respuesta:"",custom: true},
@@ -200,7 +208,7 @@ export default function AddVisita({ desgloses, departamentos, addVisita }: { des
                     </tbody>
                 </table>
                 <div>
-                    <CldUploadButton  uploadPreset="visita_preset" onSuccess={(r) => handleImages(r)} options={{maxFiles: 8,maxFileSize: 2*1024*1024}}
+                    <CldUploadButton uploadPreset="visita_preset" onSuccess={(r) => handleImages(r)} options={{maxFiles: 8,maxFileSize: 2*1024*1024}}
                         onOpen={() => alert("Solo se permiten subir hasta 8 imágenes por visita, con un tamaño máximo de 2MB cada una, ademas, seleccionando la imagen ya la sube, asegurarse de seleccionarlas bien.")}>
                         SUBIR IMAGENES
                     </CldUploadButton>
