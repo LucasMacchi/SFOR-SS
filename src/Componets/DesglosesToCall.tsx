@@ -131,11 +131,13 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
     const createLlamada = async () => {
         setTimer(false)
         console.log(seconds)
+        /*
         let check = true
         preguntas.forEach(p => {
             if(p.respuesta.length === 0) check = false
         });
-        if(confirm("¿Confirma que desea crear la llamada?") && seconds > 0 && check) {
+        */
+        if(confirm("¿Confirma que desea crear la llamada?") && seconds > 0 /*&& check*/) {
             if(selectedDesglose) {
                 const data: IAddLlamada = {
                     fecha: 'NOW()',

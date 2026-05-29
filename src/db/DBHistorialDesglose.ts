@@ -1,6 +1,6 @@
 import authJwt from "@/utils/authJwt";
 import clientReturner from "./clientReturner";
-import { IHistorialDesglose, IInsumo } from "@/utils/interfaces";
+import { IHistorialDesglose } from "@/utils/interfaces";
 import { historialDesgloseSQL } from "./SQLreturner";
 
 export default async function (desglose_id: number): Promise<IHistorialDesglose[]> {

@@ -1,6 +1,7 @@
 import EscuelaAdd from "@/Componets/EscuelaAdd"
 import EscuelasDisplay from "@/Componets/EscuelasDisplay"
 import HistorialDesglose from "@/Componets/HistorialDesglose"
+import ImportacionColegios from "@/Componets/importacionColegios"
 import DBAddDesglose from "@/db/DBAddDesglose"
 import DBDepartamentos from "@/db/DBDepartamentos"
 import DBDesgloseEdit from "@/db/DBDesgloseEdit"
@@ -82,6 +83,9 @@ export default async function Page () {
             <div>
                 <HistorialDesglose desgloses={desgloses} historialFn={historialDesglose}/>
             </div>
+            <div>
+            </div>
+                {/*<ImportacionColegios desglose={desgloses}/>*/}
         </div>
     )
 }
