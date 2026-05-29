@@ -4,6 +4,25 @@ export interface IRqLogin {
     username: string,
     password: string
 }
+
+export interface excelLineas {
+    line_num:number,
+    des: string,
+    fortificado: boolean,
+    rac: number
+}
+
+export interface IDesgloseComparision {
+    line: number,
+    desglose_id:number,
+    des1:string,
+    rac1:number,
+    fort1:boolean,
+    des2:string,
+    rac2:number,
+    fort2:boolean
+}
+
 export interface IRqUniq {
     pv:number,
     numero:number
