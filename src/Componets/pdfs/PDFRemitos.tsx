@@ -283,7 +283,7 @@ const insumosDisplayer = (envios: IEnvioT[],insumosArr: IInsumo[],desgloses: num
         elements.push(
             <View style={stylePedido.tableRow} key={101}>
                 <View style={stylePedido.tableColIns}>
-                    <Text style={stylePedido.tableCell2}>Raciones por {dias} dias habiles</Text>
+                    <Text style={stylePedido.tableCell2}>Cobertura de raciones por {dias} dias habiles</Text>
                 </View>
                 <View style={stylePedido.tableColcod}>
                     <Text style={stylePedido.tableCell}>{" "}</Text>
