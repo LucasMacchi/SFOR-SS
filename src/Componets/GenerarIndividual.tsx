@@ -138,6 +138,7 @@ export default function GenerarIndividual ({escuelas,departamentos,planes,insumo
         return check
     }
     const prevRemitos = () => {
+        console.log(selectedLgr)
         setPrev(viajeInsumosParseDisplay(insumos,planes,remitos))
     }
     const planReturner = (id:number) : string => {
@@ -292,7 +293,7 @@ export default function GenerarIndividual ({escuelas,departamentos,planes,insumo
                 </table>
                 </div>
                 <div style={{display:"flex",justifyContent:"center",marginTop: 40}}>
-                    <button style={btn_s_style} disabled={selectedLgr !== 9999} onClick={() => generarRemitos()}>GENERAR REMITOS</button>
+                    <button style={btn_s_style} disabled={selectedLgr === 9999} onClick={() => generarRemitos()}>GENERAR REMITOS</button>
                     <button style={btn_s_style} onClick={() => prevRemitos()}>?</button>
                 </div>
             </div>
