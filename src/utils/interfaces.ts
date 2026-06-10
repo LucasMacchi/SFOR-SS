@@ -5,6 +5,56 @@ export interface IRqLogin {
     password: string
 }
 
+export interface IintervencionTicket {
+    ticket_id: number,
+    categoria: string,
+    username: string,
+    fecha: Date,
+    payload: string,
+    image?: string
+}
+
+export interface IUsuariosSafe {
+    userId: number,
+    username: string,
+    email: string
+}
+
+export interface ITicket {
+    ticket_id: number,
+    user_id: number,
+    username: string,
+    fecha_creado: Date,
+    fecha_solucion: Date | null,
+    solucion: string | null,
+    categoria: string,
+    estado: string,
+    desglose_id: number,
+    lentrega_id: number,
+    departamento: string,
+    localidad: string,
+    comentario: string,
+    raciones:number,
+    completo: string,
+    fortificado: boolean,
+    numero:string,
+    des: string,
+    origen:string,
+    prioridad: number,
+    user_asignado?: number,
+}
+
+export interface IAddTicket {
+    user_id: number,
+    categoria: string,
+    estado: string,
+    desglose_id: number,
+    lentrega_id: number,
+    comentarios: string,
+    raciones:number,
+    numero:string
+}
+
 export interface excelLineas {
     line_num:number,
     des: string,
@@ -537,7 +587,8 @@ export interface IEnviosExcelRQ {
     pv:number,
     numero:number,
     dependencia:string,
-    lugar_entrega:number
+    lugar_entrega:number,
+    raciones: number
 }
 
 export interface IEnviosExcel {

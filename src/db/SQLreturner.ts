@@ -407,7 +407,8 @@ export function enviosExcelSQL (userId:number) {
     return `
         SELECT r.fecha_creado,r.fecha_despachado,r.fecha_preparado,
         r.fecha_entregado,r.fortificado,es.des as estado,
-        r.pv,r.numero,des.des as dependencia,r.lentrega_id as lugar_entrega
+        r.pv,r.numero,des.des as dependencia,r.lentrega_id as lugar_entrega,
+		(SELECT SUM(raciones) FROM public.envio_details d JOIN public.insumo i ON i.ins_id = d.ins_id WHERE i.calculable = true AND d.envio_id = e.envio_id) as raciones
         FROM public.envio e
         JOIN public.desglose des ON e.desglose_id = des.desglose_id
         JOIN public.remito r ON e.remito_id = r.remito_id 
@@ -625,12 +626,45 @@ export function getAllLlamadasSQL() {
         ORDER BY fecha DESC;`
 }
 
+export function getTicketsSQL () {
+    return `SELECT * FROM public.ticket t JOIN public.desglose ON desglose.desglose_id = t.desglose_id JOIN public.lentrega ON lentrega.lentrega_id = t.lentrega_id JOIN public."user" u ON u."userId" = t.user_id ORDER BY t.ticket_id DESC;`
+}
+
+export function createTicketSQL () {
+    return `INSERT INTO public.ticket(categoria, desglose_id, comentario, raciones, lentrega_id, user_id, estado) VALUES ($1, $2, $3, $4, $5, $6, $7);`
+}
+
 export function resolverReporteSQL () {
     return `UPDATE public.pregunta SET reporte = false,respuesta = $2, respuesta_2 = $3 WHERE preg_id = $1;`
 }
 
 export function getDependenciasInformeSQL () {
     return `SELECT * FROM public.desglose d JOIN public.lentrega le ON d.lentrega_id = le.lentrega_id ORDER BY le.lentrega_id;`
+}
+
+export function getIntervencionesTicketSQL () {
+    return `SELECT i.intervencion_id,i.categoria,i.fecha,i.ticket_id,i.payload,i.image,u.username FROM public.ticket_intervencion i 
+    JOIN public."user" u ON u."userId" = i.user_id WHERE i.ticket_id = $1 ORDER BY i.intervencion_id DESC`
+}
+
+export function solucionarTicketSQL () {
+    return `UPDATE public.ticket SET estado = 'CERRADO', solucion = $2,fecha_solucion = 'NOW()' WHERE ticket_id = $1;`
+}
+
+export function cambiarPrioridadTicketSQL () {
+    return `UPDATE public.ticket SET prioridad = $2 WHERE ticket_id = $1;`
+}
+
+export function asignandoTicketSQL () {
+    return `UPDATE public.ticket SET user_asignado = $2 WHERE ticket_id = $1;`
+}
+
+export function addIntervencionSQL () {
+    return `INSERT INTO public.ticket_intervencion(categoria, ticket_id, user_id, payload) VALUES ($1, $2, $3, $4);`
+}
+
+export function addIntervencionImagenSQL () {
+    return `INSERT INTO public.ticket_intervencion(categoria, ticket_id, user_id, payload, image) VALUES ($1, $2, $3, $4, $5);`
 }
 
 export function addVisitaSQL () {
@@ -643,4 +677,8 @@ export function addVisitaDetailSQL () {
 
 export function setVisitadoSQL () {
     return `UPDATE public.desglose SET visitado = true WHERE desglose_id = $1;`
+}
+
+export function getUsuariosSafeSQL () {
+    return `SELECT "user"."userId", username, email FROM public."user" ORDER BY "userId";`
 }
