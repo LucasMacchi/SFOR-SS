@@ -110,7 +110,8 @@ export default async function Page() {
                     R_TIPO:e.fortificado ? "ALMUERZO" : "COPA DE LECHE",
                     R_ESTADO:e.estado,
                     E_DEPENDENCIA:e.dependencia,
-                    E_ID_ENTREGA:e.lugar_entrega
+                    E_ID_ENTREGA:e.lugar_entrega,
+                    RACIONES: e.raciones
                 }
             })
             return excelData
