@@ -2,6 +2,8 @@
     "origenes": [
         "CALL CENTER",
         "EMAIL",
-        "MINISTERIO"
+        "MINISTERIO",
+        "NOTA",
+        "EMAIL / NOTA"
     ]
 }
