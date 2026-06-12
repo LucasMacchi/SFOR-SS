@@ -1,7 +1,9 @@
 "use client"
-import { IAddLlamada, IAddPregunta, IDesgloseLlamada, ILlamada, IPregunta } from "@/utils/interfaces";
+import { IAddLlamada, IAddPregunta, IAddTicket, IDesglose, IDesgloseLlamada, ILlamada, IPregunta, IUsuariosSafe } from "@/utils/interfaces";
 import { btn_d_style, btn_s_style, text_2_t_style } from "@/utils/styles";
 import { useEffect, useState } from "react";
+import TicketAdd from "./TicketAdd";
+import { addTicketSQL } from "@/db/SQLreturner";
 
 
 const preguntasT:IAddPregunta[] = [
@@ -26,11 +28,11 @@ const preguntasT:IAddPregunta[] = [
         {llamada_id: 0, pregunta: "Comentarios", respuesta: "",fecha:"NOW()",reporte:false}
 ]
 
-export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,departamentos,getLlamadasEscuelaFn,getRespuestasFn,resolverLlamadaFn,addLlamadaNoAtendidaFn}:
+export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,departamentos,getLlamadasEscuelaFn,getRespuestasFn,resolverLlamadaFn,addLlamadaNoAtendidaFn,desglosesT,addTicketFn,usuarios}:
     {desgloses: IDesgloseLlamada[], editContFn: (columna: string, data: string, id: number) => Promise<boolean>,
         addLlamadaFn: (data: IAddLlamada,preguntas: IAddPregunta[]) => Promise<boolean>,departamentos:string[],
         getLlamadasEscuelaFn: (id: number) => Promise<ILlamada[]>,getRespuestasFn: (id: number) => Promise<IPregunta[]>,resolverLlamadaFn: (llamada_id: number,solucion:string) => Promise<boolean>
-        addLlamadaNoAtendidaFn: (data: IAddLlamada) => Promise<boolean>
+        addLlamadaNoAtendidaFn: (data: IAddLlamada) => Promise<boolean>,desglosesT:IDesglose[], addTicketFn:(ticket: IAddTicket,escuela:string) => Promise<boolean>,usuarios:IUsuariosSafe[]
     }) {
     
     const [selectedDesglose, setSelectedDesglose] = useState<IDesgloseLlamada | null>(null)
@@ -44,6 +46,7 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
     const [seconds,setSeconds] = useState(0)
     const [llamados,setLlamados] = useState(0)
     const [atendidos,setAtendidos] = useState(0)
+    const [openTicket, setOpenTicket] = useState(false)
     const [respuestas, setRespuestas] = useState<IPregunta[]>([])
     const [selectedLlamada, setSelectedLlamada] = useState(0)
     const [preguntas, setPreguntas] = useState<IAddPregunta[]>(preguntasT)
@@ -612,9 +615,6 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
                                         ))}
                                     </tbody>
                                 </table>
-                                <div>
-                                    <button style={{...btn_s_style,marginLeft:5,marginTop: 10}} onClick={() => addReporteRetiro()}>AGREGAR RETIRO</button>
-                                </div>
                                 {selectedDesglose && (
                                 <div style={{marginTop:20}}>
                                     <div style={{marginLeft: 10}}>
@@ -631,6 +631,12 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
                                 )}
                                 <button style={{...btn_d_style,marginLeft:5,marginTop: 10}} onClick={() => createLlamadaNoAtendida()}>NO ATENDIO</button>
                                 <button style={{...btn_s_style,marginLeft:5,marginTop: 10}} onClick={() => createLlamada()}>CONFIRMAR LLAMADA</button>
+                                <div>
+                                    <button style={{...btn_s_style,marginLeft:5,marginTop: 10}} onClick={() => setOpenTicket(!openTicket)}>CREAR TICKET</button>
+                                </div>
+                                <div>
+                                    {openTicket && <TicketAdd desgloseH={selectedDesglose ? selectedDesglose.desglose_id : 0} usuarios={usuarios} origenH="CALL CENTER" desgloses={desglosesT} addTicketFn={addTicketFn}/>}
+                                </div>
                             </div>
                             <div style={{width: "40%"}}>
                                 <table style={{width: "100%"}}>
