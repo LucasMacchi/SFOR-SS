@@ -630,6 +630,18 @@ export function getTicketsSQL () {
     return `SELECT * FROM public.ticket t JOIN public.desglose ON desglose.desglose_id = t.desglose_id JOIN public.lentrega ON lentrega.lentrega_id = t.lentrega_id JOIN public."user" u ON u."userId" = t.user_id ORDER BY t.ticket_id DESC;`
 }
 
+export function addTicketAsignadoSQL () {
+    return `INSERT INTO public.ticket(categoria, desglose_id, comentario, raciones, lentrega_id, user_id, 
+    estado, numero, prioridad, user_asignado, origen, user_observador) 
+    VALUES ( $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12);`
+}
+
+export function addTicketSQL () {
+    return `INSERT INTO public.ticket(categoria, desglose_id, comentario, raciones, lentrega_id, user_id, 
+    estado, numero, prioridad, origen) 
+    VALUES ( $1, $2, $3, $4, $5, $6, $7, $8, $9, $10);`
+}
+
 export function createTicketSQL () {
     return `INSERT INTO public.ticket(categoria, desglose_id, comentario, raciones, lentrega_id, user_id, estado) VALUES ($1, $2, $3, $4, $5, $6, $7);`
 }
@@ -656,7 +668,11 @@ export function cambiarPrioridadTicketSQL () {
 }
 
 export function asignandoTicketSQL () {
-    return `UPDATE public.ticket SET user_asignado = $2 WHERE ticket_id = $1;`
+    return `UPDATE public.ticket SET user_asignado = $2, estado = 'ASIGNADO' WHERE ticket_id = $1;`
+}
+
+export function observadorTicketSQL () {
+    return `UPDATE public.ticket SET user_observador = $2, estado = 'ASIGNADO' WHERE ticket_id = $1;`
 }
 
 export function addIntervencionSQL () {

@@ -1,0 +1,11 @@
+{
+    "categorias": [
+        {"c":"RACIONES NO ENVIADAS","p":2},
+        {"c":"DISMINUCION DE RACIONES","p":3},
+        {"c":"MAL ESTADO DE MERCADERIA","p":1},
+        {"c":"CAMBIO DE CABECERA","p":3},
+        {"c":"SOLICITUD DE ALTA DE DIETAS","p":3},
+        {"c":"RETIRO DE MERCADERIA","p":3},
+        {"c":"OTROS","p":3}
+    ]
+}

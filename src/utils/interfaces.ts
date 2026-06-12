@@ -41,6 +41,7 @@ export interface ITicket {
     des: string,
     origen:string,
     prioridad: number,
+    user_observador?:number,
     user_asignado?: number,
 }
 
@@ -52,7 +53,11 @@ export interface IAddTicket {
     lentrega_id: number,
     comentarios: string,
     raciones:number,
-    numero:string
+    numero:string,
+    user_asignado?: number,
+    origen: string,
+    prioridad: number,
+    user_observador: number
 }
 
 export interface excelLineas {
@@ -588,7 +593,7 @@ export interface IEnviosExcelRQ {
     numero:number,
     dependencia:string,
     lugar_entrega:number,
-    raciones: number
+    raciones: string
 }
 
 export interface IEnviosExcel {
@@ -602,6 +607,7 @@ export interface IEnviosExcel {
     R_ESTADO:string,
     E_DEPENDENCIA:string,
     E_ID_ENTREGA:number
+    RACIONES: number
 }
 
 export interface IViajeExcelComplete {

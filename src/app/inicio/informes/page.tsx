@@ -111,7 +111,7 @@ export default async function Page() {
                     R_ESTADO:e.estado,
                     E_DEPENDENCIA:e.dependencia,
                     E_ID_ENTREGA:e.lugar_entrega,
-                    RACIONES: e.raciones
+                    RACIONES: parseInt(e.raciones)
                 }
             })
             return excelData

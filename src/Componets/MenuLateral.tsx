@@ -31,7 +31,6 @@ export default function MenuLateral({rol,username,planActual,userplan,createRepa
                     <LinkMenu where="/inicio" titulo="inicio" />
                     {rol <= 2 && <LinkMenu where="/inicio/planificacion" titulo="planificacion" />}
                     {rol <= 2 && <LinkMenu where="/inicio/generar" titulo="generar" />}
-                    {rol <= 3 && <LinkMenu where="/inicio/reportes" titulo="reportes" />}
                     {rol <= 2 && <LinkMenu where="/inicio/generarViaje" titulo="generar viaje" />}
                     {(rol === 3 || rol === 2 || rol === 1 ) && <LinkMenu where="/inicio/traer" titulo="consultar" />}
                     {rol <= 2 && <LinkMenu where="/inicio/planes" titulo="planes" />}
@@ -41,6 +40,7 @@ export default function MenuLateral({rol,username,planActual,userplan,createRepa
                     {rol <= 2 && <LinkMenu where="/inicio/informes" titulo="informes" />}
                     {(rol === 4 || rol === 2 || rol === 1 )&& <LinkMenu where="/inicio/callcenter" titulo="call center" />}
                     {(rol === 4 || rol === 2 || rol === 1 )&& <LinkMenu where="/inicio/visita" titulo="visita" />}
+                    {<LinkMenu where="/inicio/ticket" titulo="ticket" />}
                     {rol <= 2 && <LinkMenu where="/inicio/facturacion" titulo="facturacion" />}
                     {rol <= 2 && <LinkMenu where="/inicio/datos" titulo="datos" />}
                     {rol <= 1 && <LinkMenu where="/inicio/usuarios" titulo="usuarios" />}
