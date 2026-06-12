@@ -205,6 +205,10 @@ export function desgloseByLentregaSQL (id:number,sent:boolean,hidden:boolean) {
     return sent ? `SELECT * FROM public.desglose WHERE lentrega_id = ${id} and enviado = false ${hidden ? "":"and visible = true"} ORDER BY desglose_id ASC;` :`SELECT * FROM public.desglose WHERE lentrega_id = ${id} ${hidden ? "":" and visible = true"} ORDER BY desglose_id ASC;`
 }
 
+export function allEscuelasSQL () {
+    return `SELECT * FROM public.desglose  ORDER BY desglose_id ASC;`
+}
+
 export function desgloseByLentregaPlanSQL (id:number) {
     return `SELECT * FROM public.desglose WHERE lentrega_id = ${id} ORDER BY desglose_id ASC;`
 }
