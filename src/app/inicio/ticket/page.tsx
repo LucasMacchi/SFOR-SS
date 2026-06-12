@@ -1,6 +1,7 @@
 import TicketAdd from "@/Componets/TicketAdd"
 import TicketsDisplay from "@/Componets/TicketsDisplay"
 import DBAddTicket from "@/db/DBAddTicket"
+import DBAllEscuelas from "@/db/DBAllEscuelas"
 import DBDepartamentos from "@/db/DBDepartamentos"
 import DBDesglosesVisitar from "@/db/DBDesglosesVisitar"
 import DBEscuelas from "@/db/DBEscuelas"
@@ -19,18 +20,8 @@ export default async function Ticket() {
     const usuarios = await DBSafeUsuarios()
     const tickets = await DBGetTickets()
     const departamentos = await DBDepartamentos()
-    const desgloses = await DBEscuelas(true,true)
-    const desglosesP: IDesglose[] = []
-    if(desgloses) {
-        desgloses.forEach(l => {
-            if(l.desgloses) {
-                l.desgloses.forEach(d => {
-                    d.direccion = l.direccion
-                    desglosesP.push(d)
-                });
-            }
-        });
-    }
+    const desgloses = await DBAllEscuelas()
+    
     const addTicketFn = async (ticket: IAddTicket,escuela:string): Promise<boolean> => {
         "use server"
         try {            
@@ -51,7 +42,7 @@ export default async function Ticket() {
                 <hr color="#4A6EE8" style={hr_style}/>
             </div>
             <div>
-                <TicketAdd desgloses={desglosesP} origenH={""} usuarios={usuarios} 
+                <TicketAdd desgloses={desgloses} origenH={""} usuarios={usuarios} 
                 addTicketFn={addTicketFn} desgloseH={0}/>
             </div>
             <div>

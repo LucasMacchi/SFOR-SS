@@ -1,7 +1,11 @@
 {
     "origenes": [
         "CALL CENTER",
+        "TELEFONO",
         "EMAIL",
-        "MINISTERIO"
+        "MINISTERIO",
+        "NOTA",
+        "EMAIL / NOTA",
+        "REDES SOCIALES"
     ]
 }
