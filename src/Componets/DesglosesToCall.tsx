@@ -158,7 +158,6 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
                     setSeconds(0)
                     setLlamadas([])
                     setSelectedLlamada(0)
-                    window.location.reload()
                 }
                 else alert("Error al crear la llamada.")
             }
@@ -186,7 +185,6 @@ export default function DesglosesToCall ({desgloses,editContFn,addLlamadaFn,depa
                     setSeconds(0)
                     setLlamadas([])
                     setSelectedLlamada(0)
-                    window.location.reload()
                 }
                 else alert("Error al crear la llamada no atendida.")
             }
