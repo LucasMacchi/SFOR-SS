@@ -2,6 +2,7 @@ import DesglosesToCall from "@/Componets/DesglosesToCall"
 import DBAddLlamada from "@/db/DBAddLlamada"
 import DBAddLlamadaNoAtentida from "@/db/DBAddLlamadaNoAtentida"
 import DBAddTicket from "@/db/DBAddTicket"
+import DBAllEscuelas from "@/db/DBAllEscuelas"
 import DBDepartamentos from "@/db/DBDepartamentos"
 import DBDesglosesLlamadas from "@/db/DBDesglosesLlamadas"
 import DBEditContactos from "@/db/DBEditContactos"
@@ -22,19 +23,8 @@ export default async function Page () {
     const escuelas = await DBDesglosesLlamadas()
     const departamentos = await DBDepartamentos()
     const usuarios = await DBSafeUsuarios()
-    const desgloses = await DBEscuelas(true,true)
-    //console.log(escuelas)
-    const desglosesP: IDesglose[] = []
-    if(desgloses) {
-        desgloses.forEach(l => {
-            if(l.desgloses) {
-                l.desgloses.forEach(d => {
-                    d.direccion = l.direccion
-                    desglosesP.push(d)
-                });
-            }
-        });
-    }
+    const desglosesP = await DBAllEscuelas()
+
     const editDesgloseContacto = async (columna: string, data: string, id: number): Promise<boolean> => {
         "use server"
         try {
