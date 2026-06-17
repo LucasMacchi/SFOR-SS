@@ -8,7 +8,7 @@ import { IDesglose, ILentrega } from "@/utils/interfaces"
 export default async function (): Promise<IDesglose[]> {
     const conn = clientReturner()
     try {
-        if(await authJwt(3)) {
+        if(await authJwt(4)) {
             await conn.connect()
             const lugares: IDesglose[] = (await conn.query(allEscuelasSQL())).rows
             await conn.end()
