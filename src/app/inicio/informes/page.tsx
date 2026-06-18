@@ -6,7 +6,7 @@ import DBFacturacion from "@/db/DBFacturacion";
 import DBValorRacion from "@/db/DBValorRacion";
 import DBViajes from "@/db/DBViajes";
 import DBViajesExcel from "@/db/DBViajesExcel";
-import { IEnviosExcel, IEXCELDependencia, IExcelFactura, IEXCELLlamada, IFacturasExcel, IRemitoInFactura, IRemitoNoExportedRQ, IViajeExcel, IViajeExcelComplete, IViajeExcelCompleteInsumos, IViajeRemitoDetalleExcel } from "@/utils/interfaces";
+import { IEnviosExcel, IEXCELDependencia, IExcelFactura, IEXCELLlamada, IFacturasExcel, IRemitoInFactura, IRemitoNoExportedRQ, ITicketEXCEL, IViajeExcel, IViajeExcelComplete, IViajeExcelCompleteInsumos, IViajeRemitoDetalleExcel } from "@/utils/interfaces";
 import sessionCheck from "@/utils/sessionCheck";
 import { hr_style, text_2_t_style } from "@/utils/styles";
 import parseRemitoString from "@/utils/parseRemitoString";
@@ -26,6 +26,8 @@ import DBGetAllLlamdadas from "@/db/DBGetAllLlamdadas";
 import LlamadasExcelData from "@/Componets/LlamadasExcelData";
 import DBDependenciasInforme from "@/db/DBDependenciasInforme";
 import DependenciasExcelData from "@/Componets/DependenciasExcelData";
+import DBGetTickets from "@/db/DBGetTickets";
+import TicketsExcel from "@/Componets/TicketsExcel";
 
 
 
@@ -57,6 +59,37 @@ export default async function Page() {
                 }
             })
             return parsedDataExcel
+        } catch (error) {
+            console.log(error)
+            return []
+        }
+    }
+
+    const getAllTickets = async () => {
+        "use server"
+        try {
+            const tickets = await DBGetTickets()
+            const parsedTickets: ITicketEXCEL[] = tickets.map((t) => {
+                return{
+                    ID:t.numero,
+                    USER: t.username,
+                    FECHA_CREADO: t.fecha_creado.toISOString().split("T")[0],
+                    FECHA_SOLUCION: t.fecha_solucion ? t.fecha_solucion.toISOString().split("T")[0] : "N/A",
+                    SOLUCION: t.solucion ? t.solucion : "N/A",
+                    CATEGORIA: t.categoria,
+                    ESTADO: t.estado,
+                    DEPENDENCIA: t.des,
+                    CABECERA: t.completo,
+                    DEPARTAMENTO: t.departamento,
+                    LOCALIDAD: t.localidad,
+                    COMENTARIO: t.comentario,
+                    RACIONES:t.raciones,
+                    TIPO: t.fortificado ? "AL": "CL",
+                    ORIGEN:t.origen,
+                    PRIORIDAD: t.prioridad === 1 ? "ALTA" : t.prioridad === 2 ? "MEDIA" : "BAJA"
+                }
+            })
+            return parsedTickets
         } catch (error) {
             console.log(error)
             return []
@@ -418,6 +451,13 @@ export default async function Page() {
                 <hr color="#4A6EE8" style={hr_style}/>
                 <div style={{display:"flex",justifyContent:"center"}}>
                     <DependenciasExcelData getDependenciasData={getAllDesgloses}/>
+                </div>
+            </div>
+            <div>
+                <h2 style={text_2_t_style}>TICKETS</h2>
+                <hr color="#4A6EE8" style={hr_style}/>
+                <div style={{display:"flex",justifyContent:"center"}}>
+                    <TicketsExcel getAllTickets={getAllTickets}/>
                 </div>
             </div>
         </div>
