@@ -36,9 +36,6 @@ export default async function Page({params}:{params:Promise<{uniqticket:string}>
         }
     }
     
-    const getFile = async () => {
-        
-    }
 
     const userReturner = (userId: number | undefined) => {
         const user = usuarios.find(u => u.userId === userId)

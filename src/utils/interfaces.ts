@@ -45,6 +45,25 @@ export interface ITicket {
     user_asignado?: number,
 }
 
+export interface ITicketEXCEL {
+    ID:string,
+    USER: string,
+    FECHA_CREADO: string,
+    FECHA_SOLUCION: string,
+    SOLUCION: string,
+    CATEGORIA: string,
+    ESTADO: string,
+    DEPENDENCIA: string,
+    CABECERA: string,
+    DEPARTAMENTO: string,
+    LOCALIDAD: string,
+    COMENTARIO: string,
+    RACIONES:number,
+    TIPO: string,
+    ORIGEN:string,
+    PRIORIDAD: string
+}
+
 export interface IAddTicket {
     user_id: number,
     categoria: string,
