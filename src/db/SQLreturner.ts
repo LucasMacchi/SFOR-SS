@@ -542,6 +542,14 @@ export function getVisitaPreguntasSQL() {
     return `SELECT * FROM public.visita_detail WHERE visita_id = $1 ORDER BY vdetail_id ASC;`
 }
 
+export function getMarcasSQL() {
+    return `SELECT * FROM public.marcas ORDER BY marca_id ASC`
+}
+
+export function getDiferenciaRaciones() {
+    return `SELECT * FROM public."desglosesDiff"`
+}
+
 export function getDesglosesLastCall () {
     return `SELECT 
     d.cargo_2,

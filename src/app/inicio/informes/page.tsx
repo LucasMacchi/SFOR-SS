@@ -28,6 +28,8 @@ import DBDependenciasInforme from "@/db/DBDependenciasInforme";
 import DependenciasExcelData from "@/Componets/DependenciasExcelData";
 import DBGetTickets from "@/db/DBGetTickets";
 import TicketsExcel from "@/Componets/TicketsExcel";
+import DBRacionesDif from "@/db/DBRacionesDif";
+import RacionesDifExcel from "@/Componets/RacionesDifExcel";
 
 
 
@@ -71,7 +73,9 @@ export default async function Page() {
             const tickets = await DBGetTickets()
             const parsedTickets: ITicketEXCEL[] = tickets.map((t) => {
                 return{
+                    TIK:t.ticket_id,
                     ID:t.numero,
+                    CUE:t.cue,
                     USER: t.username,
                     FECHA_CREADO: t.fecha_creado.toISOString().split("T")[0],
                     FECHA_SOLUCION: t.fecha_solucion ? t.fecha_solucion.toISOString().split("T")[0] : "N/A",
@@ -90,6 +94,17 @@ export default async function Page() {
                 }
             })
             return parsedTickets
+        } catch (error) {
+            console.log(error)
+            return []
+        }
+    }
+
+    const getDiferenciasRacionesExcel = async () => {
+        "use server"
+        try {
+            const diferencias = await DBRacionesDif()
+            return diferencias
         } catch (error) {
             console.log(error)
             return []
@@ -460,6 +475,14 @@ export default async function Page() {
                     <TicketsExcel getAllTickets={getAllTickets}/>
                 </div>
             </div>
+           <div>
+                <h2 style={text_2_t_style}>RACIONES</h2>
+                <hr color="#4A6EE8" style={hr_style}/>
+                <div style={{display:"flex",justifyContent:"center"}}>
+                    <RacionesDifExcel getDiferenciasRacionesExcel={getDiferenciasRacionesExcel}/>
+                </div>
+            </div>
+
         </div>
     )
 }

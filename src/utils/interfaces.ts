@@ -23,6 +23,7 @@ export interface IUsuariosSafe {
 export interface ITicket {
     ticket_id: number,
     user_id: number,
+    cue:number,
     username: string,
     fecha_creado: Date,
     fecha_solucion: Date | null,
@@ -45,7 +46,29 @@ export interface ITicket {
     user_asignado?: number,
 }
 
+export interface IMarca {
+    marca_id:number,
+    nombre:string
+}
+
+export interface IViewRacionesDif {
+    id_escuela:number,
+    id_cabecera: number,
+    cue: number,
+    cabecera:string,
+    localidad:string,
+    departamento:string,
+    escuela_dependencia:string,
+    raciones1ra:number,
+    tipo:string,
+    enviado1ra:string,
+    raciones2da:number,
+    enviado2da:string,
+    diferencia_raciones_1ray2da:number
+}
+
 export interface ITicketEXCEL {
+    TIK:number,
     ID:string,
     USER: string,
     FECHA_CREADO: string,
@@ -53,6 +76,7 @@ export interface ITicketEXCEL {
     SOLUCION: string,
     CATEGORIA: string,
     ESTADO: string,
+    CUE:number,
     DEPENDENCIA: string,
     CABECERA: string,
     DEPARTAMENTO: string,
