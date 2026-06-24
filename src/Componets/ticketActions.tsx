@@ -1,6 +1,6 @@
 "use client"
 
-import { IUsuariosSafe } from "@/utils/interfaces"
+import { ISolucionesCat, IUsuariosSafe } from "@/utils/interfaces"
 import { btn_s_style, text_2_t_style } from "@/utils/styles"
 import { CldUploadButton, CloudinaryUploadWidgetResults } from "next-cloudinary"
 import { useEffect, useState } from "react"
@@ -9,21 +9,26 @@ const options = [
     {id: 2, label: "CAMBIAR PRIORIDAD"},
     {id: 3, label: "ASIGNAR TICKET"},
     {id: 4, label: "SEGUIMIENTO"},
-    {id: 5, label: "ASIGNAR OBSERVADOR"}
+    {id: 5, label: "ASIGNAR OBSERVADOR"},
+    {id: 6, label: "ABRIR TICKET"},
+    {id: 7, label: "CERRAR TICKET"}
 ]
 
-export default function TicketsActions({ticket_id,solucionarTicket,cambiarPrioridadTicket,usuarios,asignarTicket,addSeguimiento,observadorTicketFn}:
-    {ticket_id:number,solucionarTicket: (ticket_id:number, solucion:string,imagen?:string) => Promise<boolean>, 
-        cambiarPrioridadTicket: (ticket_id:number, prioridad:number) => Promise<boolean>, 
+export default function TicketsActions({ticket_id,solucionarTicket,cambiarPrioridadTicket,usuarios,
+    soluciones,asignarTicket,addSeguimiento,observadorTicketFn,changeEstado,estado}:
+    {ticket_id:number,solucionarTicket: (ticket_id:number, solucion:string,categoria:number,imagen?:string) => Promise<boolean>, 
+        cambiarPrioridadTicket: (ticket_id:number, prioridad:number) => Promise<boolean>, estado: string,
         usuarios: IUsuariosSafe[],asignarTicket: (asignado: number,asignado_des:string,ticket_id:number) => Promise<boolean>,
         addSeguimiento: (ticket_id: number, comentario: string,imagen?:string) => Promise<boolean>,
-        observadorTicketFn: (obervador: number, observador_des: string, ticket_id: number) => Promise<boolean>}) {
+        observadorTicketFn: (obervador: number, observador_des: string, ticket_id: number) => Promise<boolean>,
+        soluciones: ISolucionesCat[],changeEstado: (ticket_id: number, comentario: string,estado:string)=> Promise<boolean>}) {
 
     const [selectedOption, setSelectedOption] = useState(0)
     const [solucion, setSolucion] = useState("")
     const [selectedPrioridad, setSelectedPrioridad] = useState(1)
     const [selectedUsuarios, setSelectedUsuarios] = useState(0)
     const [imagen, setImagen] = useState<string>("")
+    const [selectedSolu, setSelectedSoli] = useState(0)
 
     useEffect(() => {
         setSolucion("")
@@ -31,8 +36,8 @@ export default function TicketsActions({ticket_id,solucionarTicket,cambiarPriori
     }, [selectedOption])
 
     const solucionarFn = async () => {
-        if(solucion.length > 0) {
-            const res = imagen.length > 0 ? await solucionarTicket(ticket_id, solucion, imagen) : await solucionarTicket(ticket_id, solucion)
+        if(solucion.length > 0 && selectedSolu) {
+            const res = imagen.length > 0 ? await solucionarTicket(ticket_id, solucion,selectedSolu, imagen) : await solucionarTicket(ticket_id, solucion,selectedSolu)
             if(res) {
                 alert("Ticket solucionado exitosamente.")
                 window.location.reload()
@@ -78,6 +83,26 @@ export default function TicketsActions({ticket_id,solucionarTicket,cambiarPriori
         }
     }
 
+    const cerrarTicketFn = async () => {
+        if(solucion.length > 0) {
+            const res = await changeEstado(ticket_id, solucion, "CERRADO")
+            if(res) {
+                alert("Ticket cerrado exitosamente.")
+                window.location.reload()
+            } else alert("Error al cerrar el ticket.")
+        }
+    }
+
+    const abrirTicketFn = async () => {
+        if(solucion.length > 0) {
+            const res = await changeEstado(ticket_id, solucion, "ABIERTO")
+            if(res) {
+                alert("Ticket cerrado exitosamente.")
+                window.location.reload()
+            } else alert("Error al abrir el ticket.")
+        }
+    }
+
     const handleImages = (r: CloudinaryUploadWidgetResults) => {
         console.log(r)
         const url = r && r.info && typeof r.info !== "string" && r.info.secure_url.length > 0 ? r.info.secure_url : "";
@@ -87,10 +112,23 @@ export default function TicketsActions({ticket_id,solucionarTicket,cambiarPriori
     }
 
     const actionReturner = () => {
-        if(selectedOption === 1) {
+        if((estado === "CERRADO" || estado === "SOLUCIONADO") && selectedOption !== 6) {
+            return(<h2 style={text_2_t_style}>ABRA EL TICKET PARA REALIZAR ACCIONES</h2>)
+        }
+        else if(selectedOption === 1) {
             return(
                 <div>
                     <h2 style={text_2_t_style}>SOLUCIONAR TICKET</h2>
+                    <div>
+                        <h3 style={{...text_2_t_style}}>SOLUCION</h3>
+                        <select name="categoria-sel" value={selectedSolu} style={{width: 150,fontSize:16,marginBottom: 20}}
+                        onChange={(e) => setSelectedSoli(parseInt(e.target.value))}>
+                            <option value={0}>---</option>
+                            {soluciones.map((s,i) => (
+                                <option key={i} value={s.categoria_id}>{s.descripcion}</option>
+                            ))}
+                        </select>
+                    </div>
                     <textarea
                         placeholder="Ingrese la solucion..."
                         value={solucion}
@@ -190,6 +228,38 @@ export default function TicketsActions({ticket_id,solucionarTicket,cambiarPriori
                     </div>
                     <div style={{marginTop: 15}}>
                         <button style={btn_s_style} onClick={() => observadorAsignarTicketFn()}>ASIGNAR</button>
+                    </div>
+                </div>
+            )
+        }
+        else if(selectedOption === 6) {
+            return(
+                <div>
+                    <h2 style={text_2_t_style}>ABRIR TICKET</h2>
+                    <textarea
+                        placeholder="Ingrese un comentario..."
+                        value={solucion}
+                        onChange={(e) => setSolucion(e.target.value)}
+                        style={{height: 100,width: "30%",resize: "none"}}
+                    />
+                    <div style={{marginTop: 15}}>
+                        <button style={btn_s_style} onClick={() => abrirTicketFn()}>ABRIR TICKET</button>
+                    </div>
+                </div>
+            )
+        }
+        else if(selectedOption === 7) {
+            return(
+                <div>
+                    <h2 style={text_2_t_style}>CERRAR TICKET</h2>
+                    <textarea
+                        placeholder="Ingrese un comentario..."
+                        value={solucion}
+                        onChange={(e) => setSolucion(e.target.value)}
+                        style={{height: 100,width: "30%",resize: "none"}}
+                    />
+                    <div style={{marginTop: 15}}>
+                        <button style={btn_s_style} onClick={() => cerrarTicketFn()}>CERRAR TICKET</button>
                     </div>
                 </div>
             )

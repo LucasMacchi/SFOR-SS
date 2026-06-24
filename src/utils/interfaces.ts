@@ -14,10 +14,31 @@ export interface IintervencionTicket {
     image?: string
 }
 
+export interface IEnvioDiff {
+    envio_id_ac:number,
+    cue_ac:number,
+    dependencia_ac:string,
+    cabecera_ac:string,
+    localidad_ac:string,
+    actual:number,
+    envio_id_ae:number,
+    cue_ae:number,
+    dependencia_ae:string,
+    cabecera_ae:string,
+    localidad_ae:string,
+    anterior:number,
+    tipo:string
+}
+
 export interface IUsuariosSafe {
     userId: number,
     username: string,
     email: string
+}
+
+export interface ISolucionesCat {
+    categoria_id: number,
+    descripcion: string
 }
 
 export interface ITicket {
@@ -44,6 +65,7 @@ export interface ITicket {
     prioridad: number,
     user_observador?:number,
     user_asignado?: number,
+    descripcion: string
 }
 
 export interface IMarca {

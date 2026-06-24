@@ -13,6 +13,7 @@ export default function TicketsDisplay({tickets, departamentos,usuarios,user_id}
     const [searchDep, setSearchDep] = useState("")
     const [categoriaF, setCategoriaF] = useState("")
     const [prioridadF , setPrioridadF] = useState(0)
+    const [cerradoF , setCerradoF] = useState(2)
     const [solucionF, setSolucionF] = useState(2)
     const [selectedAsignado, setSelectedAsignado] = useState(user_id)
 
@@ -34,7 +35,7 @@ export default function TicketsDisplay({tickets, departamentos,usuarios,user_id}
             arr = arr.filter(l => l.user_asignado === selectedAsignado)
         }
         if(prioridadF > 0) {
-            arr = arr.filter(l => l.prioridad === prioridadF)
+            arr = arr.filter(l => l.prioridad === prioridadF )
         }
         if(solucionF === 1) {
             arr = arr.filter(l => l.solucion && l.solucion.length > 0)
@@ -42,9 +43,15 @@ export default function TicketsDisplay({tickets, departamentos,usuarios,user_id}
         if(solucionF === 2) {
             arr = arr.filter(l => !l.solucion || l.solucion.length === 0)
         }
+        if(cerradoF === 2) {
+            arr = arr.filter(l => l.estado !== "CERRADO")
+        }
+        if(cerradoF === 1) {
+            arr = arr.filter(l => l.estado === "CERRADO")
+        }
         setFilteredTickets(arr)
 
-    },[searchC,searchE,categoriaF,prioridadF,solucionF,searchDep,selectedAsignado])
+    },[searchC,searchE,categoriaF,prioridadF,solucionF,searchDep,selectedAsignado,cerradoF])
 
     const colorization = (prioridad:number) => {
         if(prioridad === 1) return "#a84049"
@@ -118,6 +125,17 @@ export default function TicketsDisplay({tickets, departamentos,usuarios,user_id}
                                 <h2 style={{...text_2_t_style, marginTop: 40}}>SOLUCIONADO</h2>
                                 <select name="categoria-sel" value={solucionF} style={{width: 150,fontSize:16,marginBottom: 20}}
                                 onChange={(e) => setSolucionF(parseInt(e.target.value))}>
+                                    <option value={0}>---</option>
+                                    <option value={1}>SÍ</option>
+                                    <option value={2}>NO</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div style={{marginLeft: 30}}>
+                            <div>
+                                <h2 style={{...text_2_t_style, marginTop: 40}}>CERRADO</h2>
+                                <select name="categoria-sel" value={cerradoF} style={{width: 150,fontSize:16,marginBottom: 20}}
+                                onChange={(e) => setCerradoF(parseInt(e.target.value))}>
                                     <option value={0}>---</option>
                                     <option value={1}>SÍ</option>
                                     <option value={2}>NO</option>
