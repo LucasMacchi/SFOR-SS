@@ -30,6 +30,8 @@ import DBGetTickets from "@/db/DBGetTickets";
 import TicketsExcel from "@/Componets/TicketsExcel";
 import DBRacionesDif from "@/db/DBRacionesDif";
 import RacionesDifExcel from "@/Componets/RacionesDifExcel";
+import DBEnviadosDif from "@/db/DBEnviadosDif";
+import EnviosDifExcel from "@/Componets/EnviosDifExcel";
 
 
 
@@ -104,6 +106,17 @@ export default async function Page() {
         "use server"
         try {
             const diferencias = await DBRacionesDif()
+            return diferencias
+        } catch (error) {
+            console.log(error)
+            return []
+        }
+    }
+
+    const getDiferenciasEnviosExcel = async () => {
+        "use server"
+        try {
+            const diferencias = await DBEnviadosDif()
             return diferencias
         } catch (error) {
             console.log(error)
@@ -480,6 +493,9 @@ export default async function Page() {
                 <hr color="#4A6EE8" style={hr_style}/>
                 <div style={{display:"flex",justifyContent:"center"}}>
                     <RacionesDifExcel getDiferenciasRacionesExcel={getDiferenciasRacionesExcel}/>
+                </div>
+                <div style={{display:"flex",justifyContent:"center"}}>
+                    <EnviosDifExcel getDiferenciasEnviosExcel={getDiferenciasEnviosExcel}/>
                 </div>
             </div>
 

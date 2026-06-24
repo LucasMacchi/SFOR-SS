@@ -550,6 +550,14 @@ export function getDiferenciaRaciones() {
     return `SELECT * FROM public."desglosesDiff"`
 }
 
+export function getDiferenciaEnviado() {
+    return `SELECT * FROM public."enviadosDif"`
+}
+
+export function getSolucionesCatSQL() {
+    return `SELECT * FROM public.soluciones_categorias ORDER BY categoria_id`
+}
+
 export function getDesglosesLastCall () {
     return `SELECT 
     d.cargo_2,
@@ -639,7 +647,11 @@ export function getAllLlamadasSQL() {
 }
 
 export function getTicketsSQL () {
-    return `SELECT * FROM public.ticket t JOIN public.desglose ON desglose.desglose_id = t.desglose_id JOIN public.lentrega ON lentrega.lentrega_id = t.lentrega_id JOIN public."user" u ON u."userId" = t.user_id ORDER BY t.ticket_id DESC;`
+    return `SELECT * FROM public.ticket t 
+    JOIN public.desglose ON desglose.desglose_id = t.desglose_id 
+    JOIN public.lentrega ON lentrega.lentrega_id = t.lentrega_id
+    LEFT JOIN public.soluciones_categorias s ON s.categoria_id = t.solucion_id 
+    JOIN public."user" u ON u."userId" = t.user_id ORDER BY t.ticket_id DESC;`
 }
 
 export function addTicketAsignadoSQL () {
@@ -672,7 +684,11 @@ export function getIntervencionesTicketSQL () {
 }
 
 export function solucionarTicketSQL () {
-    return `UPDATE public.ticket SET estado = 'CERRADO', solucion = $2,fecha_solucion = 'NOW()' WHERE ticket_id = $1;`
+    return `UPDATE public.ticket SET estado = 'SOLUCIONADO',solucion_id = $3, solucion = $2,fecha_solucion = 'NOW()' WHERE ticket_id = $1;`
+}
+
+export function estadoTicketSQL () {
+    return `UPDATE public.ticket SET estado = $2, solucion = null, fecha_solucion = null WHERE ticket_id = $1;`
 }
 
 export function cambiarPrioridadTicketSQL () {
