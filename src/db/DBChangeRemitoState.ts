@@ -4,13 +4,13 @@ import { changeStateRemitoSQL, despacharSQL, returnRemitoUnidadesSQL, stockAddMo
 import authJwt from "@/utils/authJwt";
 import parseRemitoString from "@/utils/parseRemitoString";
 
-export default async function (estado_id:number,estado:string,remito:number): Promise<void> {
+export default async function (estado_id:number,estado:string,remito:number,desp:boolean): Promise<void> {
     const conn = clientReturner()
     try {
         if(await authJwt(3)) {
             await conn.connect()
             await conn.query(changeStateRemitoSQL(estado),[estado_id,remito])
-            if(estado_id === 3) {
+            if(estado_id >= 3 && !desp) {
                 const insumosRemito: IRemitoUnids[] = (await conn.query(returnRemitoUnidadesSQL(remito))).rows
                 for(const insumo of insumosRemito) {
                     const des = 'REMITO DESPACHADO - '+parseRemitoString(insumo.pv,insumo.numero)

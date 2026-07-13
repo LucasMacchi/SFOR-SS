@@ -32,7 +32,7 @@ export async function PATCH(req: Request) {
     const b:IRqStChange = await req.json();
     try {
         if(b.estado_id && b.estado.length > 0 && b.remito) {
-            const res = await DBChangeRemitoState(b.estado_id,b.estado,b.remito)
+            const res = await DBChangeRemitoState(b.estado_id,b.estado,b.remito,b.desp)
             return NextResponse.json({ success: true });
         }
         return NextResponse.json({ error: 'ERROR' }, { status: 401 });

@@ -6,6 +6,7 @@ import DBPlanActual from "@/db/DBPlanActual";
 import DBRemitos from "@/db/DBRemitos";
 import DBValorRacion from "@/db/DBValorRacion";
 import DBViajes from "@/db/DBViajes";
+import { IRemitosEnvio } from "@/utils/interfaces";
 import sessionCheck from "@/utils/sessionCheck";
 
 export default async function Page() {
@@ -16,7 +17,7 @@ export default async function Page() {
     const plan = await DBPlanActual()
     const viajes = await DBViajes()
     const valRac = await DBValorRacion()
-    const updateStateMultiple = async (remitos: number[],state:number): Promise<boolean> => {
+    const updateStateMultiple = async (remitos: IRemitosEnvio[],state:number): Promise<boolean> => {
         "use server"
         try {
             await DBChangeRemitoStateMultiple(state,remitos)

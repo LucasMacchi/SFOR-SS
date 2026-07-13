@@ -61,6 +61,7 @@ export default function StockActions ({stock,insumos,changeStock}:
 
     return(
         <div>
+            <h2 style={{...text_2_t_style}}>ACCIONES</h2>
             <div>
                 <h2 style={{...text_2_t_style}}>SELECCIONA UN INSUMO A CONSULTAR</h2>
                 <select name="estados_sel" id="state_sl"

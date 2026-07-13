@@ -17,7 +17,7 @@ export default function StockExcel ({insumos,logs}:{insumos:IInsumo[],logs:IStoc
                 COD2: i.cod2 ? i.cod2 : 0,
                 COD3: i.cod3 ? i.cod3 : 0,
                 INSUMO: i.des,
-                STOCK: i.stock
+                STOCK: i.stock_lote ? i.stock_lote : 0
             })
         });
         const worksheet = XLSX.utils.json_to_sheet(stock)

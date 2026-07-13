@@ -231,6 +231,12 @@ export default function AddVisita({ desgloses, departamentos, addVisita }: { des
                         SUBIR IMAGENES
                     </CldUploadButton>
                 </div>
+                <h5 style={{...text_2_t_style}}>IMAGENES CARGADAS</h5>
+                {imagenes.length > 0 && imagenes.map((img, index) => (
+                    <div key={index} style={{margin: 10}}>
+                        <h6>{img}</h6>
+                    </div>
+                ))}
                 <div>
                     <button style={{...btn_s_style,marginTop: 15}} onClick={() => handleRegistrarVisita()}>REGISTRAR RECORRIDO</button>
                 </div>
