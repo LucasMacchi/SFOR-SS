@@ -16,6 +16,7 @@ import DBPlanReparto from "@/db/DBPlanReparto";
 import DBSalidaLote from "@/db/DBSalidaLote";
 import DBStockLogs from "@/db/DBStockLogs";
 import DBViajes from "@/db/DBViajes";
+import decodeJWT from "@/utils/decodeJWT";
 import { IAddLote, IInsumoStock, IStockAdd, IViajeRQ } from "@/utils/interfaces";
 import { hr_style, text_2_t_style } from "@/utils/styles";
 import viajesParseDisplayAll from "@/utils/viajesParseDisplayAll";
@@ -23,6 +24,7 @@ import viajesParseDisplayAll from "@/utils/viajesParseDisplayAll";
 
 
 export default async function Page() {
+    const user = await decodeJWT()
     const insumos = await DBInsumos()
     const insumosBaja = await DBInsumosBajaStck()
     const stockLog = await DBStockLogs()
@@ -100,7 +102,6 @@ export default async function Page() {
     });
     const stockViajes = viajesParseDisplayAll(insumos,planes ? planes : [],viajesParsed)
 
-
     return (
         <div style={{marginLeft: 15, marginBottom: 100}}> 
             <div >
@@ -112,7 +113,7 @@ export default async function Page() {
             </div>
             <div>
                 <div style={{width: "80%"}}>
-                    <DisplayStock insumosB={insumosBaja} insumos={insumos} 
+                    <DisplayStock insumosB={insumosBaja} insumos={insumos} userRol={user ? user.rol : 4}
                     lotes={lotes} marcas={marcas} addLoteFn={addLote} addUnidadesLote={addUnidadesLote} 
                     bajaLoteFn={bajaLote} descontarUnidadesLoteFn={descontarUnidadesLote} logLoteFn={logLote}
                     salidaUnidadesLoteFn={salidaUnidadesLote}
