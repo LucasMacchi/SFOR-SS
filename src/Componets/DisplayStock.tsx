@@ -22,8 +22,8 @@ const iniLote:IAddLote = {
 const razonesSalida = ["VENCIMIENTO","DAÑO","AJUSTE","EL POPULAR","ROBO/PERDIDA"]
 
 export default function DisplayStock ({insumos,insumosB,lotes,marcas,addLoteFn,addUnidadesLote,salidaUnidadesLoteFn,
-    bajaLoteFn,descontarUnidadesLoteFn,logLoteFn}:{marcas:IMarca[], insumos:IInsumo[],
-    insumosB:IInsumo[],lotes:ILote[],
+    bajaLoteFn,descontarUnidadesLoteFn,logLoteFn,userRol}:{marcas:IMarca[], insumos:IInsumo[],
+    insumosB:IInsumo[],lotes:ILote[], userRol:number,
     addLoteFn: (lote: IAddLote) => Promise<boolean>,
     addUnidadesLote:(l:number,lname:string ,newUnidades: number,prev:number,i:number) => Promise<boolean>,
     bajaLoteFn: (lote:number,lname:string,state:boolean,i:number) => Promise<boolean>,
@@ -365,12 +365,12 @@ export default function DisplayStock ({insumos,insumosB,lotes,marcas,addLoteFn,a
                         onChange={(e) => setOption(parseInt(e.target.value))}
                         style={{width: 500,fontSize:24,marginBottom: 20}}>
                             <option value={0}>---</option>
-                            <option value={1}>INGRESO DE NUEVO LOTE</option>
-                            <option value={2}>INGRESO SOBRE UN LOTE YA CREADO</option>
-                            <option value={3}>CAMBIAR ESTADO DE LOTE</option>
-                            <option value={4}>DESCONTAR UNIDADES DE UN LOTE</option>
-                            <option value={5}>CONSULTAR MOVIMIENTOS</option>
-                            <option value={6}>SALIDA</option>
+                            {userRol <=3 && <option value={1}>INGRESO DE NUEVO LOTE</option>}
+                            {userRol <=2 && <option value={2}>INGRESO SOBRE UN LOTE YA CREADO</option>}
+                            {userRol <=2 && <option value={3}>CAMBIAR ESTADO DE LOTE</option>}
+                            {userRol <=2 && <option value={4}>DESCONTAR UNIDADES DE UN LOTE</option>}
+                            {userRol <=3 && <option value={5}>CONSULTAR MOVIMIENTOS</option>}
+                            {userRol <=2 && <option value={6}>SALIDA</option>}
                         </select>
                     </div>
                 </div>
