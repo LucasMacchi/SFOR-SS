@@ -49,9 +49,9 @@ export default function TicketsActions({ticket_id,solucionarTicket,cambiarPriori
         if(solucion.length > 0) {
             const res = imagen.length > 0 ? await addSeguimiento(ticket_id, solucion, imagen) : await addSeguimiento(ticket_id, solucion)
             if(res) {
-                alert("Ticket solucionado exitosamente.")
+                alert("Seguimiento agregado exitosamente.")
                 window.location.reload()
-            } else alert("Error al solucionar el ticket.")
+            } else alert("Error al agregar el seguimiento.")
         }
     }
 
@@ -141,6 +141,7 @@ export default function TicketsActions({ticket_id,solucionarTicket,cambiarPriori
                             SUBIR IMAGEN
                         </CldUploadButton>
                     </div>
+                    {imagen.length > 0 && (<h6 style={{...text_2_t_style}}>{imagen}</h6>)}
                     <div style={{marginTop: 15}}>
                         <button style={btn_s_style} onClick={() => solucionarFn()}>SOLUCIONAR</button>
                     </div>
@@ -204,6 +205,7 @@ export default function TicketsActions({ticket_id,solucionarTicket,cambiarPriori
                             SUBIR IMAGEN
                         </CldUploadButton>
                     </div>
+                    {imagen.length > 0 && (<h6 style={{...text_2_t_style}}>{imagen}</h6>)}
                     <div style={{marginTop: 15}}>
                         <button style={btn_s_style} onClick={() => seguimientoFN()}>REALIZAR SEGUIMIENTO</button>
                     </div>

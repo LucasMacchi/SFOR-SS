@@ -73,6 +73,36 @@ export interface IMarca {
     nombre:string
 }
 
+export interface IAddLote {
+    marca_id: number,
+    rnpa:string,
+    rne: string,
+    unidades: number,
+    ins_id: number,
+    monto_factura: number,
+    factura: string,
+    fecha_venc: string,
+    nro: string
+}
+
+export interface ILote {
+    lote_id: number,
+    nro:string,
+    fecha_vencimiento: Date,
+    fecha_ingreso: Date,
+    rne:string,
+    rnpa: string,
+    marca_id: number,
+    estado:string,
+    baja: boolean,
+    unidades: number,
+    unidades_actuales: number,
+    ins_id: number,
+    des: string,
+    nombre: string,
+    monto_factura: number
+}
+
 export interface IViewRacionesDif {
     id_escuela:number,
     id_cabecera: number,
@@ -150,7 +180,8 @@ export interface IRqUniq {
 export interface IRqStChange {
     estado_id: number,
     estado: string,
-    remito: number
+    remito: number,
+    desp: boolean
 }
 export interface IRqReportAdd {
     categoria_id: number,
@@ -221,13 +252,14 @@ export interface IInsumo {
     calculable:boolean,
     stock:number,
     visible:boolean,
+    stock_lote?: number
     [key: string]: any
 
 }
 
 export interface IInsumoStock extends IInsumo {
-    stockPlan: number,
-    stockNoD: number
+    stock_cajas: number,
+    stock_p: number
 }
 export interface ICreateInsumo {
     cod1:number,
@@ -299,6 +331,7 @@ export interface IUniqRemito {
     numrep: number,
     reportes: number,
     direccion: string,
+    despachado:boolean,
     viaje?:string
 }
 
@@ -611,6 +644,16 @@ export interface IStockLog {
     cod2:number,
     cod3:number,
     ins_id: number
+}
+
+export interface ILoteLog {
+    log_id: number,
+    unidades_prev: number,
+    unidades_new: number,
+    fecha: Date,
+    descripcion:string,
+    ins_id: number,
+    dif: number
 }
 
 export interface IStockAdd {

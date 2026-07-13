@@ -115,6 +115,7 @@ export default async function Page({params}:{params:Promise<{remito:string}>}) {
                         <h2 style={{...text_2_t_style, marginTop: 40}}>FACTURACION: {fact}</h2>
                         <h2 style={{...text_2_t_style, marginTop: 40}}>DIAS DE COBERTURA: {remitoUniq.dias}</h2>
                         <h2 style={{...text_2_t_style, marginTop: 40}}>TIPO DE REMITO: {tipo}</h2>
+                        <h2 style={{...text_2_t_style, marginTop: 40}}>DESPACHADO: {remitoUniq.despachado ? "SI" : "NO"}</h2>
                         <h2 style={{...text_2_t_style, marginTop: 40}}>LUGAR: {lugarEntreg}</h2>
                         {remitoUniq.viaje && <h2 style={{...text_2_t_style, marginTop: 40}}>VIAJE: {remitoUniq.viaje}</h2>}
                         <h2 style={{...text_2_t_style, marginTop: 40}}>CANTIDAD DE REPORTES: {remitoUniq.reportes}</h2>
@@ -129,7 +130,7 @@ export default async function Page({params}:{params:Promise<{remito:string}>}) {
                         <h1 style={text_2_t_style}>ESTADOS</h1>
                     </div>
                     <hr color="#4A6EE8" style={hr_style}/>
-                    <StateChangeDisplay remito={remitoUniq} estados={estados}/>
+                    <StateChangeDisplay remito={remitoUniq} estados={estados} desp={remitoUniq.despachado}/>
                 </div>
                 <div style={{marginTop: 65}}>
                     <div>

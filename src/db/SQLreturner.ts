@@ -29,7 +29,7 @@ export function userPlanSQL ():string {
 export function uniqRemitoSQL () {
 
     return`SELECT r.remito_id,r.pv,r.numero,r.estado_id,e.des as estado,
-            r.fortificado,r.dias, l.direccion,
+            r.fortificado,r.dias, l.direccion, r.despachado,
             r.fecha_creado,r.fecha_preparado,r.fecha_despachado,
             r.fecha_entregado,r.lentrega_id,l.departamento,l.localidad,
             f.numero as numF,f.pv as pvF, (SELECT COUNT(*) FROM public.reporte o WHERE o.remito_id = r.remito_id) as reportes,
@@ -137,7 +137,11 @@ export function valRacFacturacionSQL () {
 }
 
 export function insumosSQL () {
-    return `SELECT * FROM public.insumo ORDER BY ins_id ASC;`
+    return `SELECT *,(SELECT SUM(unidades_actuales) FROM public.lote l WHERE l.ins_id = i.ins_id AND l.baja = false) as stock_lote FROM public.insumo i ORDER BY i.ins_id ASC;`
+}
+
+export function insumosBajaSQL () {
+    return `SELECT *,(SELECT SUM(unidades_actuales) FROM public.lote l WHERE l.ins_id = i.ins_id AND l.baja = true) as stock_lote FROM public.insumo i ORDER BY i.ins_id ASC;`
 }
 
 export function insumoEditSQL (column: string,ins: number,value:string | boolean) {
@@ -368,6 +372,37 @@ export function stockAddMovSQL (value: number,sum:boolean,des: string,ins_id:num
     return `SELECT updateStockFn(${ins_id},${value},'${des}',${sum});`
 }
 
+export function loteLogSQL (ins_id:number) {
+    return `SELECT * FROM public.stock_log WHERE ins_id = ${ins_id} ORDER BY fecha DESC `
+}
+
+export function addLoteSQL () {
+    return `INSERT INTO public.lote(nro, fecha_vencimiento, factura, rne, 
+    rnpa, marca_id, unidades, unidades_actuales, ins_id, monto_factura) 
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10);`
+}
+
+export function addUnidadesLoteSQL () {
+    return `UPDATE public.lote SET unidades_actuales = $2 WHERE lote_id = $1;`
+}
+
+export function bajaLoteSQL () {
+    return `UPDATE public.lote SET baja = $2 WHERE lote_id = $1;`
+}
+
+export function getlLotesUpdateStock () {
+    return `SELECT * FROM public.lote l JOIN public.marcas m ON m.marca_id = l.marca_id WHERE l.ins_id = $1 AND l.baja = false AND l.unidades_actuales > 0 ORDER BY l.fecha_vencimiento ASC LIMIT 5`
+}
+
+export function lotesUpdateStock () {
+    return `UPDATE public.lote SET unidades_actuales = $2, baja = $3 WHERE lote_id = $1`
+}
+
+export function addStockMov () {
+    return `INSERT INTO public.stock_log(unidades_prev, unidades_new, descripcion, dif, ins_id) VALUES ($1, $2, $3, $4, $5);`
+}
+
+
 export function despacharSQL (remito:number) {
     return `UPDATE public.remito SET despachado=true WHERE remito_id = ${remito} AND despachado = false;`
 }
@@ -556,6 +591,10 @@ export function getDiferenciaEnviado() {
 
 export function getSolucionesCatSQL() {
     return `SELECT * FROM public.soluciones_categorias ORDER BY categoria_id`
+}
+
+export function getLotesSQL() {
+    return `SELECT * FROM public.lote l JOIN public.insumo i ON i.ins_id = l.ins_id JOIN public.marcas m ON m.marca_id = l.marca_id ORDER BY lote_id ASC;`
 }
 
 export function getDesglosesLastCall () {

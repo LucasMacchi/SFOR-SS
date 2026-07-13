@@ -6,7 +6,7 @@ import axios from "axios";
 import { useState } from "react";
 
 
-export default function ({remito,estados}:{remito: IUniqRemito,estados: IEstados[]}) {
+export default function ({remito,estados,desp}:{remito: IUniqRemito,estados: IEstados[],desp:boolean}) {
 
     const [selectedState, setSelectedState] = useState(0)
     const changeState = async () => {
@@ -15,7 +15,7 @@ export default function ({remito,estados}:{remito: IUniqRemito,estados: IEstados
             estados.forEach(s => {
                 if(s.estado_id === selectedState) estado = s.des
             });
-            const res:boolean = await (await axios.patch('/remitos/uniq/api',{estado_id:selectedState,estado,remito:remito.remito_id})).data["success"]
+            const res:boolean = await (await axios.patch('/remitos/uniq/api',{estado_id:selectedState,estado,remito:remito.remito_id,desp:desp})).data["success"]
             if(res) window.location.reload()
             else alert("No se pudo cambiar el estado.")
         }

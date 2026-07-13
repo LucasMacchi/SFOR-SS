@@ -8,7 +8,7 @@ import refillEmptySpace from "@/utils/refillEmptySpace";
 import ExcelBtn from "./ExcelBtn";
 
 
-export default function FilterRemito ({remitos,estados,planes,stateMultipleFn,viajes,valRac}:{valRac:number,viajes:IViajeRQ[],remitos: IRemitosEnvio[],estados:IEstados[],planes:IReparto[],stateMultipleFn: (remitos: number[],state:number) => Promise<boolean> }) {
+export default function FilterRemito ({remitos,estados,planes,stateMultipleFn,viajes,valRac}:{valRac:number,viajes:IViajeRQ[],remitos: IRemitosEnvio[],estados:IEstados[],planes:IReparto[],stateMultipleFn: (remitos: IRemitosEnvio[],state:number) => Promise<boolean> }) {
     const router = useRouter()
     const [selectedState, setSelectedState] = useState(0)
     const [selectedFac, setSelectedFac] = useState(0)
@@ -104,9 +104,9 @@ export default function FilterRemito ({remitos,estados,planes,stateMultipleFn,vi
         setFilterRemitos(prt => prt.map((rt) => {return {...rt,checked: chk}}))
     }
     const changeStateMultiple = async () => {
-        const ids: number[] = []
+        const ids: IRemitosEnvio[] = []
         filterRemitos.forEach(f => {
-            if(f.checked) ids.push(f.remito_id)
+            if(f.checked) ids.push(f)
         });
         const res = await stateMultipleFn(ids,selectedStC)
         if(res) {
