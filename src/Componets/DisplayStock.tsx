@@ -380,7 +380,7 @@ export default function DisplayStock ({insumos,insumosB,lotes,marcas,addLoteFn,a
 
     return (
         <div>
-            <h2 style={{...text_2_t_style}}>INSUMOS</h2>
+            <h2 style={{...text_2_t_style}}>INSUMOS DISPONIBLES</h2>
             <div style={{display:"flex",justifyContent:"start",marginBottom: 35,marginRight: 10,fontSize: 14}}>
                 <table style={{width: "100%"}}>
                     <tbody>
