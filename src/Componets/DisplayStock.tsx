@@ -62,7 +62,7 @@ export default function DisplayStock ({insumos,insumosB,lotes,marcas,addLoteFn,a
     }
 
     const createLote = async () => {
-        if(loteAdd.factura.length > 0 && loteAdd.fecha_venc.length > 0 && loteAdd.marca_id && loteAdd.monto_factura && 
+        if(loteAdd.factura.length > 0 && loteAdd.fecha_venc.length > 0 && loteAdd.marca_id && 
             loteAdd.nro.length > 0 && loteAdd.rne.length > 0 && loteAdd.rnpa.length > 0 && loteAdd.unidades) {
             if(confirm("¿Quieres generar el Lote?")) {
                 loteAdd.ins_id = selectedI
@@ -267,8 +267,8 @@ export default function DisplayStock ({insumos,insumosB,lotes,marcas,addLoteFn,a
                                 <input type="text" style={{textAlign:"center",width: "15%"}} value={loteAdd.factura} onChange={(e) => setLoteAdd({...loteAdd, factura: e.target.value})}/>
                             </div>
                             <div>
-                                <h4 style={{...text_2_t_style}}>MONTO: {convertToMoney(loteAdd.monto_factura)}</h4>
-                                <input type="number" style={{textAlign:"left",width: "15%"}} value={loteAdd.monto_factura ? loteAdd.monto_factura : 0} onChange={(e) => setLoteAdd({...loteAdd, monto_factura: parseFloat(e.target.value)})}/>
+                                {/*<h4 style={{...text_2_t_style}}>MONTO: {convertToMoney(loteAdd.monto_factura)}</h4>*/}
+                                {/*<input type="number" style={{textAlign:"left",width: "15%"}} value={loteAdd.monto_factura ? loteAdd.monto_factura : 0} min={0} onChange={(e) => setLoteAdd({...loteAdd, monto_factura: parseFloat(e.target.value)})}/>*/}
                             </div>
                             <div>
                                 <h4 style={{...text_2_t_style}}>UNIDADES</h4>
