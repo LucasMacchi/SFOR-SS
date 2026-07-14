@@ -272,7 +272,7 @@ export default function DisplayStock ({insumos,insumosB,lotes,marcas,addLoteFn,a
                             </div>
                             <div>
                                 <h4 style={{...text_2_t_style}}>UNIDADES</h4>
-                                <input type="number" style={{textAlign:"center",width: "15%"}} value={loteAdd.unidades} onChange={(e) => setLoteAdd({...loteAdd, unidades: parseInt(e.target.value)})}/>
+                                <input type="number" style={{textAlign:"center",width: "15%"}} min={0} value={loteAdd.unidades} onChange={(e) => setLoteAdd({...loteAdd, unidades: parseInt(e.target.value)})}/>
                             </div>
                             <div>
                                 <h4 style={{...text_2_t_style}}>FECHA VENCIMIENTO</h4>
