@@ -1,6 +1,5 @@
 "use client"
 
-import convertToMoney from "@/utils/convertToMoney";
 import { IAddLote, IInsumo, ILote, ILoteLog, IMarca } from "@/utils/interfaces";
 import {btn_d_style, btn_s_style, text_2_t_style } from "@/utils/styles";
 import { useEffect, useState } from "react";
@@ -57,7 +56,6 @@ export default function DisplayStock ({insumos,insumosB,lotes,marcas,addLoteFn,a
         const worksheet = XLSX.utils.json_to_sheet(logs)
         const workbook = XLSX.utils.book_new()
         XLSX.utils.book_append_sheet(workbook,worksheet,"LOGS")    
-
         XLSX.writeFile(workbook,'LOGS.xlsx')
     }
 
