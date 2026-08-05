@@ -107,7 +107,7 @@ export default async function Page() {
             <div >
                 <div style={{display:"flex"}}>
                     <h2 style={{...text_2_t_style,marginRight: 10}}>STOCK</h2>
-                    <StockExcel insumos={insumos} logs={stockLog} />
+                    <StockExcel insumos={insumos} logs={stockLog} lotes={lotes}/>
                 </div>
                 <hr color="#4A6EE8" style={hr_style}/>
             </div>

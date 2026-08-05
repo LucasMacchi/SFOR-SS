@@ -1,10 +1,10 @@
 "use client"
-import { IInsumo, IStockExcel, IStockLog, IStockLogExcel } from "@/utils/interfaces";
+import { IInsumo, ILote, IStockExcel, IStockLog, IStockLogExcel } from "@/utils/interfaces";
 import Image from "next/image"
 import * as XLSX from 'xlsx';
 
 
-export default function StockExcel ({insumos,logs}:{insumos:IInsumo[],logs:IStockLog[]}) {
+export default function StockExcel ({insumos,logs,lotes}:{insumos:IInsumo[],logs:IStockLog[],lotes:ILote[]}) {
 
     const color = "#32CD32"
 
@@ -22,7 +22,22 @@ export default function StockExcel ({insumos,logs}:{insumos:IInsumo[],logs:IStoc
         });
         const worksheet = XLSX.utils.json_to_sheet(stock)
         const workbook = XLSX.utils.book_new()
-        XLSX.utils.book_append_sheet(workbook,worksheet,"STOCK")    
+        XLSX.utils.book_append_sheet(workbook,worksheet,"STOCK")
+        const parsedLotes = lotes.map(l => {
+            return {
+                INSUMO: l.des,
+                LOTE: l.nro,
+                ESTADO: l.baja ? "BAJA" : "ACTIVO",
+                RNE: l.rne,
+                RNPA: l.rnpa,
+                INGRESO: l.fecha_ingreso.toISOString().split("T")[0],
+                VENCIMIENTO: l.fecha_vencimiento.toISOString().split("T")[0],
+                UNIDADES: l.unidades,
+                UNIDADES_DISPONIBLES: l.unidades_actuales,
+                MARCA: l.nombre
+            }
+        })
+        XLSX.utils.book_append_sheet(workbook,XLSX.utils.json_to_sheet(parsedLotes),"LOTES")
         insumos.forEach(i => {
             const insStock:IStockLogExcel[] = []
             logs.forEach(l => {
