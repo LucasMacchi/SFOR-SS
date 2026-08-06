@@ -12,6 +12,7 @@ export default function TicketAdd ({desgloses,origenH,usuarios,desgloseH,addTick
     {desgloses: IDesglose[],origenH:string,desgloseH:number,usuarios: IUsuariosSafe[],addTicketFn:(ticket: IAddTicket,escuela:string) => Promise<boolean> }) {
     const [categoria, setCategoria] = useState("")
     const [searchC, setSearchC] = useState("")
+    const [searchCUE, setSearchCUE] = useState(0)
     const [origen, setOrigen] = useState(origenH)
     const [prioridad, setPrioridad] = useState(0)
     const [comentario, setComentario] = useState("")
@@ -36,8 +37,11 @@ export default function TicketAdd ({desgloses,origenH,usuarios,desgloseH,addTick
         if(searchC.length > 2) {
             arr = arr.filter(l => l.des.toLowerCase().includes(searchC.toLowerCase()))
         }
+        if(searchCUE.toString().length > 2) {
+            arr = arr.filter(l => l.cue.toString().includes(searchCUE.toString()))
+        }
         setFilteredDesgloses(arr)
-    },[searchC])
+    },[searchC, searchCUE])
 
 
     const handleAddTicket = async () => {
@@ -167,17 +171,26 @@ export default function TicketAdd ({desgloses,origenH,usuarios,desgloseH,addTick
                         <tr>
                             <th style={{border: "1px solid", fontSize: 14}}>SELECCIONA LA DEPENDENCIA *: </th>
                             <th style={{border: "1px solid", fontSize: 14}}>
-                                BUSCAR                             
                                 <div>
-                                    <input name="plan-inpt" value={searchC} style={{width: 150,fontSize:14, margin: 10}}
-                                    onChange={(e) => setSearchC(e.target.value)}/>
+                                    BUSCAR CUE                             
+                                    <div>
+                                        <input name="plan-inpt" value={searchCUE} style={{width: 150,fontSize:14, margin: 10}}
+                                        onChange={(e) => setSearchCUE(parseInt(e.target.value))}/>
+                                    </div>                                   
+                                </div>
+                                <div>
+                                    BUSCAR NOMBRE                             
+                                    <div>
+                                        <input name="plan-inpt" value={searchC} style={{width: 150,fontSize:14, margin: 10}}
+                                        onChange={(e) => setSearchC(e.target.value)}/>
+                                    </div>
                                 </div>
                             <div>
-                                <select name="categoria-sel" value={selectedDesglose} style={{fontSize:14,width: 350}}
+                                <select name="categoria-sel" value={selectedDesglose} style={{fontSize:14,width: 450}}
                                     onChange={(e) => setSelectedDesglose(parseInt(e.target.value))}>
                                         <option key={0} value={0}>---</option>
                                         {filteredDesgloses.map((c,i) => (
-                                            <option key={i} value={c.desglose_id}>{c.des + " - " + (c.fortificado ? "AL" : "CL")}</option>
+                                            <option key={i} value={c.desglose_id}>{c.cue+"-"+c.des + " - " + (c.fortificado ? "AL" : "CL")}</option>
                                         ))}
                                     </select>
                                 </div>
