@@ -283,7 +283,7 @@ const insumosDisplayer = (envios: IEnvioT[],insumosArr: IInsumo[],desgloses: num
         elements.push(
             <View style={stylePedido.tableRow} key={101}>
                 <View style={stylePedido.tableColIns}>
-                    <Text style={stylePedido.tableCell2}>Cobertura de raciones por {dias} dias habiles</Text>
+                    <Text style={stylePedido.tableCell2}>Cobertura de raciones por {dias} dias corridos</Text>
                 </View>
                 <View style={stylePedido.tableColcod}>
                     <Text style={stylePedido.tableCell}>{" "}</Text>
@@ -352,7 +352,7 @@ const pageContruct = (e: IRemitoT, copia: boolean,venc:string,cai:string,insumos
                         <Text style={stylePedido.body}>CUIT: 30-70731824-0</Text>
                     </View>
                     <View style={stylePedido.viewdata}>
-                        <Text style={{...stylePedido.body,fontWeight: 900}}>PLAN: 2da entrega {e.periodo}</Text>
+                        <Text style={{...stylePedido.body,fontWeight: 900}}>PLAN: 3ra entrega {e.periodo}</Text>
                         <Text style={{...stylePedido.body,fontWeight: 900}}>Lugar de Entrega: {e.completo}</Text>
                         <Text style={{...stylePedido.body,fontWeight: 900}}>Localidad: {e.localidad}</Text>
                         <Text style={{...stylePedido.body,fontWeight: 900}}>Direccion: {e.direccion}</Text>
