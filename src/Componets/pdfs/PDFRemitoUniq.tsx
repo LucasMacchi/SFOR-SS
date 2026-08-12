@@ -228,7 +228,7 @@ const insumosDisplayer = (insumos: IRemitosDetalles[],desgloses: number, dias: n
         elements.push(
             <View style={stylePedido.tableRow} key={101}>
                 <View style={stylePedido.tableColIns}>
-                    <Text style={stylePedido.tableCell2}>Raciones por {dias} dias corridos.</Text>
+                    <Text style={stylePedido.tableCell2}>Raciones por {dias} dias habiles.</Text>
                 </View>
                 <View style={stylePedido.tableColcod}>
                     <Text style={stylePedido.tableCell}>{" "}</Text>
