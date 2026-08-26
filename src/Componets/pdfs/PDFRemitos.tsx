@@ -161,14 +161,14 @@ const checkIfEspecial = (e: IRemitoT) => {
     return check
 }
 
-const checkIfCorridos = (e: IRemitoT) => {
+const checkIfCorridos = (e: IEnvioT[]) => {
     const regEFA1 = /\CE.F.A.\b/
     const regEFA2 = /\CE.F.A\b/
     const regEFA3 = /\CEFA\b/
     const regAgro1 = /\CAgrotecnica\b/
     const regAgro2 = /\Cagrotecnica\b/
     let check = false
-    e.envios.forEach(e => {
+    e.forEach(e => {
         if(regEFA1.test(e.des) || regEFA2.test(e.des) || regEFA3.test(e.des)) check =  true
         if(regAgro1.test(e.des) || regAgro2.test(e.des)) check = true
     });
@@ -183,6 +183,7 @@ const insumosDisplayer = (envios: IEnvioT[],insumosArr: IInsumo[],desgloses: num
     const regCeliaco2 = /\CELIAQUIA\b/
     const regDiabetes = /\DIABETES\b/
     const regMixto = /\MIXTO\b/
+    let checkCrr = checkIfCorridos(envios)
     envios.forEach(e => {
         if(regDiabetes.test(e.des)) opt = 1
         if(regCeliaco.test(e.des) || regCeliaco2.test(e.des)) opt = 2
@@ -297,7 +298,7 @@ const insumosDisplayer = (envios: IEnvioT[],insumosArr: IInsumo[],desgloses: num
         elements.push(
             <View style={stylePedido.tableRow} key={101}>
                 <View style={stylePedido.tableColIns}>
-                    <Text style={stylePedido.tableCell2}>Cobertura de raciones por {dias} dias habiles.</Text>
+                    <Text style={stylePedido.tableCell2}>Cobertura de raciones por {dias} dias {checkCrr ? "CORRIDOS": "HABILES"}.</Text>
                 </View>
                 <View style={stylePedido.tableColcod}>
                     <Text style={stylePedido.tableCell}>{" "}</Text>
