@@ -161,6 +161,20 @@ const checkIfEspecial = (e: IRemitoT) => {
     return check
 }
 
+const checkIfCorridos = (e: IRemitoT) => {
+    const regEFA1 = /\CE.F.A.\b/
+    const regEFA2 = /\CE.F.A\b/
+    const regEFA3 = /\CEFA\b/
+    const regAgro1 = /\CAgrotecnica\b/
+    const regAgro2 = /\Cagrotecnica\b/
+    let check = false
+    e.envios.forEach(e => {
+        if(regEFA1.test(e.des) || regEFA2.test(e.des) || regEFA3.test(e.des)) check =  true
+        if(regAgro1.test(e.des) || regAgro2.test(e.des)) check = true
+    });
+    return check
+}
+
 const insumosDisplayer = (envios: IEnvioT[],insumosArr: IInsumo[],desgloses: number, dias: number) => {
     const elements = []
     const insumos: IRemitosDetalles[] = remitoEnviosInsumosReturner(insumosArr,envios)
