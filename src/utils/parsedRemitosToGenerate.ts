@@ -40,7 +40,7 @@ export default function (remitosP:IViajeRemito[],planes: IPlan[],insumos:IInsumo
                                     ins_id: ins.ins_id,
                                     insumo: ins.des,
                                     unidades: racIns * pd.dias,
-                                    raciones: Math.floor(racIns / ins.racunidad) * ins.racunidad
+                                    raciones: Math.ceil(racIns / ins.racunidad) * ins.racunidad
                                 })
                             }
                             else {
