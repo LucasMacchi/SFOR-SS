@@ -35,12 +35,13 @@ export default function (viaje: IViajeRQ,planes: IPlan[],insumos:IInsumo[]) {
                         if(pd.ins_id === ins.ins_id) {
                             if(plan.celiacos || plan.diabetes || plan.mixto) {
                                 const racIns = d.raciones
+                                console.log(racIns * pd.dias * ins.racunidad)
                                 enviosDetalles.push({
                                     envio_id: 0,
                                     ins_id: ins.ins_id,
                                     insumo: ins.des,
                                     unidades: racIns * pd.dias,
-                                    raciones: Math.ceil(racIns / ins.racunidad) !== 0 ? Math.ceil(racIns / ins.racunidad) * ins.racunidad : 1 * ins.racunidad
+                                    raciones: racIns * pd.dias !== 0 ? racIns * pd.dias * ins.racunidad : 1 * ins.racunidad
                                 })
                             }
                             else {
