@@ -162,15 +162,19 @@ const checkIfEspecial = (e: IRemitoT) => {
 }
 
 const checkIfCorridos = (e: IEnvioT[]) => {
-    const regEFA1 = /\CE.F.A.\b/
-    const regEFA2 = /\CE.F.A\b/
-    const regEFA3 = /\CEFA\b/
-    const regAgro1 = /\CAgrotecnica\b/
-    const regAgro2 = /\Cagrotecnica\b/
+    
+    const regEFA1 = /\E.F.A.\b/
+    const regEFA2 = /\E.F.A\b/
+    const regEFA3 = /\EFA\b/
+    const regAgro1 = /\Agrotecnica\b/
+    const regAgro2 = /\agrotecnica\b/
     let check = false
     e.forEach(e => {
-        if(regEFA1.test(e.des) || regEFA2.test(e.des) || regEFA3.test(e.des)) check =  true
-        if(regAgro1.test(e.des) || regAgro2.test(e.des)) check = true
+        if(regEFA1.test(e.des)) check = true
+        if(regEFA2.test(e.des)) check = true
+        if(regEFA3.test(e.des)) check = true
+        if(regAgro1.test(e.des)) check = true
+        if(regAgro2.test(e.des)) check = true
     });
     return check
 }
