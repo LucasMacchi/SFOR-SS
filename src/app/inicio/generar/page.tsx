@@ -17,7 +17,7 @@ export default async function Page() {
     await sessionCheck(2)
     const insumos = await DBInsumos()
     const planes = await DBPlanReparto()
-    const lugares = await DBEscuelas(true,false)
+    const lugares = await DBEscuelas(true)
     const departamentos = await DBDepartamentos()
     const userplan = await DBUserPlan()
     
