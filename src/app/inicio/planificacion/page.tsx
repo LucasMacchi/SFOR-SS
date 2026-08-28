@@ -17,13 +17,16 @@ import sessionCheck from "@/utils/sessionCheck";
 import { hr_style, text_2_t_style } from "@/utils/styles";
 import DBEditPlanVRemito from "@/db/DBEditPlanVRemito";
 import DBDeleteViajeAll from "@/db/DBDeleteViajeAll";
+import DBGeneralData from "@/db/DBGeneralData";
 
 
 
 
 export default async function Page () {
     await sessionCheck(2)
-    const lugares = await DBEscuelas(true,false)
+    const lugares = await DBEscuelas()
+    const data = await DBGeneralData()
+    const allowVenv = (data ? data.configVariables[6].payload : "0") === "1" ? true : false
     const plan = await DBPlanActual()
     const departamentos = await DBDepartamentos()
     const insumos = await DBInsumos()
@@ -38,33 +41,39 @@ export default async function Page () {
             })
         })
     });
-    lugares.forEach(lgs => {
-        if(lgs.desgloses) {
-            desglosesViajes.forEach(dv => {
-                if(lgs.desgloses){
-                    lgs.desgloses.forEach((d) => {
-                        if(dv.desglose_id === d.desglose_id) d.selected = true
-                    })
-                }
-            });
-        }
-    });
+    if(!allowVenv) {
+        lugares.forEach(lgs => {
+            if(lgs.desgloses) {
+                desglosesViajes.forEach(dv => {
+                    if(lgs.desgloses){
+                        lgs.desgloses.forEach((d) => {
+                            if(dv.desglose_id === d.desglose_id) d.selected = true
+                        })
+                    }
+                });
+            }
+        });
+    }
+
 
     const updateDesgloses = async () => {
         "use server"
         try {
-            const lugaresU = await DBEscuelas(true,false)
-            lugaresU.forEach(lgs => {
-                if(lgs.desgloses) {
-                    desglosesViajes.forEach(dv => {
-                        if(lgs.desgloses){
-                            lgs.desgloses.forEach((d) => {
-                                if(dv.desglose_id === d.desglose_id) d.selected = true
-                            })
-                        }
-                    });
-                }
-            });
+            const lugaresU = await DBEscuelas()
+            if(!allowVenv) {
+                lugaresU.forEach(lgs => {
+                    if(lgs.desgloses) {
+                        desglosesViajes.forEach(dv => {
+                            if(lgs.desgloses){
+                                lgs.desgloses.forEach((d) => {
+                                    if(dv.desglose_id === d.desglose_id) d.selected = true
+                                })
+                            }
+                        });
+                    }
+                });
+            }
+
             return lugaresU
         } catch (error) {
             console.log(error)

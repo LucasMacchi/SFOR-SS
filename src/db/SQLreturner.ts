@@ -205,8 +205,8 @@ export function allLugaresEntregaSQL () {
     return `SELECT * FROM public.lentrega ORDER BY lentrega_id ASC;`
 }
 
-export function desgloseByLentregaSQL (id:number,sent:boolean,hidden:boolean) {
-    return sent ? `SELECT * FROM public.desglose WHERE lentrega_id = ${id} and enviado = false ${hidden ? "":"and visible = true"} ORDER BY desglose_id ASC;` :`SELECT * FROM public.desglose WHERE lentrega_id = ${id} ${hidden ? "":" and visible = true"} ORDER BY desglose_id ASC;`
+export function desgloseByLentregaSQL (id:number) {
+    return `SELECT * FROM public.desglose WHERE lentrega_id = ${id} and ((SELECT payload FROM public.config WHERE config_id = 8) <> '0' OR enviado = false) and visible = true ORDER BY desglose_id ASC`
 }
 
 export function allEscuelasSQL () {
@@ -267,6 +267,10 @@ export function addDetalleViajeSQL (d: IViajeDetalle,rtId:number,user:number) {
 
 export function viajeSQL (userId:number) {
     return `SELECT * FROM public.viaje WHERE reparto_id = (SELECT reparto_id FROM reparto_user WHERE user_id = ${userId}) ORDER BY viaje_id DESC `
+}
+
+export function viajeUniqSQL (id:number) {
+    return `SELECT * FROM public.viaje WHERE viaje_id = ${id} ORDER BY viaje_id DESC `
 }
 
 export function viajeRemitoSQL (viaje: number) {

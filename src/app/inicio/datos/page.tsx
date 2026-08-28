@@ -16,6 +16,8 @@ export default async function () {
     const fechVe = data ? data.configVariables[1].payload : 0
     const finT = data ? data.configVariables[2].payload : 0
     const valR = data ? data.configVariables[5].payload : 0
+    const allowVdup = data ? data.configVariables[6].payload : 0
+    const allowVenv = data ? data.configVariables[7].payload : 0
     const facturas: IFactura[] = data ? data.facturas : []
     const lastFact: number = facturas[0].numero
     let racionesF: number = 0
@@ -24,6 +26,17 @@ export default async function () {
     });
 
     async function changeData(id: number,payload:string) : Promise<boolean> {
+        "use server"
+        try {
+            await DBChangeData(id,payload)
+            return true
+        } catch (error) {
+            console.log(error)
+            return false
+        }
+    }
+
+    async function changeDataBool(id: number,payload:string) : Promise<boolean> {
         "use server"
         try {
             await DBChangeData(id,payload)
@@ -43,24 +56,23 @@ export default async function () {
             <div>
                 <div>
                     <h2 style={{...text_2_t_style, marginTop: 40}}>SIGUIENTE REMITO: {data?.nextRemitoNro}</h2>
-                    <ChangeDataBtn id={99} changeData={changeData}/> 
+                    <ChangeDataBtn id={99} changeData={changeData} bool={false} vbool={false}/> 
                 </div>
                 <div>
                     <h2 style={{...text_2_t_style, marginTop: 40}}>PUNTO DE VENTA DE REMITOS: {pvR}</h2>
-                    <ChangeDataBtn id={4} changeData={changeData}/> 
+                    <ChangeDataBtn id={4} changeData={changeData} bool={false} vbool={false}/> 
                 </div>
                 <div>
                     <h2 style={{...text_2_t_style, marginTop: 40}}>CODIGO CAI DE REMITO: {cai}</h2>
-                    <ChangeDataBtn id={1} changeData={changeData}/> 
+                    <ChangeDataBtn id={1} changeData={changeData} bool={false} vbool={false}/> 
                 </div>
                 <div>
                     <h2 style={{...text_2_t_style, marginTop: 40}}>FECHA DE VENCIMIENTO: {fechVe}</h2>
-                    <ChangeDataBtn id={2} changeData={changeData}/> 
+                    <ChangeDataBtn id={2} changeData={changeData} bool={false} vbool={false}/> 
                 </div>
                 <div>
                     <h2 style={{...text_2_t_style, marginTop: 40}}>FIN DE TALONARIO: {finT}</h2> 
-                    <ChangeDataBtn id={3} changeData={changeData}/> 
-
+                    <ChangeDataBtn id={3} changeData={changeData} bool={false} vbool={false}/> 
                 </div>
             </div>
             <div style={{marginTop: 100}}>
@@ -70,7 +82,7 @@ export default async function () {
             <div>
                 <div style={{display: "flex",alignItems: "baseline"}}>
                     <h2 style={{...text_2_t_style, marginTop: 40}}>PUNTO DE VENTA DE FACTURACION: {pvF}</h2>
-                    <ChangeDataBtn id={5} changeData={changeData}/> 
+                    <ChangeDataBtn id={5} changeData={changeData} bool={false} vbool={false}/> 
                 </div>
                 <div>
                     <h2 style={{...text_2_t_style, marginTop: 40}}>ULTIMA FACTURA: {lastFact}</h2> 
@@ -83,9 +95,21 @@ export default async function () {
                 </div>
                 <div style={{display: "flex",alignItems: "baseline"}}>
                     <h2 style={{...text_2_t_style, marginTop: 40}}>VALOR A FACTURAR POR RACION: {valR}</h2>
-                    <ChangeDataBtn id={6} changeData={changeData}/> 
+                    <ChangeDataBtn id={6} changeData={changeData} bool={false} vbool={false}/> 
                 </div>
             </div>
+            <div style={{marginTop: 100}}>
+                <h1 style={text_2_t_style}>PARAMETRIZACION</h1>
+            </div>
+            <hr color="#4A6EE8" style={hr_style}/>
+                <div>
+                    <h2 style={{...text_2_t_style, marginTop: 40}}>PERMITIR MOSTRAR DESGLOSES DE VIAJES YA CREADOS : {allowVdup === "1" ? "SI" : "NO"}</h2> 
+                    <ChangeDataBtn id={7} changeData={changeData} bool={true} vbool={allowVdup === "1" ? true : false}/> 
+                </div>
+                <div>
+                    <h2 style={{...text_2_t_style, marginTop: 40}}>PERMITIR MOSTRAR DESGLOSES YA ENVIADOS PARA VIAJES : {allowVenv === "1" ? "SI" : "NO"}</h2> 
+                    <ChangeDataBtn id={8} changeData={changeData} bool={true} vbool={allowVenv === "1" ? true : false}/> 
+                </div>
         </div>
     )
 }
