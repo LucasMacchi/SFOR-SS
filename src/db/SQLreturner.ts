@@ -209,6 +209,10 @@ export function desgloseByLentregaSQL (id:number) {
     return `SELECT * FROM public.desglose WHERE lentrega_id = ${id} and ((SELECT payload FROM public.config WHERE config_id = 8) <> '0' OR enviado = false) and visible = true ORDER BY desglose_id ASC`
 }
 
+export function desgloseByLentregaAllSQL (id:number) {
+    return `SELECT * FROM public.desglose WHERE lentrega_id = ${id}`
+}
+
 export function allEscuelasSQL () {
     return `SELECT * FROM public.desglose  ORDER BY desglose_id ASC;`
 }

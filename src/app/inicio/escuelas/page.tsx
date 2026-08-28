@@ -13,7 +13,7 @@ import { hr_style, text_2_t_style } from "@/utils/styles"
 
 export default async function Page () {
     await sessionCheck(2)
-    const lugares = await DBEscuelas(false,true)
+    const lugares = await DBEscuelas(true)
     const departamentos = await DBDepartamentos()
     const desgloses:IDesglose[] = []
     if(lugares) {
