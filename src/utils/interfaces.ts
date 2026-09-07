@@ -583,6 +583,7 @@ export interface IViajeRQ {
     des: string,
     remitos: IViajeRemitoRQ[],
     viaje_id:number,
+    ocultado: boolean,
     reparto_id: number,
     procesado:boolean
 }
