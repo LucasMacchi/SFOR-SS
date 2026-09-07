@@ -20,6 +20,7 @@ export default function DisplayPlanes ({viajes,deleteFn,insumos,planes,lugares,r
 
     const [selectedViaje,setSelectedViaje] = useState(-1)
     const [selectedViajeU,setSelectedViajeU] = useState(-1)
+    const [displayOcultos, setDisplayOcultos] = useState(false)
     const [selectedRt,setSelectedRt] = useState(-1)
     const [selectPlan, setSelectPlan] = useState(-1)
     const [selectedRep,setSelectedRep] = useState(-1)
@@ -190,11 +191,20 @@ export default function DisplayPlanes ({viajes,deleteFn,insumos,planes,lugares,r
                     style={{width: 500,fontSize:24,marginBottom: 20}}>
                         <option value={-1}>---</option>
                         {viajes.map((p,i) => {
-                            if(p.remitos.length > 0) {
-                                return <option key={i} value={i}>{p.des}</option>
+                            if(displayOcultos) {
+                                if(p.remitos.length > 0 ) {
+                                    return <option key={i} value={i}>{p.des}</option>
+                                }
                             }
+                            else {
+                                if(p.remitos.length > 0 && !p.ocultado) {
+                                    return <option key={i} value={i}>{p.des}</option>
+                                }
+                            }
+
                         })}
                     </select>
+                    <input type="checkbox" checked={displayOcultos} onChange={() => setDisplayOcultos(!displayOcultos)}/> Mostrar Ocultos
                 </div>
                 {selectedViaje > -1 &&
                 <div>

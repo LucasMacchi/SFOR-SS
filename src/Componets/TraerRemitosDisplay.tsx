@@ -27,6 +27,7 @@ export default function TraerRemitosDisplay ({viajes,insumos,venc,cai,getRtViaje
     const [remitos, setRemitos] = useState<IRemitoT[]>([])
     const [range, setRange] = useState({start:0,end:0})
     const [loading, setLoading] = useState(false)
+    const [displayOcultos, setDisplayOcultos] = useState(false)
     
     useEffect(() => {
         setSelectedViaje(-1)
@@ -79,11 +80,19 @@ export default function TraerRemitosDisplay ({viajes,insumos,venc,cai,getRtViaje
                     style={{width: 500,fontSize:24,marginBottom: 20}}>
                         <option value={-1}>---</option>
                         {viajes.map((p,i) => {
-                            if(p.remitos.length > 0 && p.procesado) {
-                                return <option key={i} value={i}>{p.des}</option>
+                            if(displayOcultos) {
+                                if(p.remitos.length > 0 && p.procesado) {
+                                    return <option key={i} value={i}>{p.des}</option>
+                                }
+                            }
+                            else {
+                                if(p.remitos.length > 0 && !p.ocultado && p.procesado) {
+                                    return <option key={i} value={i}>{p.des}</option>
+                                }
                             }
                         })}
                     </select>
+                    <input type="checkbox" checked={displayOcultos} onChange={() => setDisplayOcultos(!displayOcultos)}/> Mostrar Ocultos
                 </div>
                 {(selectedViaje > -1 && viajes[selectedViaje]) && 
                     <div>
