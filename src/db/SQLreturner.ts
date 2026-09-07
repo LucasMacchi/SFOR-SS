@@ -453,7 +453,7 @@ export function deleteRemitoSQL (remito:number) {
 export function enviosExcelSQL (userId:number) {
     return `
         SELECT r.fecha_creado,r.fecha_despachado,r.fecha_preparado,
-        r.fecha_entregado,r.fortificado,es.des as estado,
+        r.fecha_entregado,r.fortificado,es.des as estado,r.dias,
         r.pv,r.numero,des.des as dependencia,r.lentrega_id as lugar_entrega,
 		(SELECT SUM(raciones) FROM public.envio_details d JOIN public.insumo i ON i.ins_id = d.ins_id WHERE i.calculable = true AND d.envio_id = e.envio_id) as raciones
         FROM public.envio e
