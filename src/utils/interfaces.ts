@@ -697,6 +697,7 @@ export interface IEnviosExcelRQ {
     fecha_entregado:Date,
     fortificado:boolean,
     estado:string,
+    dias:number,
     pv:number,
     numero:number,
     dependencia:string,
