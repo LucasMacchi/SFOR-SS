@@ -706,7 +706,8 @@ export interface IEnviosExcelRQ {
     raciones: string,
     cabecera: string,
     localidad: string,
-    departamento:string
+    departamento:string,
+    diarias:number
 }
 
 export interface IEnviosExcel {
@@ -722,8 +723,9 @@ export interface IEnviosExcel {
     L_LOCALIDAD: string,
     L_DEPARTAMENTO: string,
     E_DEPENDENCIA:string,
-    E_ID_ENTREGA:number
-    RACIONES: number
+    E_ID_ENTREGA:number,
+    RACIONES_DIARIAS: number
+    RACIONES_ENTREGADAS: number
 }
 
 export interface IViajeExcelComplete {
