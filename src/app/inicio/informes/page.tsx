@@ -274,7 +274,8 @@ export default async function Page() {
                             DIAS:e.dias,
                             PLAN:e.plan,
                             RACIONES:e.raciones,
-                            RACIONES_TOTAL:e.raciones * e.dias
+                            RACIONES_TOTAL:e.raciones * e.dias,
+                            TIPO: e.tipo ? "ALMUERZO" : "COPA DE LECHE"
                         })
                     }
                 });
@@ -312,7 +313,8 @@ export default async function Page() {
                             PLAN:e.plan,
                             RACIONES:e.raciones,
                             RACIONES_TOTAL:e.raciones * e.dias,
-                            VIAJE: v.des
+                            VIAJE: v.des,
+                            TIPO: e.tipo ? "ALMUERZO" : "COPA DE LECHE"
                         })
                     }
                 });

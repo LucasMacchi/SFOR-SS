@@ -470,8 +470,8 @@ export function addRepartoSQL (plan:number,year:number) {
 
 export function dataExcelViajesSQL (userId:number) {
     return `
-    SELECT v.viaje_id,de.cue,l.lentrega_id,l.completo,de.des as dependencia,l.localidad,l.departamento,l.direccion,p.dias,p.des as plan,d.raciones
-    FROM public.viaje v JOIN public.viaje_remito r ON v.viaje_id = r.viaje_id 
+    SELECT v.viaje_id,de.cue,l.lentrega_id,l.completo,de.des as dependencia,l.localidad,l.departamento,l.direccion,p.dias,p.des as plan,d.raciones,de.fortificado as tipo
+    FROM public.viaje v JOIN public.viaje_remito r ON v.viaje_id = r.viaje_id
     JOIN public.viaje_detalle d ON d.vremito_id = r.vremito_id
     JOIN public.desglose de ON de.desglose_id = d.desglose_id
     JOIN public.lentrega l ON de.lentrega_id = l.lentrega_id
