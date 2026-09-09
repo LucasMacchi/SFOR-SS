@@ -455,11 +455,13 @@ export function enviosExcelSQL (userId:number) {
         SELECT r.fecha_creado,r.fecha_despachado,r.fecha_preparado,
         r.fecha_entregado,r.fortificado,es.des as estado,r.dias,
         r.pv,r.numero,des.des as dependencia,r.lentrega_id as lugar_entrega,
+        l.completo as cabecera,l.departamento,l.localidad,
 		(SELECT SUM(raciones) FROM public.envio_details d JOIN public.insumo i ON i.ins_id = d.ins_id WHERE i.calculable = true AND d.envio_id = e.envio_id) as raciones
         FROM public.envio e
         JOIN public.desglose des ON e.desglose_id = des.desglose_id
         JOIN public.remito r ON e.remito_id = r.remito_id 
-        JOIN public.estado es ON r.estado_id = es.estado_id  
+        JOIN public.estado es ON r.estado_id = es.estado_id
+        JOIN public.lentrega l ON des.lentrega_id = l.lentrega_id
         WHERE r.reparto_id = (SELECT reparto_id FROM reparto_user WHERE user_id = ${userId});
         `
 }
