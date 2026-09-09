@@ -175,7 +175,8 @@ export default async function Page() {
                     L_DEPARTAMENTO: e.departamento,
                     E_DEPENDENCIA:e.dependencia,
                     E_ID_ENTREGA:e.lugar_entrega,
-                    RACIONES: parseInt(e.raciones),
+                    RACIONES_DIARIAS: e.diarias,
+                    RACIONES_ENTREGADAS: parseInt(e.raciones),
                     R_DIAS:e.dias
                 }
             })
