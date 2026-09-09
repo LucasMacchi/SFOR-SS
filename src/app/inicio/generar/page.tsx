@@ -31,7 +31,7 @@ export default async function Page() {
             return false
         }
     }
-    
+    const planesParsed = planes ? planes.filter((plan) => plan.visible === true) : []
     return (
         <div>
             <div>
@@ -42,7 +42,7 @@ export default async function Page() {
                 <div>
                     <GenerarIndividual escuelas={lugares} 
                     departamentos={departamentos} 
-                    planes={planes ?planes:[]} insumos={insumos} reparto={userplan}
+                    planes={planesParsed} insumos={insumos} reparto={userplan}
                     generateFn={generateRemitosViaje}/>
                 </div>
             </div>

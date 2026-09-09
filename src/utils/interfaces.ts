@@ -752,7 +752,8 @@ export interface IViajeExcelRQ {
     dias:number,
     plan:string,
     raciones: number,
-    viaje_id: number
+    viaje_id: number,
+    tipo:boolean
 }
 
 export interface IViajeExcel {
@@ -767,6 +768,7 @@ export interface IViajeExcel {
     PLAN:string,
     RACIONES:number,
     RACIONES_TOTAL:number,
+    TIPO:string,
     VIAJE?:string
 }
 
