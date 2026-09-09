@@ -703,7 +703,10 @@ export interface IEnviosExcelRQ {
     numero:number,
     dependencia:string,
     lugar_entrega:number,
-    raciones: string
+    raciones: string,
+    cabecera: string,
+    localidad: string,
+    departamento:string
 }
 
 export interface IEnviosExcel {
@@ -715,6 +718,9 @@ export interface IEnviosExcel {
     R_ENTREGADO:string,
     R_TIPO:string,
     R_ESTADO:string,
+    L_CABECERA: string,
+    L_LOCALIDAD: string,
+    L_DEPARTAMENTO: string,
     E_DEPENDENCIA:string,
     E_ID_ENTREGA:number
     RACIONES: number

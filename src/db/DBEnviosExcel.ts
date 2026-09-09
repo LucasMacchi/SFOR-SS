@@ -1,7 +1,7 @@
 import authJwt from "@/utils/authJwt";
 import clientReturner from "./clientReturner";
-import {IEnviosExcelRQ, IRemitosEnvio } from "@/utils/interfaces";
-import { enviosExcelSQL, listRemitosSQL } from "@/db/SQLreturner";
+import {IEnviosExcelRQ } from "@/utils/interfaces";
+import { enviosExcelSQL } from "@/db/SQLreturner";
 import decodeJWT from "@/utils/decodeJWT";
 
 export default async function (): Promise<IEnviosExcelRQ[]> {
