@@ -173,6 +173,7 @@ export default async function Page() {
                     L_CABECERA: e.cabecera,
                     L_LOCALIDAD: e.localidad,
                     L_DEPARTAMENTO: e.departamento,
+                    E_CUE:e.cue,
                     E_DEPENDENCIA:e.dependencia,
                     E_ID_ENTREGA:e.lugar_entrega,
                     RACIONES_DIARIAS: e.diarias,
