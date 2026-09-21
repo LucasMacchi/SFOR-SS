@@ -10,6 +10,7 @@ export default async function (ins_id: number,newVal: string | boolean,column:st
                 await conn.connect()
                 const sql = insumoEditSQL(column,ins_id,newVal)
                 await conn.query(sql)
+                await conn.end()
                 return true
             }
             await conn.end()
