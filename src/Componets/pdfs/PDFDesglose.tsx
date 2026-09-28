@@ -109,12 +109,6 @@ const insumosDisplayer = (envio: IEnvioT,insumosArr:IInsumo[],dias:number) => {
                     <Text style={stylePedido.tableCell}>{insumos[i] ? insumos[i].des : " "}</Text>
                 </View>
                 <View style={stylePedido.tableColcod}>
-                    <Text style={stylePedido.tableCell}>{insumos[i] ? insumos[i].cajas : " "}</Text>
-                </View>
-                <View style={stylePedido.tableColcod}>
-                    <Text style={stylePedido.tableCell}>{insumos[i] ? insumos[i].bolsas : " "}</Text>
-                </View>
-                <View style={stylePedido.tableColcod}>
                     <Text style={stylePedido.tableCell}>{insumos[i] ? insumos[i].unidades : " "}</Text>
                 </View>
             </View>
@@ -125,12 +119,6 @@ const insumosDisplayer = (envio: IEnvioT,insumosArr:IInsumo[],dias:number) => {
         <View style={stylePedido.tableRow}>
             <View style={stylePedido.tableColIns}>
                 <Text style={stylePedido.tableCell}>{"RACIONES TOTALES POR "+dias+" DIAS: "+racTotales}</Text>
-            </View>
-            <View style={stylePedido.tableColcod}>
-                <Text style={stylePedido.tableCell}>{" "}</Text>
-            </View>
-            <View style={stylePedido.tableColcod}>
-                <Text style={stylePedido.tableCell}>{" "}</Text>
             </View>
             <View style={stylePedido.tableColcod}>
                 <Text style={stylePedido.tableCell}>{" "}</Text>
@@ -172,12 +160,6 @@ const pageContruct = (e: IEnvioT, copia: boolean,page: number,completo:string,lo
                 <View style={stylePedido.tableRow_header}>
                     <View style={stylePedido.tableColIns}>
                         <Text style={{...stylePedido.tableCell,color:"white"}}>INSUMO</Text>
-                    </View>
-                    <View style={stylePedido.tableColcod}>
-                        <Text style={{...stylePedido.tableCell,color:"white"}}>CAJAS</Text>
-                    </View>
-                    <View style={stylePedido.tableColcod}>
-                        <Text style={{...stylePedido.tableCell,color:"white"}}>UNIDADES</Text>
                     </View>
                     <View style={stylePedido.tableColcod}>
                         <Text style={{...stylePedido.tableCell,color:"white"}}>UNIDADES TOTALES</Text>
